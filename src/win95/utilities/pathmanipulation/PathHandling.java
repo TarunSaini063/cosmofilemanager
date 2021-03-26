@@ -3,9 +3,9 @@ package win95.utilities.pathmanipulation;
 import win95.constants.DirectoryMovement;
 import win95.constants.FileType;
 import win95.constants.Messages;
+import win95.debug.LogsPrinter;
 import win95.utilities.exceptions.InvalidPathException;
 import win95.utilities.exceptions.UnknownFileMovement;
-import win95.debug.LogsPrinter;
 
 public class PathHandling {
     private static FileType type;
@@ -37,16 +37,22 @@ public class PathHandling {
     String cd(String path,DirectoryMovement movementType,String nextNode) throws InvalidPathException, UnknownFileMovement {
         PathValidity pathValidity = new PathValidity(path);
         if(!pathValidity.isValid()) {
+//            ExceptionPrinter.print("PathHandling",40,Messages.INVALID_PATH + path);
             throw new InvalidPathException(Messages.INVALID_PATH + path);
         }
 
         if(movementType != DirectoryMovement.CD_NEXT){
+//            ExceptionPrinter.print("PathHandling",50,Messages.INVALID_PATH_MOVEMENT);
             throw new UnknownFileMovement(Messages.INVALID_PATH_MOVEMENT);
         }
         String newPath = path + FileSeparator.fileSeparator()+nextNode;
 
         LogsPrinter.printLogic("PathHandling",47,"new Path : "+newPath);
-
+        pathValidity = new PathValidity(newPath);
+        if(!pathValidity.isValid()) {
+//            ExceptionPrinter.print("PathHandling",50,Messages.INVALID_PATH + newPath);
+            throw new InvalidPathException(Messages.INVALID_PATH + newPath);
+        }
         return newPath;
     }
 }
