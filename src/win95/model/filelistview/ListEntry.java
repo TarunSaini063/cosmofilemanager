@@ -1,90 +1,125 @@
 package win95.model.filelistview;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import win95.constants.FileIcons;
+import win95.debug.LogsPrinter;
+import win95.model.FileDetail;
+import win95.model.filelistview.listViewelements.RowButtonShare;
+import win95.model.filelistview.listViewelements.RowImageView;
+import win95.model.filelistview.listViewelements.RowLabel;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class ListEntry {
-    String name,url;
+    private String name,url;
+
+    private RowImageView rowImageView;
+    private RowLabel rowNameLabel,rowCount;
+    private RowButtonShare delete,open,share;
+    private FileDetail fileDetail;
 
 
-    ImageView imageView;
-    Label label;
-    Button delete,open;
-    public ListEntry(String name){
-        this.name = name;
-        this.imageView = new ImageView();
-        this.url = "/Users/tarun/IntellijProjects/CosmoFileManager/src/win95/asset/fileLogo.png";
+
+    public ListEntry(FileDetail fileDetail){
+        this.fileDetail = fileDetail;
+        this.name = fileDetail.getFileName();
+        this.url = FileIcons.getFileIconPath(fileDetail.getFileExtension());
+
+        rowNameLabel = new RowLabel(fileDetail);
+        rowNameLabel.setMaxWidth(1000);
+        rowNameLabel.setMinWidth(500);
+
+        rowCount = new RowLabel(fileDetail);
+        rowCount.setText("");
+        rowCount.setMinWidth(30);
+
         Image image = new Image(new File(url).toURI().toString());
-        this.imageView.setImage(image);
-        label = new Label(name);
-        label.setMaxWidth(1000);
-        label.setMinWidth(500);
-        imageView.setFitHeight(25);
-        imageView.setFitWidth(25);
-        delete = new Button("Delete");
-        open = new Button("Open");
-        open.setOnAction(event -> {
-            try {
-                String command="open /Users/tarun/Desktop/Coding/Codechef/";
-                if(name.contains(" ")){
-                    command+="\""+name+"\"";
-                }
-                else command+=name;
-                Process open = Runtime.getRuntime().exec(command);
-                System.out.println(command);
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(open.getErrorStream()));
-                String error;
-                while((error = bufferedReader.readLine())!=null){
-                    System.out.println(error);
-                }
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        this.rowImageView = new RowImageView(fileDetail);
+        this.rowImageView.setImage(image);
 
-            }
+
+        share = new RowButtonShare(fileDetail,"Share");
+
+        share.setOnAction(event -> {
+            /*
+                replace with share module..
+                not implemented yet...
+             */
+            LogsPrinter.printLogic("ListEntry",42,"Share logic not implemented yet");
         });
     }
 
-    public Label getLabel() {
-        return label;
-    }
+
     public String getName() {
         return name;
-    }
-
-    public ImageView getImageView() {
-        return imageView;
-    }
-
-    public Button getDelete() {
-        return delete;
-    }
-
-    public Button getOpen() {
-        return open;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
+    public String getUrl() {
+        return url;
     }
 
-    public void setDelete(Button delete) {
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public RowImageView getRowImageView() {
+        return rowImageView;
+    }
+
+    public void setRowImageView(RowImageView rowImageView) {
+        this.rowImageView = rowImageView;
+    }
+
+    public RowLabel getRowNamelabel() {
+        return rowNameLabel;
+    }
+
+    public void setRowNamelabel(RowLabel rowNamelabel) {
+        this.rowNameLabel = rowNamelabel;
+    }
+
+    public RowLabel getRowCount() {
+        return rowCount;
+    }
+
+    public void setRowCount(RowLabel rowCount) {
+        this.rowCount = rowCount;
+    }
+
+    public RowButtonShare getDelete() {
+        return delete;
+    }
+
+    public void setDelete(RowButtonShare delete) {
         this.delete = delete;
     }
 
-    public void setOpen(Button open) {
+    public RowButtonShare getOpen() {
+        return open;
+    }
+
+    public void setOpen(RowButtonShare open) {
         this.open = open;
+    }
+
+    public RowButtonShare getShare() {
+        return share;
+    }
+
+    public void setShare(RowButtonShare share) {
+        this.share = share;
+    }
+
+    public FileDetail getFileDetail() {
+        return fileDetail;
+    }
+
+    public void setFileDetail(FileDetail fileDetail) {
+        this.fileDetail = fileDetail;
     }
 
     @Override
@@ -96,5 +131,6 @@ public class ListEntry {
                 ", open=" + "open" +
                 '}';
     }
+
 
 }

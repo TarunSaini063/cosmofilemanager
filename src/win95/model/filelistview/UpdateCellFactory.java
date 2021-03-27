@@ -2,9 +2,14 @@ package win95.model.filelistview;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.MouseButton;
+import win95.constants.ControllerInstances;
+import win95.constants.Dimensions;
+import win95.debug.LogsPrinter;
+import win95.model.filelistview.listViewelements.RowGridPane;
+import win95.model.filelistview.listViewelements.RowLabel;
+import win95.utilities.filehandling.OpenFile;
 
 public class UpdateCellFactory extends ListCell<ListEntry> {
     @Override
@@ -14,26 +19,42 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             setGraphic(null);
         }else{
             int index = this.getIndex();
-            GridPane grid = new GridPane();
+
+            RowGridPane grid = new RowGridPane(item.getFileDetail());
             grid.setHgap(10);
             grid.setVgap(10);
             grid.setPadding(new Insets(0, 10, 0, 10));
-            Label count = new Label(index+1+"");
-            count.setMinWidth(30);
+
+            RowLabel count = item.getRowCount();
+            count.setText(index+1+"");
+            count.setMinWidth(Dimensions.LISTVIEW_ROWCOUNT);
+
             grid.add(count,0,0,1,1);
-            grid.add(item.getImageView(),1,0);
-            grid.add(item.getLabel(),2,0,3,1);
-            grid.add(item.getOpen(),5,0);
+            grid.add(item.getRowImageView(),1,0);
+            grid.add(item.getRowNamelabel(),2,0,3,1);
+            grid.add(item.getShare(),5,0);
+
             grid.setAlignment(Pos.BASELINE_LEFT);
-//            HBox listRow = new HBox(50);
-//            listRow.setAlignment(Pos.BASELINE_LEFT);
-//            listRow.getChildren().addAll(
-//                    new Label(index+1+""),
-//                    item.getImageView(),
-//                    item.getLabel(),
-//                    item.getOpen()
-//            );
+//            grid.setGridLinesVisible(true);
             setGraphic(grid);
+            this.setOnMouseClicked(event->{
+                if (event.getButton() == MouseButton.PRIMARY){
+                    if(event.getClickCount() == 2){
+                        OpenFile.open(item.getFileDetail());
+                    }
+                    else{
+                            if(ControllerInstances.instance!=null){
+                                LogsPrinter.printLogic("UpdateCellFactory",47,"calling controller instance");
+                                ControllerInstances.instance.showPreview(item.getFileDetail());
+                            }else{
+                                LogsPrinter.printLogic("UpdateCellFactory",47,"controller instance is null");
+                            }
+                        /*
+                        * set right anchor pane to show preview details
+                        */
+                    }
+                }
+            });
         }
     }
 }
