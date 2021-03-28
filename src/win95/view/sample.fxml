@@ -4,14 +4,20 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.Controller">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane layoutX="300.0" prefHeight="1200.0" prefWidth="1200.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="tagPane" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#707c8600" height="42.0" layoutX="58.0" layoutY="6.0" stroke="BLACK" strokeType="INSIDE" width="170.0" />
+            <ImageView fx:id="left" fitHeight="35.0" fitWidth="33.0" layoutX="83.0" layoutY="10.0" onMouseClicked="#previousDirectory" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="right" fitHeight="35.0" fitWidth="33.0" layoutX="167.0" layoutY="11.0" onMouseClicked="#nextDirectory" pickOnBounds="true" preserveRatio="true" />
+         </children></AnchorPane>
+      <AnchorPane fx:id="middle" layoutX="300.0" prefHeight="1200.0" prefWidth="1200.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="0.0">
          <children>
             <ListView fx:id="listView" prefHeight="200.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-            <AnchorPane prefHeight="50.0" prefWidth="1200.0" style="-fx-background-color: yellow;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="middleTop" prefHeight="50.0" prefWidth="1200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label layoutX="14.0" layoutY="17.0" text="Number" />
                   <Label layoutX="268.0" layoutY="17.0" text="Name" />

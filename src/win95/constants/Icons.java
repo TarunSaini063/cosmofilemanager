@@ -11,6 +11,12 @@ public class Icons {
 
     public static final String DARK_MENU_DOT = otherIconDirectory+"/menu_dark.png";
     public static final String LIGHT_MENU_DOT = otherIconDirectory+"/menu_light.png";
+
+    public static final String LIGHT_LEFT_ARROW = otherIconDirectory+"/left_light.png";
+    public static final String DARK_LEFT_ARROW = otherIconDirectory+"/left_dark.png";
+
+    public static final String LIGHT_RIGHT_ARROW = otherIconDirectory+"/right_light.png";
+    public static final String DARK_RIGHT_ARROW = otherIconDirectory+"/right_dark.png";
     static {
         iconPath.put("ai", fileIconDirectory +"/ai.png");
         iconPath.put("apk", fileIconDirectory +"/apk.png");

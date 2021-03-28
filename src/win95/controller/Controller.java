@@ -73,6 +73,18 @@ public class Controller implements Initializable {
     @FXML
     private ImageView menu;
 
+    @FXML
+    private AnchorPane tagPane;
+
+    @FXML
+    private AnchorPane middleTop;
+
+    @FXML
+    private ImageView left;
+
+    @FXML
+    private ImageView right;
+
     ContextMenu menuPopup;
 
     @FXML
@@ -81,7 +93,15 @@ public class Controller implements Initializable {
         menu=(ImageView)event.getSource();
         menuPopup.show(menu,event.getScreenX(),event.getScreenY());
     }
+    @FXML
+    void nextDirectory(MouseEvent event) {
+        System.out.println("NEXT PRESSED");
+    }
 
+    @FXML
+    void previousDirectory(MouseEvent event) {
+        System.out.println("PREVIOUS PRESSED");
+    }
     public void showPreview(FileDetail fileDetail){
 
         GridPane previewGridPane = new GridPane();
@@ -187,6 +207,20 @@ public class Controller implements Initializable {
         * themes not yet implemented...
         *
         */
+        tagPane.setStyle("-fx-background-color: "+Color.LEFT_PANE_COLOR);
+        middleTop.setStyle("-fx-background-color: "+Color.MIDDLE_PANE_COLOR);
+        preview.setStyle("-fx-background-color: "+Color.PREVIEW_PANE_COLOR);
+
+        Image leftImageLight = new Image(new File(Icons.LIGHT_LEFT_ARROW).toURI().toString());
+        left.setImage(leftImageLight);
+        menu.setFitHeight(Dimensions.DIRECTORY_MOVEMENT_ICON);
+        menu.setFitWidth(Dimensions.DIRECTORY_MOVEMENT_ICON);
+
+        Image rightImageLight = new Image(new File(Icons.LIGHT_RIGHT_ARROW).toURI().toString());
+        right.setImage(rightImageLight);
+        menu.setFitHeight(Dimensions.DIRECTORY_MOVEMENT_ICON);
+        menu.setFitWidth(Dimensions.DIRECTORY_MOVEMENT_ICON);
+
         Image image = new Image(new File(Icons.LIGHT_MENU_DOT).toURI().toString());
         menu.setFitHeight(Dimensions.MENU_ICON);
         menu.setFitWidth(Dimensions.MENU_ICON);
