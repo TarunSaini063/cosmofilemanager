@@ -2,14 +2,11 @@ package win95.model.filelistview.listViewelements;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import win95.constants.Dimensions;
 import win95.constants.LogicConstants;
 import win95.model.FileDetail;
 
 import java.io.File;
-
-import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class RowImageView extends ImageView {
     private final FileDetail fileDetail;
@@ -20,11 +17,6 @@ public class RowImageView extends ImageView {
         this.fileDetail = fileDetail;
         this.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
-        this.setOnMouseClicked(event -> {
-            if ((event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)) {
-                doubleClick(fileDetail);
-            }
-        });
     }
 
     public RowImageView(FileDetail fileDetail,LogicConstants previewMode) {
