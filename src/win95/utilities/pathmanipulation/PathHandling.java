@@ -1,7 +1,7 @@
 package win95.utilities.pathmanipulation;
 
-import win95.constants.DirectoryMovement;
 import win95.constants.FileType;
+import win95.constants.LogicConstants;
 import win95.constants.Messages;
 import win95.debug.LogsPrinter;
 import win95.utilities.exceptions.InvalidPathException;
@@ -14,13 +14,13 @@ public class PathHandling {
 
     }
 
-    String cd(String path, DirectoryMovement movementType) throws InvalidPathException, UnknownFileMovement {
+    String cd(String path, LogicConstants movementType) throws InvalidPathException, UnknownFileMovement {
         PathValidity pathValidity = new PathValidity(path);
         if(!pathValidity.isValid()) {
             throw new InvalidPathException(Messages.INVALID_PATH + path);
         }
 
-        if(movementType != DirectoryMovement.CD_BACK){
+        if(movementType != LogicConstants.CD_BACK){
             throw new UnknownFileMovement(Messages.INVALID_PATH_MOVEMENT);
         }
         String []nodes = path.split(FileSeparator.fileSeparator());
@@ -34,14 +34,14 @@ public class PathHandling {
         return newPathStringBuilder.toString();
     }
 
-    String cd(String path,DirectoryMovement movementType,String nextNode) throws InvalidPathException, UnknownFileMovement {
+    String cd(String path,LogicConstants movementType,String nextNode) throws InvalidPathException, UnknownFileMovement {
         PathValidity pathValidity = new PathValidity(path);
         if(!pathValidity.isValid()) {
 //            ExceptionPrinter.print("PathHandling",40,Messages.INVALID_PATH + path);
             throw new InvalidPathException(Messages.INVALID_PATH + path);
         }
 
-        if(movementType != DirectoryMovement.CD_NEXT){
+        if(movementType != LogicConstants.CD_NEXT){
 //            ExceptionPrinter.print("PathHandling",50,Messages.INVALID_PATH_MOVEMENT);
             throw new UnknownFileMovement(Messages.INVALID_PATH_MOVEMENT);
         }

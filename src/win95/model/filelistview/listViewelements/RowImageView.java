@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import win95.constants.Dimensions;
-import win95.constants.DirectoryMovement;
+import win95.constants.LogicConstants;
 import win95.model.FileDetail;
 import win95.utilities.filehandling.OpenFile;
 
@@ -15,7 +15,7 @@ public class RowImageView extends ImageView {
     private  String imageURL;
     private Image image;
 
-    public RowImageView( FileDetail fileDetail) {
+    public RowImageView(FileDetail fileDetail) {
         this.fileDetail = fileDetail;
         this.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
@@ -26,7 +26,7 @@ public class RowImageView extends ImageView {
         });
     }
 
-    public RowImageView(FileDetail fileDetail, DirectoryMovement viewMode) {
+    public RowImageView(FileDetail fileDetail,LogicConstants previewMode) {
         this.fileDetail = fileDetail;
         this.setFitHeight(Dimensions.PREVIEW_FILE_ICON);
         this.setFitWidth(Dimensions.PREVIEW_FILE_ICON);

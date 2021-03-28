@@ -38,7 +38,7 @@ public class Controller implements Initializable {
         previewGridPane.setVgap(10);
         previewGridPane.setAlignment(Pos.CENTER);
 
-        RowImageView rowImageView = new RowImageView(fileDetail, DirectoryMovement.PREVIEW_MODE);
+        RowImageView rowImageView = new RowImageView(fileDetail, LogicConstants.PREVIEW_MODE);
         Image image = new Image(new File(FileIcons.getFileIconPath(fileDetail.getFileExtension())).toURI().toString());
         rowImageView.setImage(image);
         GridPane.setHalignment(rowImageView, HPos.CENTER);
