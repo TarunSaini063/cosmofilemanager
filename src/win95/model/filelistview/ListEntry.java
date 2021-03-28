@@ -1,7 +1,7 @@
 package win95.model.filelistview;
 
 import javafx.scene.image.Image;
-import win95.constants.FileIcons;
+import win95.constants.Icons;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
 import win95.model.filelistview.listViewelements.RowButtonShare;
@@ -23,7 +23,7 @@ public class ListEntry {
     public ListEntry(FileDetail fileDetail){
         this.fileDetail = fileDetail;
         this.name = fileDetail.getFileName();
-        this.url = FileIcons.getFileIconPath(fileDetail.getFileExtension());
+        this.url = Icons.getFileIconPath(fileDetail.getFileExtension());
 
         rowNameLabel = new RowLabel(fileDetail);
         rowNameLabel.setMaxWidth(1000);

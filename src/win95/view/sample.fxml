@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.Controller">
@@ -14,6 +15,7 @@
                <children>
                   <Label layoutX="14.0" layoutY="17.0" text="Number" />
                   <Label layoutX="268.0" layoutY="17.0" text="Name" />
+                  <ImageView fx:id="menu" fitHeight="35.0" fitWidth="45.0" layoutX="1155.0" layoutY="9.0" onMouseClicked="#showMenu" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="11.0" />
                </children>
             </AnchorPane>
          </children>
