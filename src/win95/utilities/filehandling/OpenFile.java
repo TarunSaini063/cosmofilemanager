@@ -5,6 +5,7 @@ import win95.constants.FileType;
 import win95.debug.ExceptionPrinter;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
+import win95.utilities.pathmanipulation.PathStack;
 
 import java.awt.*;
 import java.io.IOException;
@@ -22,11 +23,12 @@ public class OpenFile {
             ExceptionPrinter.print("openfile",12,"failed to open file using Desktop class");
         }
     }
-    public static void doubleClick(FileDetail fileDetail){
+    public static void doubleClick(FileDetail fileDetail) throws IOException {
         if(fileDetail.getFileType()== FileType.FILE){
             open(fileDetail);
         }else{
             if(CommonData.instance != null) {
+                PathStack.setPreviousDirectory(CommonData.CURRENT_DIRECTORY);
                 CommonData.instance.updateListView(fileDetail);
             }else{
                 LogsPrinter.printLogic("UpdateCellFactory",47,

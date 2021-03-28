@@ -10,6 +10,8 @@ import win95.debug.LogsPrinter;
 import win95.model.filelistview.listViewelements.RowGridPane;
 import win95.model.filelistview.listViewelements.RowLabel;
 
+import java.io.IOException;
+
 import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class UpdateCellFactory extends ListCell<ListEntry> {
@@ -41,7 +43,11 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             this.setOnMouseClicked(event->{
                 if (event.getButton() == MouseButton.PRIMARY){
                     if(event.getClickCount() == 2){
-                        doubleClick(item.getFileDetail());
+                        try {
+                            doubleClick(item.getFileDetail());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     else{
                             if(CommonData.instance!=null){

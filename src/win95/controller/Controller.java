@@ -21,11 +21,13 @@ import win95.model.FileDetail;
 import win95.model.filelistview.CellFactory;
 import win95.model.filelistview.ListEntry;
 import win95.model.filelistview.listViewelements.RowImageView;
+import win95.utilities.pathmanipulation.PathStack;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -85,6 +87,8 @@ public class Controller implements Initializable {
     @FXML
     private ImageView right;
 
+    private String BUTTON_PRESSED = "NONE";
+
     ContextMenu menuPopup;
 
     @FXML
@@ -94,13 +98,32 @@ public class Controller implements Initializable {
         menuPopup.show(menu,event.getScreenX(),event.getScreenY());
     }
     @FXML
-    void nextDirectory(MouseEvent event) {
-        System.out.println("NEXT PRESSED");
+    void nextDirectory(MouseEvent event) throws IOException {
+        BUTTON_PRESSED = "NEXT";
+        if(PathStack.getNextDirectory() == null){
+            BUTTON_PRESSED = "NONE";
+            return;
+        }
+        LogsPrinter.printLogic("controller",97,"moving to(next) : "+ Objects.requireNonNull(PathStack.getNextDirectory()).getFilePath());
+        FileDetail fileDetail = CommonData.CURRENT_DIRECTORY;
+        if(updateListView(PathStack.getNextDirectory())) {
+            preview.getChildren().clear();
+            PathStack.setPreviousDirectory(fileDetail);
+        }
     }
-
     @FXML
-    void previousDirectory(MouseEvent event) {
-        System.out.println("PREVIOUS PRESSED");
+    void previousDirectory(MouseEvent event) throws IOException {
+        BUTTON_PRESSED = "PREVIOUS";
+        if(PathStack.getPreviousDirectory() == null) {
+            BUTTON_PRESSED = "NONE";
+            return;
+        }
+        LogsPrinter.printLogic("controller",105,"moving to(previous) : "+ Objects.requireNonNull(PathStack.getPreviousDirectory()).getFilePath());
+        FileDetail fileDetail = CommonData.CURRENT_DIRECTORY;
+        if(updateListView(PathStack.getPreviousDirectory())) {
+            preview.getChildren().clear();
+            PathStack.setNextDirectory(fileDetail);
+        }
     }
     public void showPreview(FileDetail fileDetail){
 
@@ -157,8 +180,10 @@ public class Controller implements Initializable {
         System.out.println(previewGridPane.toString());
         preview.getChildren().add(previewGridPane);
     }
-    public void updateListView(){
+    public void updateListView() throws IOException {
         File USER_HOME = new File(System.getProperty("user.home"));
+
+        CommonData.CURRENT_DIRECTORY = new FileDetail(USER_HOME);
         File []files = USER_HOME.listFiles();
         assert files != null;
         for(File file : files){
@@ -174,13 +199,27 @@ public class Controller implements Initializable {
         }
     }
 
-    public void updateListView(FileDetail fileDetail){
+    public boolean updateListView(FileDetail fileDetail) throws IOException {
+        if(fileDetail == null) return false;
         File parentPath = new File(fileDetail.getFilePath());
+        if(parentPath == null){
+            LogsPrinter.printLogic("Controller",157,
+                    "Path list files give null (invalid path/some other error");
+            return false;
+        }
+        CommonData.CURRENT_DIRECTORY = fileDetail;
         File []files = parentPath.listFiles();
         if(files == null){
             LogsPrinter.printLogic("Controller",157,
                     "parent Path list files give null (invalid path/some other error");
-            return;
+            return false;
+        }
+        if(BUTTON_PRESSED.equals("NEXT")){
+            PathStack.setNextDirectory(fileDetail);
+            BUTTON_PRESSED = "NONE";
+        }else if(BUTTON_PRESSED.equals("PREVIOUS")){
+            PathStack.setPreviousDirectory(fileDetail);
+            BUTTON_PRESSED = "NONE";
         }
         observableList.clear();
         for(File file : files){
@@ -194,6 +233,7 @@ public class Controller implements Initializable {
             }
 
         }
+        return true;
     }
 
 
@@ -226,7 +266,11 @@ public class Controller implements Initializable {
         menu.setFitWidth(Dimensions.MENU_ICON);
         menu.setImage(image);
 
-        updateListView();
+        try {
+            updateListView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         listView.setCellFactory(new CellFactory());
 
