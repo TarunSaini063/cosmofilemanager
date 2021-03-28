@@ -4,12 +4,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseButton;
-import win95.constants.ControllerInstances;
+import win95.constants.CommonData;
 import win95.constants.Dimensions;
 import win95.debug.LogsPrinter;
 import win95.model.filelistview.listViewelements.RowGridPane;
 import win95.model.filelistview.listViewelements.RowLabel;
-import win95.utilities.filehandling.OpenFile;
+
+import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class UpdateCellFactory extends ListCell<ListEntry> {
     @Override
@@ -40,12 +41,12 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             this.setOnMouseClicked(event->{
                 if (event.getButton() == MouseButton.PRIMARY){
                     if(event.getClickCount() == 2){
-                        OpenFile.open(item.getFileDetail());
+                        doubleClick(item.getFileDetail());
                     }
                     else{
-                            if(ControllerInstances.instance!=null){
+                            if(CommonData.instance!=null){
                                 LogsPrinter.printLogic("UpdateCellFactory",47,"calling controller instance");
-                                ControllerInstances.instance.showPreview(item.getFileDetail());
+                                CommonData.instance.showPreview(item.getFileDetail());
                             }else{
                                 LogsPrinter.printLogic("UpdateCellFactory",47,"controller instance is null");
                             }

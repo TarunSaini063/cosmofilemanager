@@ -13,4 +13,10 @@ public enum LogicConstants {
         BY_ACCESS_INC,
         BY_DEFAULT
     }
+    public enum OS{
+        LINUX,
+        MAC,
+        WINDOW,
+        UNKNOWN
+    }
 }

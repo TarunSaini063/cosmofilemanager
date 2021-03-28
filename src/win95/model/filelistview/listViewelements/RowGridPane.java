@@ -3,7 +3,8 @@ package win95.model.filelistview.listViewelements;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import win95.model.FileDetail;
-import win95.utilities.filehandling.OpenFile;
+
+import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class RowGridPane extends GridPane {
     private final FileDetail fileDetail;
@@ -12,7 +13,7 @@ public class RowGridPane extends GridPane {
         this.fileDetail = fileDetail;
         this.setOnMouseClicked(event -> {
             if ((event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)) {
-                OpenFile.open(fileDetail);
+                doubleClick(fileDetail);
             }
         });
     }

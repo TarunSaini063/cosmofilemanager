@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import win95.constants.*;
+import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
 import win95.model.filelistview.CellFactory;
 import win95.model.filelistview.ListEntry;
@@ -97,7 +98,10 @@ public class Controller implements Initializable {
         Label nameTag = new Label("Name : ");
         nameTag.setFont(Fonts.PREVIEW_FONT);
         previewGridPane.add(nameTag,0,1);
-        previewGridPane.add(new Label(fileDetail.getFileName()),1,1);
+        Label name = new Label(fileDetail.getFileName());
+        name.setMaxWidth(200);
+        name.setWrapText(true);
+        previewGridPane.add(name,1,1);
 
         Label sizeTag = new Label("Size : ");
         sizeTag.setFont(Fonts.PREVIEW_FONT);
@@ -133,6 +137,45 @@ public class Controller implements Initializable {
         System.out.println(previewGridPane.toString());
         preview.getChildren().add(previewGridPane);
     }
+    public void updateListView(){
+        File USER_HOME = new File(System.getProperty("user.home"));
+        File []files = USER_HOME.listFiles();
+        assert files != null;
+        for(File file : files){
+            try {
+                FileDetail fileDetail = new FileDetail(file);
+                System.out.println(fileDetail.toString());
+                ListEntry listEntry = new ListEntry(fileDetail);
+                observableList.add(listEntry);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public void updateListView(FileDetail fileDetail){
+        File parentPath = new File(fileDetail.getFilePath());
+        File []files = parentPath.listFiles();
+        if(files == null){
+            LogsPrinter.printLogic("Controller",157,
+                    "parent Path list files give null (invalid path/some other error");
+            return;
+        }
+        observableList.clear();
+        for(File file : files){
+            try {
+                FileDetail inFileDetail = new FileDetail(file);
+                System.out.println(inFileDetail.toString());
+                ListEntry listEntry = new ListEntry(inFileDetail);
+                observableList.add(listEntry);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -149,20 +192,7 @@ public class Controller implements Initializable {
         menu.setFitWidth(Dimensions.MENU_ICON);
         menu.setImage(image);
 
-        File USER_HOME = new File(System.getProperty("user.home"));
-        File []files = USER_HOME.listFiles();
-        assert files != null;
-        for(File file : files){
-            try {
-                FileDetail fileDetail = new FileDetail(file);
-                System.out.println(fileDetail.toString());
-                ListEntry listEntry = new ListEntry(fileDetail);
-                observableList.add(listEntry);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+        updateListView();
 
         listView.setCellFactory(new CellFactory());
 
@@ -232,7 +262,7 @@ public class Controller implements Initializable {
 
         menuPopup.getItems().addAll(sort_by_name,sort_by_size,sort_by_access);
 
-        ControllerInstances.instance = this;
+        CommonData.instance = this;
 
     }
 

@@ -1,6 +1,9 @@
 package win95.utilities.filehandling;
 
+import win95.constants.CommonData;
+import win95.constants.FileType;
 import win95.debug.ExceptionPrinter;
+import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
 
 import java.awt.*;
@@ -17,6 +20,18 @@ public class OpenFile {
             Desktop.getDesktop().open(fileDetail.getFile());
         } catch (IOException e) {
             ExceptionPrinter.print("openfile",12,"failed to open file using Desktop class");
+        }
+    }
+    public static void doubleClick(FileDetail fileDetail){
+        if(fileDetail.getFileType()== FileType.FILE){
+            open(fileDetail);
+        }else{
+            if(CommonData.instance != null) {
+                CommonData.instance.updateListView(fileDetail);
+            }else{
+                LogsPrinter.printLogic("UpdateCellFactory",47,
+                        "controller class instance is null\nfailed in updating listview");
+            }
         }
     }
 }

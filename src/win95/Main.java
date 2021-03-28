@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import win95.constants.CommonData;
+import win95.constants.LogicConstants;
 
 public class Main extends Application {
 
@@ -20,6 +22,28 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+
+        /*
+        *
+        * Read data from user folder created/updated at last execution
+        * not yet implement....
+        * create separate module
+        *
+        */
+
+        if (CommonData.OS == LogicConstants.OS.UNKNOWN) {
+
+            String OS = System.getProperty("os.name", "generic").toLowerCase();
+
+            if ((OS.contains("mac")) || (OS.contains("darwin"))) {
+                CommonData.OS = LogicConstants.OS.MAC;
+            } else if (OS.contains("win")) {
+                CommonData.OS = LogicConstants.OS.WINDOW;
+            } else if (OS.contains("nux")) {
+                CommonData.OS = LogicConstants.OS.LINUX;
+            }
+        }
+
         launch(args);
     }
 }

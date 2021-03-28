@@ -3,7 +3,8 @@ package win95.model.filelistview.listViewelements;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import win95.model.FileDetail;
-import win95.utilities.filehandling.OpenFile;
+
+import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class RowLabel extends Label {
     /*
@@ -21,7 +22,7 @@ public class RowLabel extends Label {
         this.fileDetail = fileDetail;
         this.setOnMouseClicked(event -> {
             if ((event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)) {
-                OpenFile.open(fileDetail);
+                doubleClick(fileDetail);
             }
         });
     }

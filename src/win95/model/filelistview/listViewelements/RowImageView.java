@@ -6,9 +6,10 @@ import javafx.scene.input.MouseButton;
 import win95.constants.Dimensions;
 import win95.constants.LogicConstants;
 import win95.model.FileDetail;
-import win95.utilities.filehandling.OpenFile;
 
 import java.io.File;
+
+import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class RowImageView extends ImageView {
     private final FileDetail fileDetail;
@@ -21,7 +22,7 @@ public class RowImageView extends ImageView {
         this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         this.setOnMouseClicked(event -> {
             if ((event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)) {
-                OpenFile.open(fileDetail);
+                doubleClick(fileDetail);
             }
         });
     }
