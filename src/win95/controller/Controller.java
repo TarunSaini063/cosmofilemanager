@@ -2,14 +2,12 @@ package win95.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -27,8 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.ResourceBundle;
+
+import static win95.constants.CommonData.CURRENT_DIRECTORY;
 
 public class Controller implements Initializable {
     @FXML
@@ -82,12 +81,12 @@ public class Controller implements Initializable {
     private AnchorPane middleTop;
 
     @FXML
-    private ImageView left;
+    private Button left;
 
     @FXML
-    private ImageView right;
+    private Button right;
 
-    private String BUTTON_PRESSED = "NONE";
+    public static String BUTTON_PRESSED = "NONE";
 
     ContextMenu menuPopup;
 
@@ -97,34 +96,41 @@ public class Controller implements Initializable {
         menu=(ImageView)event.getSource();
         menuPopup.show(menu,event.getScreenX(),event.getScreenY());
     }
+
     @FXML
-    void nextDirectory(MouseEvent event) throws IOException {
+    void nextDirectory(ActionEvent event) throws IOException {
+        System.out.println("Next directory button pressed");
         BUTTON_PRESSED = "NEXT";
-        if(PathStack.getNextDirectory() == null){
+        FileDetail nextDirectory = PathStack.getNextDirectory();
+        if(nextDirectory == null){
             BUTTON_PRESSED = "NONE";
+            System.out.println("PathStack.getNextDirectory() return null ");
             return;
         }
-        LogsPrinter.printLogic("controller",97,"moving to(next) : "+ Objects.requireNonNull(PathStack.getNextDirectory()).getFilePath());
-        FileDetail fileDetail = CommonData.CURRENT_DIRECTORY;
-        if(updateListView(PathStack.getNextDirectory())) {
+        if(updateListView(nextDirectory)) {
             preview.getChildren().clear();
-            PathStack.setPreviousDirectory(fileDetail);
+        }else {
+            BUTTON_PRESSED = "NONE";
         }
     }
+
     @FXML
-    void previousDirectory(MouseEvent event) throws IOException {
+    void previousDirectory(ActionEvent event) throws IOException {
+        System.out.println("Previous directory button pressed");
         BUTTON_PRESSED = "PREVIOUS";
-        if(PathStack.getPreviousDirectory() == null) {
+        FileDetail previousDirectory = PathStack.getPreviousDirectory();
+        if(previousDirectory == null) {
             BUTTON_PRESSED = "NONE";
+            System.out.println("PathStack.getPreviousDirectory() return null ");
             return;
         }
-        LogsPrinter.printLogic("controller",105,"moving to(previous) : "+ Objects.requireNonNull(PathStack.getPreviousDirectory()).getFilePath());
-        FileDetail fileDetail = CommonData.CURRENT_DIRECTORY;
-        if(updateListView(PathStack.getPreviousDirectory())) {
+        if(updateListView(previousDirectory)) {
             preview.getChildren().clear();
-            PathStack.setNextDirectory(fileDetail);
+        }else {
+            BUTTON_PRESSED = "NONE";
         }
     }
+
     public void showPreview(FileDetail fileDetail){
 
         GridPane previewGridPane = new GridPane();
@@ -180,16 +186,16 @@ public class Controller implements Initializable {
         System.out.println(previewGridPane.toString());
         preview.getChildren().add(previewGridPane);
     }
+
     public void updateListView() throws IOException {
         File USER_HOME = new File(System.getProperty("user.home"));
 
-        CommonData.CURRENT_DIRECTORY = new FileDetail(USER_HOME);
+        CURRENT_DIRECTORY = new FileDetail(USER_HOME);
         File []files = USER_HOME.listFiles();
         assert files != null;
         for(File file : files){
             try {
                 FileDetail fileDetail = new FileDetail(file);
-                System.out.println(fileDetail.toString());
                 ListEntry listEntry = new ListEntry(fileDetail);
                 observableList.add(listEntry);
             } catch (IOException e) {
@@ -201,13 +207,8 @@ public class Controller implements Initializable {
 
     public boolean updateListView(FileDetail fileDetail) throws IOException {
         if(fileDetail == null) return false;
-        File parentPath = new File(fileDetail.getFilePath());
-        if(parentPath == null){
-            LogsPrinter.printLogic("Controller",157,
-                    "Path list files give null (invalid path/some other error");
-            return false;
-        }
-        CommonData.CURRENT_DIRECTORY = fileDetail;
+        File parentPath = fileDetail.getFile();
+
         File []files = parentPath.listFiles();
         if(files == null){
             LogsPrinter.printLogic("Controller",157,
@@ -215,17 +216,18 @@ public class Controller implements Initializable {
             return false;
         }
         if(BUTTON_PRESSED.equals("NEXT")){
-            PathStack.setNextDirectory(fileDetail);
+            PathStack.setPreviousDirectory(CURRENT_DIRECTORY);
             BUTTON_PRESSED = "NONE";
+            CURRENT_DIRECTORY = fileDetail;
         }else if(BUTTON_PRESSED.equals("PREVIOUS")){
-            PathStack.setPreviousDirectory(fileDetail);
+            PathStack.setNextDirectory(CURRENT_DIRECTORY);
             BUTTON_PRESSED = "NONE";
+            CURRENT_DIRECTORY = fileDetail;
         }
         observableList.clear();
         for(File file : files){
             try {
                 FileDetail inFileDetail = new FileDetail(file);
-                System.out.println(inFileDetail.toString());
                 ListEntry listEntry = new ListEntry(inFileDetail);
                 observableList.add(listEntry);
             } catch (IOException e) {
@@ -233,6 +235,7 @@ public class Controller implements Initializable {
             }
 
         }
+        PathStack.printStack();
         return true;
     }
 
@@ -252,14 +255,16 @@ public class Controller implements Initializable {
         preview.setStyle("-fx-background-color: "+Color.PREVIEW_PANE_COLOR);
 
         Image leftImageLight = new Image(new File(Icons.LIGHT_LEFT_ARROW).toURI().toString());
-        left.setImage(leftImageLight);
-        menu.setFitHeight(Dimensions.DIRECTORY_MOVEMENT_ICON);
-        menu.setFitWidth(Dimensions.DIRECTORY_MOVEMENT_ICON);
+        ImageView leftImageLightImageView = new ImageView(leftImageLight);
+        leftImageLightImageView.setFitWidth(Dimensions.DIRECTORY_MOVEMENT_ICON);
+        leftImageLightImageView.setFitHeight(Dimensions.DIRECTORY_MOVEMENT_ICON);
+        left.setGraphic(leftImageLightImageView);
 
         Image rightImageLight = new Image(new File(Icons.LIGHT_RIGHT_ARROW).toURI().toString());
-        right.setImage(rightImageLight);
-        menu.setFitHeight(Dimensions.DIRECTORY_MOVEMENT_ICON);
-        menu.setFitWidth(Dimensions.DIRECTORY_MOVEMENT_ICON);
+        ImageView rightImageLightImageView = new ImageView(rightImageLight);
+        rightImageLightImageView.setFitWidth(Dimensions.DIRECTORY_MOVEMENT_ICON);
+        rightImageLightImageView.setFitHeight(Dimensions.DIRECTORY_MOVEMENT_ICON);
+        right.setGraphic(rightImageLightImageView);
 
         Image image = new Image(new File(Icons.LIGHT_MENU_DOT).toURI().toString());
         menu.setFitHeight(Dimensions.MENU_ICON);
@@ -274,33 +279,6 @@ public class Controller implements Initializable {
 
         listView.setCellFactory(new CellFactory());
 
-       /*
-        listView.setOnMouseClicked(event -> {
-            if ((event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) &&
-               (event.getTarget() instanceof LabeledText ||
-                event.getTarget() instanceof RowLabel ||
-                event.getTarget() instanceof RowImageView ||
-                event.getTarget() instanceof RowButtonShare ||
-                event.getTarget() instanceof RowGridPane)) {
-                if(event.getTarget() instanceof LabeledText){
-                    LogsPrinter.printLogic("Controller",58,event.getTarget().toString());
-                }else {
-                        Add login to show detail in right pane using file detail pointer on single click
-                        not yet implemented..
-                    LogsPrinter.printLogic("Controller", 58, event.getTarget().toString());
-                   if(event.getTarget() instanceof RowLabel) {
-                       OpenFile.open(((RowLabel) event.getTarget()).getFileDetail());
-                   }else if(event.getTarget() instanceof RowImageView) {
-                       OpenFile.open(((RowImageView) event.getTarget()).getFileDetail());
-                   }else if(event.getTarget() instanceof RowButtonShare) {
-                       OpenFile.open(((RowButtonShare) event.getTarget()).getFileDetail());
-                   }else if(event.getTarget() instanceof RowGridPane) {
-                       OpenFile.open(((RowGridPane) event.getTarget()).getFileDetail());
-                   }
-                }
-            }
-        });
-        */
         menuPopup = new ContextMenu();
 
         MenuItem sort_by_name=new MenuItem("sort by name");
@@ -343,6 +321,5 @@ public class Controller implements Initializable {
         CommonData.instance = this;
 
     }
-
 
 }

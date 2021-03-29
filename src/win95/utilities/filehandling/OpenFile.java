@@ -2,10 +2,10 @@ package win95.utilities.filehandling;
 
 import win95.constants.CommonData;
 import win95.constants.FileType;
+import win95.controller.Controller;
 import win95.debug.ExceptionPrinter;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
-import win95.utilities.pathmanipulation.PathStack;
 
 import java.awt.*;
 import java.io.IOException;
@@ -28,8 +28,10 @@ public class OpenFile {
             open(fileDetail);
         }else{
             if(CommonData.instance != null) {
-                PathStack.setPreviousDirectory(CommonData.CURRENT_DIRECTORY);
-                CommonData.instance.updateListView(fileDetail);
+                Controller.BUTTON_PRESSED = "NEXT";
+                if(!CommonData.instance.updateListView(fileDetail)){
+                    Controller.BUTTON_PRESSED = "NONE";
+                }
             }else{
                 LogsPrinter.printLogic("UpdateCellFactory",47,
                         "controller class instance is null\nfailed in updating listview");

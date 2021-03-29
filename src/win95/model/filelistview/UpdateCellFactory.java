@@ -38,7 +38,6 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             grid.add(item.getShare(),5,0);
 
             grid.setAlignment(Pos.BASELINE_LEFT);
-//            grid.setGridLinesVisible(true);
             setGraphic(grid);
             this.setOnMouseClicked(event->{
                 if (event.getButton() == MouseButton.PRIMARY){
@@ -51,7 +50,6 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
                     }
                     else{
                             if(CommonData.instance!=null){
-                                LogsPrinter.printLogic("UpdateCellFactory",47,"calling controller instance");
                                 CommonData.instance.showPreview(item.getFileDetail());
                             }else{
                                 LogsPrinter.printLogic("UpdateCellFactory",47,"controller instance is null");
