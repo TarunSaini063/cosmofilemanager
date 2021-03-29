@@ -1,5 +1,7 @@
 package win95.controller;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,7 +34,10 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
+import static win95.constants.Color.HOVERED_BUTTON_STYLE;
+import static win95.constants.Color.STANDARD_BUTTON_STYLE;
 import static win95.constants.CommonData.CURRENT_DIRECTORY;
+import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class Controller implements Initializable {
     @FXML
@@ -114,6 +120,31 @@ public class Controller implements Initializable {
         label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
 
         hbox.getChildren().add(label);
+        hbox.setOnMouseClicked(event->{
+            File USER_HOME = new File(System.getProperty("user.home"));
+            if(text.equals("Recent")){
+                /*
+                *
+                * not yet implemented...
+                *
+                */
+            }else if(text.equals("Desktop")||text.equals("Downloads")||text.equals("Documents")){
+                try {
+                    FileDetail next = new FileDetail(new File(USER_HOME.getAbsolutePath()+"/"+text));
+                    System.out.println(next.getFilePath());
+                    doubleClick(next);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(text.equals("Home")){
+                try {
+                    doubleClick(new FileDetail(USER_HOME));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        setHoverEffect(hbox);
         return hbox;
     }
 
@@ -125,6 +156,7 @@ public class Controller implements Initializable {
         label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
         hbox.getChildren().add(label);
+        setHoverEffect(hbox);
         return hbox;
     }
     void setFavouritePanel(){
@@ -134,8 +166,8 @@ public class Controller implements Initializable {
 
         HBox recent = getLeftPaneHBox("Recent",Icons.RECENT_LIGHT);
         HBox desktop = getLeftPaneHBox("Desktop",Icons.DESKTOP_LIGHT);
-        HBox download = getLeftPaneHBox("Download",Icons.DOWNLOAD_LIGHT);
-        HBox document = getLeftPaneHBox("Document",Icons.DOCUMENT_LIGHT);
+        HBox download = getLeftPaneHBox("Downloads",Icons.DOWNLOAD_LIGHT);
+        HBox document = getLeftPaneHBox("Documents",Icons.DOCUMENT_LIGHT);
         HBox home = getLeftPaneHBox("Home",Icons.HOME_LIGHT);
 
         favouritePanel.getChildren().addAll(favourite,recent,desktop,download,document,home);
@@ -308,6 +340,18 @@ public class Controller implements Initializable {
     }
 
 
+    void setHoverEffect(Node node){
+        node.styleProperty().bind(
+                Bindings
+                        .when(node.hoverProperty())
+                        .then(
+                                new SimpleStringProperty(HOVERED_BUTTON_STYLE)
+                        )
+                        .otherwise(
+                                new SimpleStringProperty(STANDARD_BUTTON_STYLE)
+                        )
+        );
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         listView.setItems(observableList);
