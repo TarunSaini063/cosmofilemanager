@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -13,6 +14,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import win95.constants.*;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
@@ -34,7 +38,32 @@ public class Controller implements Initializable {
     private ListView<ListEntry> listView;
 
     @FXML
+    private VBox favouritePanel;
+
+    @FXML
+    private VBox tagPanel;
+
+    @FXML
     private AnchorPane preview;
+
+    @FXML
+    private ImageView menu;
+
+    @FXML
+    private AnchorPane tagPane;
+
+    @FXML
+    private AnchorPane middleTop;
+
+    @FXML
+    private Button left;
+
+    @FXML
+    private Button right;
+
+    public static String BUTTON_PRESSED = "NONE";
+
+    ContextMenu menuPopup;
 
     final private ObservableList<ListEntry> observableList = FXCollections.observableArrayList();
 
@@ -71,24 +100,63 @@ public class Controller implements Initializable {
         }
     }
 
-    @FXML
-    private ImageView menu;
+    HBox getLeftPaneHBox(String text,String iconPath){
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
 
-    @FXML
-    private AnchorPane tagPane;
+        Image image = new Image(new File(iconPath).toURI().toString());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(Dimensions.LEFT_PANEL_ICON);
+        imageView.setFitHeight(Dimensions.LEFT_PANEL_ICON);
 
-    @FXML
-    private AnchorPane middleTop;
+        Label label = new Label(text,imageView);
+        label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
+        label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
 
-    @FXML
-    private Button left;
+        hbox.getChildren().add(label);
+        return hbox;
+    }
 
-    @FXML
-    private Button right;
+    HBox getLeftTagPaneHBox(javafx.scene.paint.Color color,String text){
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
+        Circle circle = new Circle(Dimensions.COLOR_RADIUS,color);
+        Label label = new Label(text,circle);
+        label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
+        label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
+        hbox.getChildren().add(label);
+        return hbox;
+    }
+    void setFavouritePanel(){
+        HBox top = new HBox();
+        Label favourite = new Label("Favourite");
+        favourite.setFont(Fonts.TOP_FONT);
 
-    public static String BUTTON_PRESSED = "NONE";
+        HBox recent = getLeftPaneHBox("Recent",Icons.RECENT_LIGHT);
+        HBox desktop = getLeftPaneHBox("Desktop",Icons.DESKTOP_LIGHT);
+        HBox download = getLeftPaneHBox("Download",Icons.DOWNLOAD_LIGHT);
+        HBox document = getLeftPaneHBox("Document",Icons.DOCUMENT_LIGHT);
+        HBox home = getLeftPaneHBox("Home",Icons.HOME_LIGHT);
 
-    ContextMenu menuPopup;
+        favouritePanel.getChildren().addAll(favourite,recent,desktop,download,document,home);
+
+
+    }
+
+    void setTagPanel(){
+        HBox top = new HBox();
+        Label favourite = new Label("Tags");
+        favourite.setFont(Fonts.TOP_FONT);
+
+        HBox recent = getLeftTagPaneHBox(javafx.scene.paint.Color.RED,"Red...");
+        HBox desktop = getLeftTagPaneHBox(javafx.scene.paint.Color.GRAY,"Gray...");
+        HBox download = getLeftTagPaneHBox(javafx.scene.paint.Color.YELLOW,"Yellow...");
+        HBox document = getLeftTagPaneHBox(javafx.scene.paint.Color.GREEN,"Green...");
+        HBox home = getLeftTagPaneHBox(javafx.scene.paint.Color.ORANGE,"Orange...");
+
+        tagPanel.getChildren().addAll(favourite,recent,desktop,download,document,home);
+
+    }
 
     @FXML
     void showMenu(MouseEvent event) {
@@ -276,6 +344,9 @@ public class Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        setFavouritePanel();
+        setTagPanel();
 
         listView.setCellFactory(new CellFactory());
 

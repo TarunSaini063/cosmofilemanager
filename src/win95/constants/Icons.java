@@ -12,11 +12,27 @@ public class Icons {
     public static final String DARK_MENU_DOT = otherIconDirectory+"/menu_dark.png";
     public static final String LIGHT_MENU_DOT = otherIconDirectory+"/menu_light.png";
 
-    public static final String LIGHT_LEFT_ARROW = otherIconDirectory+"/left_light.png";
+    public static final String LIGHT_LEFT_ARROW = otherIconDirectory+"/left_light1.png";
     public static final String DARK_LEFT_ARROW = otherIconDirectory+"/left_dark.png";
 
-    public static final String LIGHT_RIGHT_ARROW = otherIconDirectory+"/right_light.png";
+    public static final String LIGHT_RIGHT_ARROW = otherIconDirectory+"/right_light1.png";
     public static final String DARK_RIGHT_ARROW = otherIconDirectory+"/right_dark.png";
+
+    public static final String HOME_LIGHT = otherIconDirectory+"/home_light.png";
+    public static final String HOME_DARK = otherIconDirectory+"/home_dark.png";
+
+    public static final String DOWNLOAD_LIGHT = otherIconDirectory+"/download_light.png";
+    public static final String DOWNLOAD_DARK = otherIconDirectory+"/download_dark.png";
+
+    public static final String DOCUMENT_LIGHT = otherIconDirectory+"/document_light.png";
+    public static final String DOCUMENT_DARK = otherIconDirectory+"/document_dark.png";
+
+    public static final String DESKTOP_LIGHT = otherIconDirectory+"/desktop_light.png";
+    public static final String DESKTOP_DARK = otherIconDirectory+"/desktop_dark.png";
+
+    public static final String RECENT_LIGHT = otherIconDirectory+"/recent_light.png";
+    public static final String RECENT_DARK = otherIconDirectory+"/recent_dark.png";
+
     static {
         iconPath.put("ai", fileIconDirectory +"/ai.png");
         iconPath.put("apk", fileIconDirectory +"/apk.png");
