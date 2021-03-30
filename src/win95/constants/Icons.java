@@ -54,6 +54,7 @@ public class Icons {
         iconPath.put("js", fileIconDirectory +"/js.png");
         iconPath.put("pdf", fileIconDirectory +"/pdf.png");
         iconPath.put("php", fileIconDirectory +"/php.png");
+        iconPath.put("png", fileIconDirectory +"/png.png");
         iconPath.put("ppt", fileIconDirectory +"/ppt.png");
         iconPath.put("pptx", fileIconDirectory +"/ppt.png");
         iconPath.put("rar", fileIconDirectory +"/rar.png");
