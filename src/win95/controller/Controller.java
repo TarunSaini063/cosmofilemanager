@@ -26,12 +26,14 @@ import win95.model.FileDetail;
 import win95.model.filelistview.CellFactory;
 import win95.model.filelistview.ListEntry;
 import win95.model.filelistview.listViewelements.RowImageView;
+import win95.model.quickaccess.RecentFiles;
 import win95.utilities.pathmanipulation.PathStack;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.ResourceBundle;
 
 import static win95.constants.Color.HOVERED_BUTTON_STYLE;
@@ -123,11 +125,19 @@ public class Controller implements Initializable {
         hbox.setOnMouseClicked(event->{
             File USER_HOME = new File(System.getProperty("user.home"));
             if(text.equals("Recent")){
-                /*
-                *
-                * not yet implemented...
-                *
-                */
+                Deque<String> recentQueue = RecentFiles.getRecentQueue();
+                observableList.clear();
+                preview.getChildren().clear();
+                for(String path : recentQueue){
+                    try {
+                        FileDetail inFileDetail = new FileDetail(new File(path));
+                        ListEntry listEntry = new ListEntry(inFileDetail);
+                        observableList.add(listEntry);
+                    } catch (IOException e) {
+                        LogsPrinter.printError("Controller.java",131,
+                                "Error in creating recent file object");
+                    }
+                }
             }else if(text.equals("Desktop")||text.equals("Downloads")||text.equals("Documents")){
                 try {
                     FileDetail next = new FileDetail(new File(USER_HOME.getAbsolutePath()+"/"+text));

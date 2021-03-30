@@ -7,17 +7,18 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import win95.constants.CommonData;
 import win95.constants.LogicConstants;
+import win95.model.quickaccess.RecentFiles;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("./view/sample.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("BIT-COSMOS");
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
-        primaryStage.setFullScreen(true);
         primaryStage.show();
+        RecentFiles.fetchRecent();
     }
 
 
@@ -43,7 +44,10 @@ public class Main extends Application {
                 CommonData.OS = LogicConstants.OS.LINUX;
             }
         }
-
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("In shutdown hook");
+            RecentFiles.saveRecent();
+        }, "Shutdown-thread"));
         launch(args);
     }
 }

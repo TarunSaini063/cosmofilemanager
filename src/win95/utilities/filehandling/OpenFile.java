@@ -6,6 +6,7 @@ import win95.controller.Controller;
 import win95.debug.ExceptionPrinter;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
+import win95.model.quickaccess.RecentFiles;
 
 import java.awt.*;
 import java.io.IOException;
@@ -18,9 +19,10 @@ public class OpenFile {
 
     public static void open(FileDetail fileDetail) {
         try {
+            RecentFiles.addRecentQueue(fileDetail.getFilePath());
             Desktop.getDesktop().open(fileDetail.getFile());
         } catch (IOException e) {
-            ExceptionPrinter.print("openfile",12,"failed to open file using Desktop class");
+            ExceptionPrinter.print("OpenFile",12,"failed to open file using Desktop class");
         }
     }
     public static void doubleClick(FileDetail fileDetail) throws IOException {

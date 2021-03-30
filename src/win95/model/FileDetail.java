@@ -148,6 +148,7 @@ public class FileDetail {
                 "sizeInByte     : " + sizeInByte + "\n" +
                 "sizeInKiloByte : " + sizeInKiloByte + "\n" +
                 "sizeInGigaByte : " + sizeInGigaByte + "\n" +
+                "optimizedSize  : " + optimizedSize + "\n" +
                 "fileType       : " + fileType + "\n" +
                 "fileExtension  : " + fileExtension + "\n" +
                 "numberOfFiles  : " + numberOfFiles + "\n" ;
