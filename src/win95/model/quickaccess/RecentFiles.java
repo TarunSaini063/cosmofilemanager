@@ -31,9 +31,8 @@ public class RecentFiles {
                     Object recentFileListObject = jsonParser.parse(reader);
 
                     JSONArray recentFileList = (JSONArray) recentFileListObject;
-                    System.out.println(recentFileList);
 
-                    for(Object jsonObject : recentFileList){
+                    for (Object jsonObject : recentFileList) {
                         addRecentQueue((JSONObject) jsonObject);
                     }
 
@@ -95,14 +94,14 @@ public class RecentFiles {
         System.out.println(RecentFiles.printQueue());
     }
 
-    public static void saveRecent(){
+    public static void saveRecent() {
         String recentFilePath = new File(System.getProperty("user.home")).getAbsolutePath() +
-                                "/.CosmoFileManager/recent.json";
+                "/.CosmoFileManager/recent.json";
 
         JSONArray recentFileArray = new JSONArray();
-        for(String path : recentQueue){
+        for (String path : recentQueue) {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("path",path);
+            jsonObject.put("path", path);
             recentFileArray.add(jsonObject);
         }
 
@@ -113,12 +112,14 @@ public class RecentFiles {
             e.printStackTrace();
         }
     }
-    public static Deque<String> getRecentQueue(){
+
+    public static Deque<String> getRecentQueue() {
         return recentQueue;
     }
+
     public static String printQueue() {
         StringBuilder res = new StringBuilder();
-        for(String path : recentQueue){
+        for (String path : recentQueue) {
             res.append(path).append('\n');
         }
         return res.toString();

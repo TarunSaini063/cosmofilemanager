@@ -33,6 +33,9 @@ public class Icons {
     public static final String RECENT_LIGHT = otherIconDirectory+"/recent_light.png";
     public static final String RECENT_DARK = otherIconDirectory+"/recent_dark.png";
 
+    public static final String ADDTAG_LIGHT = otherIconDirectory+"/addTag_light.png";
+    public static final String ADDTAG_DARK = otherIconDirectory+"/addTag_dark.png";
+
     static {
         iconPath.put("ai", fileIconDirectory +"/ai.png");
         iconPath.put("apk", fileIconDirectory +"/apk.png");

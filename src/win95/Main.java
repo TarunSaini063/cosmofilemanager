@@ -12,7 +12,7 @@ import win95.model.quickaccess.RecentFiles;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("./view/sample.fxml"));
         primaryStage.setTitle("BIT-COSMOS");
         primaryStage.setScene(new Scene(root));
@@ -25,12 +25,12 @@ public class Main extends Application {
     public static void main(String[] args) {
 
         /*
-        *
-        * Read data from user folder created/updated at last execution
-        * not yet implement....
-        * create separate module
-        *
-        */
+         *
+         * Read data from user folder created/updated at last execution
+         * not yet implement....
+         * create separate module
+         *
+         */
 
         if (CommonData.OS == LogicConstants.OS.UNKNOWN) {
 
