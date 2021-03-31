@@ -42,8 +42,9 @@ public class TagDialogs implements Initializable {
     @FXML
     void addTag(ActionEvent event) {
         System.out.println(tagName.getText());
-        System.out.println(tagColorPicker.getValue());
-        if(!TaggedFiles.addNewCreatedTag(tagColorPicker.getValue().toString().toUpperCase(),tagName.getText())){
+        String color = tagColorPicker.getValue().toString().toUpperCase();
+        System.out.println("Adding tag = "+color);
+        if(!TaggedFiles.addNewCreatedTag(color,tagName.getText())){
             invalidColor.setVisible(true);
             return;
         }
@@ -54,13 +55,18 @@ public class TagDialogs implements Initializable {
                 return tagName.getText();
             }
         };
-
+        circle.setOnMouseClicked(e->{
+            CommonData.instance.showTaggedFileListView(color);
+        });
         Label label = new Label(tagName.getText(), circle){
             @Override
             public String toString() {
                 return tagName.getText();
             }
         };
+        label.setOnMouseClicked(e->{
+            CommonData.instance.showTaggedFileListView(color);
+        });
         label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
 
@@ -70,6 +76,9 @@ public class TagDialogs implements Initializable {
                 return label.getText();
             }
         };
+        tag.setOnMouseClicked(e->{
+            CommonData.instance.showTaggedFileListView(color);
+        });
         tag.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
 
         tag.getChildren().add(label);
@@ -78,7 +87,6 @@ public class TagDialogs implements Initializable {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
-//        saveTagged();
     }
 
     @FXML

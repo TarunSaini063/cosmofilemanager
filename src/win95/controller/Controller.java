@@ -167,11 +167,11 @@ public class Controller implements Initializable {
 
     HBox getLeftTagPaneHBox(javafx.scene.paint.Color colorWord, String text) {
 
-        String color = String.format( "#%02X%02X%02X",
+        String color = String.format( "0X%02X%02X%02X",
                 (int)( colorWord.getRed() * 255 ),
                 (int)( colorWord.getGreen() * 255 ),
-                (int)( colorWord.getBlue() * 255 ) );
-
+                (int)( colorWord.getBlue() * 255 ) )+"FF";
+        System.out.println(text+" "+color);
         Circle circle = new Circle(Dimensions.COLOR_RADIUS, colorWord) {
             @Override
             public String toString() {
@@ -210,12 +210,12 @@ public class Controller implements Initializable {
         return hbox;
     }
 
-    private void showTaggedFileListView(String color) {
+    public void showTaggedFileListView(String color) {
         System.out.println("click on : "+color.toUpperCase());
         TaggedFileObject taggedFileObject = new TaggedFileObject(color.toUpperCase());
         ArrayList<FileDetail> fileDetails = taggedFileObject.getTaggedFileObject();
         observableList.clear();
-//        System.out.println(fileDetails.toString());
+        System.out.println("file fetched from taggedFileObject \n"+fileDetails.toString());
         for(FileDetail fileDetail : fileDetails){
             observableList.add(new ListEntry(fileDetail));
         }
@@ -245,6 +245,7 @@ public class Controller implements Initializable {
              * not yet implemented...
              *
              */
+            System.out.println(e.getTarget().toString()+" clicked");
                 showTaggedFileListView(e.getTarget().toString());
         });
     }
@@ -255,13 +256,14 @@ public class Controller implements Initializable {
             TagDetail tagDetail = color.getValue();
             String name = tagDetail.getName();
             String tagColor = tagDetail.getColor();
+            tagColor = tagColor.substring(0,tagColor.length()-2);
             HBox hbox = getLeftTagPaneHBox(javafx.scene.paint.Color.web(tagColor), name);
             appendTag(hbox);
         }
     }
 
     public void appendTag(HBox tag) {
-        addOnClickListener(tag);
+//        addOnClickListener(tag);
         setHoverEffect(tag);
         tagPanel.getChildren().add(tag);
     }

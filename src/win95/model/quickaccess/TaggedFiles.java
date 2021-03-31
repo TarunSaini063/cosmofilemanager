@@ -113,7 +113,7 @@ public class TaggedFiles {
         taggedFile.put(color, tagDetail);
         taggedColorToNameMap.put(color, name);
     }
-
+    // use to add from json
     public static void addTaggedQueue(String color, String path, String name) {
         path = new PathHandling(path).getFixedPath();
         if (taggedFile.containsKey(color)) {
@@ -128,6 +128,14 @@ public class TaggedFiles {
         }
         addNewCreatedTag(color, name);
     }
+    //use to add file to already exist tag
+    public static void addThisFileToTag(String color,String path,String tagName){
+        path = new  PathHandling(path).getFixedPath();
+        System.out.println("in add this file To tag "+color+" "+path+" "+tagName);
+        if(!taggedFile.get(color).getPath().contains(path)){
+            taggedFile.get(color).getPath().add(path);
+        }
+    }
 
     public static boolean addNewCreatedTag(String color, String name) {
         if (taggedColorToNameMap.containsKey(color)) {
@@ -139,23 +147,23 @@ public class TaggedFiles {
             System.out.println("new tag added : " + color + " " + name);
             taggedColorToNameMap.put(color, name);
             taggedFile.put(color, new TagDetail(color, name));
+            return true;
         }
-        return true;
     }
 
     public static void setDefaultTag() {
         taggedFile.clear();
-        taggedFile.put("#FF0000", new TagDetail("#FF0000", "RED"));
-        taggedFile.put("#808080", new TagDetail("#808080", "GRAY"));
-        taggedFile.put("#FFFF00", new TagDetail("#FFFF00", "YELLOW"));
-        taggedFile.put("#00FF00", new TagDetail("#00FF00", "GREEN"));
-        taggedFile.put("#FFA500", new TagDetail("#FFA500", "ORANGE"));
+        taggedFile.put("0XFF0000FF", new TagDetail("0XFF0000FF", "RED"));
+        taggedFile.put("0X808080FF", new TagDetail("0X808080FF", "GRAY"));
+        taggedFile.put("0XFFFF00FF", new TagDetail("0XFFFF00FF", "YELLOW"));
+        taggedFile.put("0X00FF00FF", new TagDetail("0X00FF00FF", "GREEN"));
+        taggedFile.put("0XFFA500FF", new TagDetail("0XFFA500FF", "ORANGE"));
         taggedColorToNameMap.clear();
-        taggedColorToNameMap.put("#FF0000", "RED");
-        taggedColorToNameMap.put("#808080", "GRAY");
-        taggedColorToNameMap.put("#FFFF00", "YELLOW");
-        taggedColorToNameMap.put("#00FF00", "GREEN");
-        taggedColorToNameMap.put("#FFA500", "ORANGE");
+        taggedColorToNameMap.put("0XFF0000FF", "RED");
+        taggedColorToNameMap.put("0X808080FF", "GRAY");
+        taggedColorToNameMap.put("0XFFFF00FF", "YELLOW");
+        taggedColorToNameMap.put("0X00FF00FF", "GREEN");
+        taggedColorToNameMap.put("0XFFA500FF", "ORANGE");
     }
 
     public static void saveTagged() {
@@ -224,15 +232,15 @@ public class TaggedFiles {
 
     public static String print() {
         String res = "";
-        for (Map.Entry<String, TagDetail> tags : taggedFile.entrySet()) {
-            String tag = "Color = " + tags.getKey() + "\n";
-            String name = "Name = " + taggedColorToNameMap.get(tags.getKey()) + "\n";
-            String paths = "paths = ";
-            for (String path : tags.getValue().getPath()) {
-                paths += path + "  ";
-            }
-            res += name + tag + paths + "\n\n";
-        }
+//        for (Map.Entry<String, TagDetail> tags : taggedFile.entrySet()) {
+//            String tag = "Color = " + tags.getKey() + "\n";
+//            String name = "Name = " + taggedColorToNameMap.get(tags.getKey()) + "\n";
+//            String paths = "paths = ";
+//            for (String path : tags.getValue().getPath()) {
+//                paths += path + "  ";
+//            }
+//            res += name + tag + paths + "\n\n";
+//        }
         return res;
     }
 

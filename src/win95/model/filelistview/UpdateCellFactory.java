@@ -65,9 +65,6 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
                             }else{
                                 LogsPrinter.printLogic("UpdateCellFactory",47,"controller instance is null");
                             }
-                        /*
-                        * set right anchor pane to show preview details
-                        */
                     }
                 }
             });

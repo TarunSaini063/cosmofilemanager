@@ -19,6 +19,8 @@ public class TagListEntry {
         tagCount = new Label();
         tagNameString = tagName;
         tagCount.setMinWidth(10);
+        if(color.length()>8)
+            color = color.substring(0,color.length()-2);
         colorCircle = new Circle(Dimensions.COLOR_RADIUS, Color.web(color)) {
             @Override
             public String toString() {

@@ -34,7 +34,10 @@ public class TagUpdateCellFactory extends ListCell<TagListEntry> {
             setGraphic(tagRowGridPane);
             this.setOnMouseClicked(e->{
                 if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                    TaggedFiles.addTaggedQueue(item.getColorCircle().getFill().toString().toUpperCase(),
+                    System.out.println("Adding file to tag color : "+item.getColorCircle().getFill().toString().toUpperCase()+" "+
+                            CommonData.TAG_OPTION_INSTANCE.getFileDetail().getFilePath()+" "+
+                            item.getName());
+                    TaggedFiles.addThisFileToTag(item.getColorCircle().getFill().toString().toUpperCase(),
                             CommonData.TAG_OPTION_INSTANCE.getFileDetail().getFilePath(),
                             item.getName());
                     Node source = (Node) e.getSource();

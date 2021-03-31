@@ -17,8 +17,13 @@ public class PathHandling {
     public String getFixedPath(){
         String []pathNodes = path.split(FileSeparator.fileSeparator());
         StringBuilder res = new StringBuilder();
+        int count = 0;
         for(String node : pathNodes){
-            res.append(node).append(FileSeparator.fileSeparator());
+            count++;
+            res.append(node);
+            if(count != pathNodes.length) {
+                res.append(FileSeparator.fileSeparator());
+            }
         }
         return res.toString();
     }
