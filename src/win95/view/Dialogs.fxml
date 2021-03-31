@@ -8,7 +8,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="234.0" prefWidth="464.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.TagDialogs">
    <children>
       <ColorPicker fx:id="tagColorPicker" layoutX="144.0" layoutY="47.0" onAction="#setCircleColor" promptText="Chose Color" />
@@ -21,6 +20,6 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="invalidColor" layoutX="166.0" layoutY="142.0" prefHeight="17.0" prefWidth="217.0" text="this color is already chosen :)" textFill="#e43535" />
+      <Label fx:id="invalidColor" layoutX="139.0" layoutY="145.0" prefHeight="17.0" prefWidth="217.0" text="this color or name is already chosen :)" textFill="#e43535" />
    </children>
 </AnchorPane>

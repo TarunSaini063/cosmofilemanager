@@ -23,7 +23,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import win95.constants.*;
@@ -33,14 +32,15 @@ import win95.model.filelistview.CellFactory;
 import win95.model.filelistview.ListEntry;
 import win95.model.filelistview.listViewelements.RowImageView;
 import win95.model.quickaccess.RecentFiles;
+import win95.model.quickaccess.TagDetail;
+import win95.model.quickaccess.TaggedFileObject;
+import win95.model.quickaccess.TaggedFiles;
 import win95.utilities.pathmanipulation.PathStack;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static win95.constants.Color.HOVERED_BUTTON_STYLE;
 import static win95.constants.Color.STANDARD_BUTTON_STYLE;
@@ -165,32 +165,60 @@ public class Controller implements Initializable {
         return hbox;
     }
 
-    HBox getLeftTagPaneHBox(javafx.scene.paint.Color color, String text) {
+    HBox getLeftTagPaneHBox(javafx.scene.paint.Color colorWord, String text) {
 
-        Circle circle = new Circle(Dimensions.COLOR_RADIUS, color) {
+        String color = String.format( "#%02X%02X%02X",
+                (int)( colorWord.getRed() * 255 ),
+                (int)( colorWord.getGreen() * 255 ),
+                (int)( colorWord.getBlue() * 255 ) );
+
+        Circle circle = new Circle(Dimensions.COLOR_RADIUS, colorWord) {
             @Override
             public String toString() {
                 return text;
             }
         };
+        circle.setOnMouseClicked(e->{
+                showTaggedFileListView(color);
+        });
+
         Label label = new Label(text, circle) {
             @Override
             public String toString() {
                 return text;
             }
         };
+        label.setOnMouseClicked(e->{
+                showTaggedFileListView(color);
+        });
         label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
+
         HBox hbox = new HBox() {
             @Override
             public String toString() {
                 return text;
             }
         };
+        hbox.setOnMouseClicked(e->{
+                showTaggedFileListView(color);
+        });
         hbox.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         hbox.getChildren().add(label);
         setHoverEffect(hbox);
+
         return hbox;
+    }
+
+    private void showTaggedFileListView(String color) {
+        System.out.println("click on : "+color.toUpperCase());
+        TaggedFileObject taggedFileObject = new TaggedFileObject(color.toUpperCase());
+        ArrayList<FileDetail> fileDetails = taggedFileObject.getTaggedFileObject();
+        observableList.clear();
+//        System.out.println(fileDetails.toString());
+        for(FileDetail fileDetail : fileDetails){
+            observableList.add(new ListEntry(fileDetail));
+        }
     }
 
     void setFavouritePanel() {
@@ -217,33 +245,19 @@ public class Controller implements Initializable {
              * not yet implemented...
              *
              */
-            if (e.getTarget() instanceof Text) {
-                System.out.println(((Text) e.getTarget()).getText());
-            } else {
-                System.out.println(e.getTarget().toString());
-            }
+                showTaggedFileListView(e.getTarget().toString());
         });
     }
 
     void setDefaultTags() {
-        HBox top = new HBox();
-        Label Tags = new Label("Tags");
-        Tags.setFont(Fonts.TOP_FONT);
-
-        HBox red = getLeftTagPaneHBox(javafx.scene.paint.Color.RED, "Red...");
-        appendTag(red);
-        HBox gray = getLeftTagPaneHBox(javafx.scene.paint.Color.GRAY, "Gray...");
-        appendTag(gray);
-
-        HBox yellow = getLeftTagPaneHBox(javafx.scene.paint.Color.YELLOW, "Yellow...");
-        appendTag(yellow);
-
-        HBox green = getLeftTagPaneHBox(javafx.scene.paint.Color.GREEN, "Green...");
-        appendTag(green);
-
-        HBox orange = getLeftTagPaneHBox(javafx.scene.paint.Color.ORANGE, "Orange...");
-        appendTag(orange);
-
+        TaggedFiles.setUserTag();
+        for (Map.Entry<String, TagDetail> color : TaggedFiles.taggedFile.entrySet()){
+            TagDetail tagDetail = color.getValue();
+            String name = tagDetail.getName();
+            String tagColor = tagDetail.getColor();
+            HBox hbox = getLeftTagPaneHBox(javafx.scene.paint.Color.web(tagColor), name);
+            appendTag(hbox);
+        }
     }
 
     public void appendTag(HBox tag) {
@@ -540,4 +554,22 @@ public class Controller implements Initializable {
 
     }
 
+    public void showAddTagToFileDialog(ListEntry item) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SetTagOptionDialogs.fxml"));
+        Parent parent = null;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        SetTagOptionDialogs setTagOptionDialogs = fxmlLoader.<SetTagOptionDialogs>getController();
+        assert parent != null;
+        setTagOptionDialogs.setFileDetails(item.getFileDetail());
+        Scene scene = new Scene(parent, 500, 600);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.showAndWait();
+    }
 }

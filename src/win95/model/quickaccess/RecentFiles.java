@@ -91,7 +91,7 @@ public class RecentFiles {
         }
         String path = (String) jsonObject.get("path");
         addRecentQueue(path);
-        System.out.println(RecentFiles.printQueue());
+//        System.out.println(RecentFiles.printQueue());
     }
 
     public static void saveRecent() {

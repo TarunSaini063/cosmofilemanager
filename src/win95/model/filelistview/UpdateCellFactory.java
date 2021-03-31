@@ -2,7 +2,9 @@ package win95.model.filelistview;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import win95.constants.CommonData;
 import win95.constants.Dimensions;
@@ -39,6 +41,15 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
 
             grid.setAlignment(Pos.BASELINE_LEFT);
             setGraphic(grid);
+            ContextMenu contextMenu = new ContextMenu();
+            this.setContextMenu(contextMenu);
+            MenuItem menuItem = new MenuItem("Add tag");
+            menuItem.setOnAction(e->{
+                System.out.println("context click : "+item.toString());
+                CommonData.instance.showAddTagToFileDialog(item);
+
+            });
+            contextMenu.getItems().add(menuItem);
             this.setOnMouseClicked(event->{
                 if (event.getButton() == MouseButton.PRIMARY){
                     if(event.getClickCount() == 2){

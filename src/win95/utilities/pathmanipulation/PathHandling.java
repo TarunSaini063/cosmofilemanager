@@ -8,10 +8,19 @@ import win95.utilities.exceptions.InvalidPathException;
 import win95.utilities.exceptions.UnknownFileMovement;
 
 public class PathHandling {
-    private static FileType type;
-
+    private  FileType type;
+    private String path;
     public PathHandling(String path) {
+        this.path = path;
+    }
 
+    public String getFixedPath(){
+        String []pathNodes = path.split(FileSeparator.fileSeparator());
+        StringBuilder res = new StringBuilder();
+        for(String node : pathNodes){
+            res.append(node).append(FileSeparator.fileSeparator());
+        }
+        return res.toString();
     }
 
     String cd(String path, LogicConstants movementType) throws InvalidPathException, UnknownFileMovement {

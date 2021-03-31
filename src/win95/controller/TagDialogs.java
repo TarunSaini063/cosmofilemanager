@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import win95.constants.CommonData;
 import win95.constants.Dimensions;
 import win95.constants.Fonts;
+import win95.model.quickaccess.TaggedFiles;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -42,11 +43,24 @@ public class TagDialogs implements Initializable {
     void addTag(ActionEvent event) {
         System.out.println(tagName.getText());
         System.out.println(tagColorPicker.getValue());
+        if(!TaggedFiles.addNewCreatedTag(tagColorPicker.getValue().toString().toUpperCase(),tagName.getText())){
+            invalidColor.setVisible(true);
+            return;
+        }
 
+        Circle circle = new Circle(Dimensions.COLOR_RADIUS, tagColorPicker.getValue()){
+            @Override
+            public String toString() {
+                return tagName.getText();
+            }
+        };
 
-        Circle circle = new Circle(Dimensions.COLOR_RADIUS, tagColorPicker.getValue());
-
-        Label label = new Label(tagName.getText(), circle);
+        Label label = new Label(tagName.getText(), circle){
+            @Override
+            public String toString() {
+                return tagName.getText();
+            }
+        };
         label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
 
@@ -64,6 +78,7 @@ public class TagDialogs implements Initializable {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
+//        saveTagged();
     }
 
     @FXML
