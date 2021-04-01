@@ -18,23 +18,70 @@ public class SystemCommands {
             System.out.println(line);
         }
     }
-    public static void OpenDirInTerminal(String path){
-        path = new PathHandling(path).getFixedPath();
+
+    public static void executeCommand(String command) {
         Process process = null;
         try {
-            if(CommonData.OS == LogicConstants.OS.MAC) {
-                process = Runtime.getRuntime().exec(MacCommand.getOpenInTerminalCommand(path));
-            }else {
-                process = Runtime.getRuntime().exec(WindowCommand.getOpenInTerminalCommand(path));
-            }
+            process = Runtime.getRuntime().exec(command);
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            if(process!=null)
+            if (process != null)
                 printResults(process);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void OpenDirInTerminal(String path) {
+        path = new PathHandling(path).getFixedPath();
+
+        if (CommonData.OS == LogicConstants.OS.MAC) {
+            executeCommand(MacCommand.getOpenInTerminalCommand(path));
+        } else {
+            executeCommand(WindowCommand.getOpenInTerminalCommand(path));
+        }
+
+    }
+
+    public static void createFile(String path) {
+        path = new PathHandling(path).getFixedPath();
+
+        if (CommonData.OS == LogicConstants.OS.MAC) {
+            executeCommand(MacCommand.CreateNewFile(path));
+        } else {
+            executeCommand(WindowCommand.CreateNewFile(path));
+        }
+    }
+
+    public static void createFolder(String path) {
+        path = new PathHandling(path).getFixedPath();
+
+        if (CommonData.OS == LogicConstants.OS.MAC) {
+            executeCommand(MacCommand.CreateNewFolder(path));
+        } else {
+            executeCommand(WindowCommand.CreateNewFolder(path));
+        }
+    }
+
+    public static void deleteFolder(String path) {
+        path = new PathHandling(path).getFixedPath();
+
+        if (CommonData.OS == LogicConstants.OS.MAC) {
+            executeCommand(MacCommand.DeleteNewFolder(path));
+        } else {
+            executeCommand(WindowCommand.DeleteNewFolder(path));
+        }
+    }
+
+    public static void deleteFile(String path) {
+        path = new PathHandling(path).getFixedPath();
+
+        if (CommonData.OS == LogicConstants.OS.MAC) {
+            executeCommand(MacCommand.DeleteNewFile(path));
+        } else {
+            executeCommand(WindowCommand.DeleteNewFile(path));
         }
     }
 }

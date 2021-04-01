@@ -61,8 +61,16 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
                 });
                 contextMenu.getItems().add(menuItem2);
             }
-
-            contextMenu.getItems().add(menuItem1);
+            MenuItem menuItem3 = new MenuItem("Delete");
+            menuItem3.setOnAction(e->{
+                CommonData.instance.deleteFromListView(item);
+                if(item.getFileDetail().getFileType() == FileType.DIRECTORY) {
+                    SystemCommands.deleteFolder(item.getFileDetail().getFilePath());
+                }else{
+                    SystemCommands.deleteFile(item.getFileDetail().getFilePath());
+                }
+            });
+            contextMenu.getItems().addAll(menuItem1,menuItem3);
 
             this.setOnMouseClicked(event->{
                 if (event.getButton() == MouseButton.PRIMARY){

@@ -133,6 +133,7 @@ public class Controller implements Initializable {
         hbox.setOnMouseClicked(event -> {
             File USER_HOME = new File(System.getProperty("user.home"));
             if (text.equals("Recent")) {
+                CommonData.CURRENT_LIST_VIEW_ITEM = FileType.UNKNOWN;
                 Set<String> recentQueue = RecentFiles.getRecentQueue();
                 LinkedList<String> list = new LinkedList<>(recentQueue);
                 Iterator<String> itr = list.descendingIterator();
@@ -255,6 +256,7 @@ public class Controller implements Initializable {
     }
 
     public void showTaggedFileListView(String color) {
+        CommonData.CURRENT_LIST_VIEW_ITEM = FileType.UNKNOWN;
         System.out.println("click on : "+color.toUpperCase());
         TaggedFileObject taggedFileObject = new TaggedFileObject(color.toUpperCase());
         ArrayList<FileDetail> fileDetails = taggedFileObject.getTaggedFileObject();
@@ -439,7 +441,7 @@ public class Controller implements Initializable {
 
     public void updateListView() throws IOException {
         File USER_HOME = new File(System.getProperty("user.home"));
-
+        CommonData.CURRENT_LIST_VIEW_ITEM = FileType.DIRECTORY;
         CURRENT_DIRECTORY = new FileDetail(USER_HOME);
         File[] files = USER_HOME.listFiles();
         assert files != null;
@@ -485,7 +487,7 @@ public class Controller implements Initializable {
             }
 
         }
-        PathStack.printStack();
+        CommonData.CURRENT_LIST_VIEW_ITEM = FileType.DIRECTORY;
         return true;
     }
 
@@ -547,6 +549,54 @@ public class Controller implements Initializable {
         menuPopup = new ContextMenu();
 
         MenuItem sort_by_name = new MenuItem("sort by name");
+        MenuItem createNewFile = new MenuItem("New File");
+        createNewFile.setOnAction(event -> {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/CreateFile.fxml"));
+            Parent parent = null;
+            try {
+                parent = fxmlLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            CreateFile createFile = fxmlLoader.<CreateFile>getController();
+            createFile.setFileDetail(CURRENT_DIRECTORY);
+            createFile.setFileType(FileType.FILE);
+            Scene scene = new Scene(parent, 419, 159);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+            /* can user better logic to add only newly created file only to observable List*/
+            try {
+                updateListView(CURRENT_DIRECTORY);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        MenuItem createNewFolder = new MenuItem("New Folder");
+        createNewFolder.setOnAction(event -> {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/CreateFile.fxml"));
+            Parent parent = null;
+            try {
+                parent = fxmlLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            CreateFile createFile = fxmlLoader.<CreateFile>getController();
+            createFile.setFileDetail(CURRENT_DIRECTORY);
+            createFile.setFileType(FileType.DIRECTORY);
+            Scene scene = new Scene(parent, 419, 159);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+            /* can user better logic to add only newly created file only to observable List*/
+            try {
+                updateListView(CURRENT_DIRECTORY);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         sort_by_name.setOnAction(event -> {
             if (sortingType == LogicConstants.SortingType.BY_DEFAULT ||
@@ -582,7 +632,9 @@ public class Controller implements Initializable {
         });
 
         menuPopup.getItems().addAll(sort_by_name, sort_by_size, sort_by_access);
-
+        if(CommonData.CURRENT_LIST_VIEW_ITEM == FileType.DIRECTORY){
+            menuPopup.getItems().addAll(createNewFile,createNewFolder);
+        }
         CommonData.instance = this;
 
     }
@@ -607,5 +659,9 @@ public class Controller implements Initializable {
 //        stage.setMaxHeight(600);
 //        stage.setMaxWidth(500);
         stage.showAndWait();
+    }
+
+    public void deleteFromListView(ListEntry listEntry) {
+        listView.getItems().remove(listEntry);
     }
 }
