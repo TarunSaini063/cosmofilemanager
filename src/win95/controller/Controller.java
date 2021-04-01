@@ -169,7 +169,7 @@ public class Controller implements Initializable {
         return hbox;
     }
 
-    HBox getLeftTagPaneHBox(javafx.scene.paint.Color colorWord, String text) {
+    HBox getLeftTagPaneHBox(javafx.scene.paint.Color colorWord, String text,TagDetail tagDetail) {
 
         String color = String.format( "0X%02X%02X%02X",
                 (int)( colorWord.getRed() * 255 ),
@@ -191,12 +191,25 @@ public class Controller implements Initializable {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem delete = new MenuItem("delete");
         delete.setOnAction(e->{
-            System.out.println("click on delete menu");
             TaggedFiles.deleteTag(color);
+            setTagPanel();
         });
         MenuItem modify = new MenuItem("Modify");
-        modify.setOnAction(e->{
-            System.out.println("click on modify menu");
+        modify.setOnAction(e1->{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/EditDialogs.fxml"));
+            Parent parent = null;
+            try {
+                parent = fxmlLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            EditDialogs dialogs = fxmlLoader.<EditDialogs>getController();
+            dialogs.setTagDetail(tagDetail);
+            Scene scene = new Scene(parent, 464, 234);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
         });
         contextMenu.getItems().addAll(delete,modify);
 
@@ -275,7 +288,7 @@ public class Controller implements Initializable {
             String name = tagDetail.getName();
             String tagColor = tagDetail.getColor();
             tagColor = tagColor.substring(0,tagColor.length()-2);
-            HBox hbox = getLeftTagPaneHBox(javafx.scene.paint.Color.web(tagColor), name);
+            HBox hbox = getLeftTagPaneHBox(javafx.scene.paint.Color.web(tagColor), name,tagDetail);
             appendTag(hbox);
         }
     }
@@ -286,7 +299,7 @@ public class Controller implements Initializable {
         tagPanel.getChildren().add(tag);
     }
 
-    void setTagPanel() {
+    public void setTagPanel() {
         HBox top = new HBox() {
             @Override
             public String toString() {

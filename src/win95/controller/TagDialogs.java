@@ -5,10 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -42,30 +40,51 @@ public class TagDialogs implements Initializable {
     @FXML
     void addTag(ActionEvent event) {
         System.out.println(tagName.getText());
-        String color = tagColorPicker.getValue().toString().toUpperCase();
-        System.out.println("Adding tag = "+color);
+        String color = String.format( "0X%02X%02X%02X",
+                (int)( tagColorPicker.getValue().getRed() * 255 ),
+                (int)( tagColorPicker.getValue().getGreen() * 255 ),
+                (int)( tagColorPicker.getValue().getBlue() * 255 ) )+"FF";
+
         if(!TaggedFiles.addNewCreatedTag(color,tagName.getText())){
             invalidColor.setVisible(true);
             return;
         }
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem delete = new MenuItem("delete");
+        delete.setOnAction(e->{
+            TaggedFiles.deleteTag(color);
+            CommonData.instance.setTagPanel();
+        });
+        MenuItem modify = new MenuItem("Modify");
+        modify.setOnAction(e->{
+        });
+        contextMenu.getItems().addAll(delete,modify);
 
         Circle circle = new Circle(Dimensions.COLOR_RADIUS, tagColorPicker.getValue()){
             @Override
             public String toString() {
-                return tagName.getText();
+                return color;
             }
         };
         circle.setOnMouseClicked(e->{
-            CommonData.instance.showTaggedFileListView(color);
+            if(e.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(circle, e.getScreenX(), e.getScreenY());
+            }else{
+                CommonData.instance.showTaggedFileListView(color);
+            }
         });
         Label label = new Label(tagName.getText(), circle){
             @Override
             public String toString() {
-                return tagName.getText();
+                return color;
             }
         };
         label.setOnMouseClicked(e->{
-            CommonData.instance.showTaggedFileListView(color);
+            if(e.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(circle, e.getScreenX(), e.getScreenY());
+            }else{
+                CommonData.instance.showTaggedFileListView(color);
+            }
         });
         label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
@@ -73,11 +92,15 @@ public class TagDialogs implements Initializable {
         HBox tag = new HBox() {
             @Override
             public String toString() {
-                return label.getText();
+                return color;
             }
         };
         tag.setOnMouseClicked(e->{
-            CommonData.instance.showTaggedFileListView(color);
+            if(e.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(circle, e.getScreenX(), e.getScreenY());
+            }else{
+                CommonData.instance.showTaggedFileListView(color);
+            }
         });
         tag.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
 

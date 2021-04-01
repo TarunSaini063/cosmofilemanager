@@ -34,8 +34,8 @@ public class TagDetail {
         return name;
     }
 
-    public void setName(String path) {
-        this.name = path;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

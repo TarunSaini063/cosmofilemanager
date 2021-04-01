@@ -41,6 +41,7 @@ public class TagUpdateCellFactory extends ListCell<TagListEntry> {
                 button.setText("Remove");
                 button.setOnMouseClicked(e->{
                     tagfiles.remove(filePath);
+                    CommonData.instance.setTagPanel();
                     Node source = (Node) e.getSource();
                     Stage stage = (Stage) source.getScene().getWindow();
                     stage.close();

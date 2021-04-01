@@ -231,6 +231,41 @@ public class TaggedFiles {
         taggedColorToNameMap.remove(color);
     }
 
+    public static boolean editTag(String color,String newColor,String name,String newName){
+        if(newColor.equals(color)){
+            if(name.equals(newName)) {
+                return true;
+            }
+            else{
+                for(Map.Entry<String,String> tag : taggedColorToNameMap.entrySet()){
+                    if(tag.getValue().equals(newName)) return false;
+                }
+                taggedColorToNameMap.put(color,newName);
+                taggedFile.get(color).setName(name);
+                return true;
+            }
+        }else{
+            if(taggedColorToNameMap.containsKey(newColor)) {
+                return false;
+            }
+            else{
+                if(!newName.equals(name)) {
+                    for (Map.Entry<String, String> tag : taggedColorToNameMap.entrySet()) {
+                        if (tag.getValue().equals(newName)) return false;
+                    }
+                }
+                taggedColorToNameMap.remove(color);
+                taggedColorToNameMap.put(newColor,newName);
+                TagDetail tagDetail = taggedFile.get(color);
+                tagDetail.setName(newName);
+                tagDetail.setColor(newColor);
+                taggedFile.put(newColor,tagDetail);
+                taggedFile.remove(color);
+                return true;
+            }
+        }
+    }
+
     public static String print() {
         String res = "";
 //        for (Map.Entry<String, TagDetail> tags : taggedFile.entrySet()) {
