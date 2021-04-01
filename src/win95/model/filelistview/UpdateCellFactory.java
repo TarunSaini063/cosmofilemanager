@@ -12,7 +12,7 @@ import win95.constants.FileType;
 import win95.debug.LogsPrinter;
 import win95.model.filelistview.listViewelements.RowGridPane;
 import win95.model.filelistview.listViewelements.RowLabel;
-import win95.utilities.filehandling.os.linux.mac.OpenInTerminal;
+import win95.utilities.filehandling.os.SystemCommands;
 
 import java.io.IOException;
 
@@ -56,7 +56,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
                 MenuItem menuItem2 = new MenuItem("Open in Terminal");
                 menuItem2.setOnAction(e -> {
                     System.out.println("context click : " + item.toString());
-                    OpenInTerminal.OpenDirInTerminal(item.getFileDetail().getFilePath());
+                    SystemCommands.OpenDirInTerminal(item.getFileDetail().getFilePath());
 
                 });
                 contextMenu.getItems().add(menuItem2);

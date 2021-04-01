@@ -20,7 +20,11 @@ public class PathHandling {
         int count = 0;
         for(String node : pathNodes){
             count++;
-            res.append(node);
+            if(node.contains(" ")){
+                res.append("\"").append(node).append("\"");
+            }else {
+                res.append(node);
+            }
             if(count != pathNodes.length) {
                 res.append(FileSeparator.fileSeparator());
             }
