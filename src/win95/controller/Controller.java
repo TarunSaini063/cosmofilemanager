@@ -572,9 +572,12 @@ public class Controller implements Initializable {
         setTagOptionDialogs.setFileDetails(item.getFileDetail());
         Scene scene = new Scene(parent, 500, 600);
         Stage stage = new Stage();
+        stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.setResizable(false);
+//        stage.setMaxHeight(600);
+//        stage.setMaxWidth(500);
         stage.showAndWait();
     }
 }
