@@ -10,14 +10,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
 import static win95.constants.Dimensions.RECENT_QUEUE_CAPACITY;
 
 public class RecentFiles {
-    private final static Deque<String> recentQueue = new ArrayDeque<>();
-
+    private final static Set<String> recentSet = new LinkedHashSet<>();
+    private final static int  CAPACITY = RECENT_QUEUE_CAPACITY;
     public static void fetchRecent() {
         JSONParser jsonParser = new JSONParser();
         File USER_HOME = new File(System.getProperty("user.home"));
@@ -79,19 +78,18 @@ public class RecentFiles {
     }
 
     public static void addRecentQueue(String path) {
-        if (recentQueue.size() == RECENT_QUEUE_CAPACITY) {
-            recentQueue.removeLast();
+        LinkedList<String> list = new LinkedList<>(recentSet);
+        Iterator<String> itr = list.descendingIterator();
+        if(recentSet.size() == CAPACITY){
+            String firstKey = recentSet.iterator().next();
+            recentSet.remove(firstKey);
         }
-        recentQueue.addFirst(path);
+        recentSet.add(path);
     }
 
     public static void addRecentQueue(JSONObject jsonObject) {
-        if (recentQueue.size() == RECENT_QUEUE_CAPACITY) {
-            recentQueue.removeLast();
-        }
         String path = (String) jsonObject.get("path");
         addRecentQueue(path);
-//        System.out.println(RecentFiles.printQueue());
     }
 
     public static void saveRecent() {
@@ -99,9 +97,12 @@ public class RecentFiles {
                 "/.CosmoFileManager/recent.json";
 
         JSONArray recentFileArray = new JSONArray();
-        for (String path : recentQueue) {
+        LinkedList<String> list = new LinkedList<>(recentSet);
+        Iterator<String> itr = list.iterator();
+
+        while (itr.hasNext()){
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("path", path);
+            jsonObject.put("path", itr.next());
             recentFileArray.add(jsonObject);
         }
 
@@ -113,13 +114,13 @@ public class RecentFiles {
         }
     }
 
-    public static Deque<String> getRecentQueue() {
-        return recentQueue;
+    public static Set<String> getRecentQueue() {
+        return recentSet;
     }
 
     public static String printQueue() {
         StringBuilder res = new StringBuilder();
-        for (String path : recentQueue) {
+        for (String path : recentSet) {
             res.append(path).append('\n');
         }
         return res.toString();

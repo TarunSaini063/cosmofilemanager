@@ -132,10 +132,13 @@ public class Controller implements Initializable {
         hbox.setOnMouseClicked(event -> {
             File USER_HOME = new File(System.getProperty("user.home"));
             if (text.equals("Recent")) {
-                Deque<String> recentQueue = RecentFiles.getRecentQueue();
+                Set<String> recentQueue = RecentFiles.getRecentQueue();
+                LinkedList<String> list = new LinkedList<>(recentQueue);
+                Iterator<String> itr = list.descendingIterator();
                 observableList.clear();
                 preview.getChildren().clear();
-                for (String path : recentQueue) {
+                while(itr.hasNext()) {
+                    String path = itr.next();
                     try {
                         FileDetail inFileDetail = new FileDetail(new File(path));
                         ListEntry listEntry = new ListEntry(inFileDetail);
