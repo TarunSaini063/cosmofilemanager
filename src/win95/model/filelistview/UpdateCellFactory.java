@@ -45,7 +45,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             setGraphic(grid);
             ContextMenu contextMenu = new ContextMenu();
             this.setContextMenu(contextMenu);
-            MenuItem menuItem1 = new MenuItem("Add tag");
+            MenuItem menuItem1 = new MenuItem("Change tags");
 
             menuItem1.setOnAction(e->{
                 System.out.println("context click : "+item.toString());

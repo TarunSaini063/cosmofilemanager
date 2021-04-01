@@ -131,7 +131,7 @@ public class TaggedFiles {
     //use to add file to already exist tag
     public static void addThisFileToTag(String color,String path,String tagName){
         path = new  PathHandling(path).getFixedPath();
-        System.out.println("in add this file To tag "+color+" "+path+" "+tagName);
+//        System.out.println("in add this file To tag "+color+" "+path+" "+tagName);
         if(!taggedFile.get(color).getPath().contains(path)){
             taggedFile.get(color).getPath().add(path);
         }
@@ -144,7 +144,7 @@ public class TaggedFiles {
             for (Map.Entry<String, String> tag : taggedColorToNameMap.entrySet()) {
                 if (tag.getValue().equals(name)) return false;
             }
-            System.out.println("new tag added : " + color + " " + name);
+//            System.out.println("new tag added : " + color + " " + name);
             taggedColorToNameMap.put(color, name);
             taggedFile.put(color, new TagDetail(color, name));
             return true;
@@ -183,8 +183,8 @@ public class TaggedFiles {
             jsonObject.put("path", pathArray);
             taggedFileArray.add(jsonObject);
         }
-        System.out.println("saving json object to file : ");
-        System.out.println(taggedFileArray.toJSONString());
+//        System.out.println("saving json object to file : ");
+//        System.out.println(taggedFileArray.toJSONString());
         try (FileWriter file = new FileWriter(taggedFilePath)) {
             file.write(taggedFileArray.toJSONString());
             file.flush();
@@ -194,20 +194,17 @@ public class TaggedFiles {
     }
 
     public static ArrayList<String> getList(String color) {
-        System.out.println("for color : " + color);
-        System.out.println(print());
-        System.out.println("end for color");
         if (taggedFile.containsKey(color)) return taggedFile.get(color).getPath();
         return new ArrayList<>();
     }
 
     public static void setUserTag() {
         if (taggedFile.isEmpty()) {
-            System.out.println("setting default");
+//            System.out.println("setting default");
             setDefaultTag();
         }
         else{
-            System.out.println("Setting tags fetch from file");
+//            System.out.println("Setting tags fetch from file");
         }
 
     }
@@ -215,7 +212,6 @@ public class TaggedFiles {
     public static ArrayList<String> getThisColorFile(String color) {
         return taggedFile.get(color).getPath();
     }
-
 
     public String toString() {
         String res = "Color = ";

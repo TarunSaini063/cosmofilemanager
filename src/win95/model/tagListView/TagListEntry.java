@@ -9,11 +9,12 @@ import win95.constants.Fonts;
 
 public class TagListEntry {
     private Circle colorCircle;
-
+    String color ;
 
     private Label tagName;
     private Label tagCount;
     private String tagNameString;
+
 
     public TagListEntry(String color, String tagName){
         tagCount = new Label();
@@ -21,6 +22,7 @@ public class TagListEntry {
         tagCount.setMinWidth(10);
         if(color.length()>8)
             color = color.substring(0,color.length()-2);
+        this.color = color;
         colorCircle = new Circle(Dimensions.COLOR_RADIUS, Color.web(color)) {
             @Override
             public String toString() {
@@ -43,6 +45,9 @@ public class TagListEntry {
 
     public Label getTagNameLabel() {
         return this.tagName;
+    }
+    public String getColor() {
+        return color;
     }
 
     public Label getTagCount() {

@@ -1,14 +1,17 @@
 package win95.model.tagListView;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import win95.constants.CommonData;
 import win95.constants.Dimensions;
 import win95.model.quickaccess.TaggedFiles;
+import win95.utilities.pathmanipulation.PathHandling;
+
+import java.util.ArrayList;
 
 public class TagUpdateCellFactory extends ListCell<TagListEntry> {
     @Override
@@ -27,24 +30,36 @@ public class TagUpdateCellFactory extends ListCell<TagListEntry> {
             count.setMinWidth(Dimensions.LISTVIEW_ROWCOUNT);
 
             Label tag = item.getTagNameLabel();
+            Button button = new Button();
 
             tagRowGridPane.add(count,0,0);
             tagRowGridPane.add(tag,2,0);
+            String filePath = new PathHandling(CommonData.TAG_OPTION_INSTANCE.getFileDetail().getFilePath()).getFixedPath();
+            String tagColor = item.getColor()+"FF";
+            ArrayList<String> tagfiles = TaggedFiles.getList(tagColor);
+            if(tagfiles.contains(filePath)){
+                button.setText("Remove");
+                button.setOnMouseClicked(e->{
+                    tagfiles.remove(filePath);
+                    Node source = (Node) e.getSource();
+                    Stage stage = (Stage) source.getScene().getWindow();
+                    stage.close();
+                });
+            }else{
+                button.setText("Add");
 
-            setGraphic(tagRowGridPane);
-            this.setOnMouseClicked(e->{
-                if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                    System.out.println("Adding file to tag color : "+item.getColorCircle().getFill().toString().toUpperCase()+" "+
-                            CommonData.TAG_OPTION_INSTANCE.getFileDetail().getFilePath()+" "+
-                            item.getName());
+                button.setOnMouseClicked(e->{
+                    for(String path : tagfiles) System.out.println(path);
                     TaggedFiles.addThisFileToTag(item.getColorCircle().getFill().toString().toUpperCase(),
                             CommonData.TAG_OPTION_INSTANCE.getFileDetail().getFilePath(),
                             item.getName());
                     Node source = (Node) e.getSource();
                     Stage stage = (Stage) source.getScene().getWindow();
                     stage.close();
-                }
-            });
+                });
+            }
+            tagRowGridPane.add(button,3,0);
+            setGraphic(tagRowGridPane);
         }
     }
 }
