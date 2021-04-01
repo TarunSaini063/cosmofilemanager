@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -175,36 +176,63 @@ public class Controller implements Initializable {
                 (int)( colorWord.getGreen() * 255 ),
                 (int)( colorWord.getBlue() * 255 ) )+"FF";
         System.out.println(text+" "+color);
+        HBox hbox = new HBox() {
+            @Override
+            public String toString() {
+                return color;
+            }
+        };
         Circle circle = new Circle(Dimensions.COLOR_RADIUS, colorWord) {
             @Override
             public String toString() {
-                return text;
+                return color;
             }
         };
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem delete = new MenuItem("delete");
+        delete.setOnAction(e->{
+            System.out.println("click on delete menu");
+            TaggedFiles.deleteTag(color);
+        });
+        MenuItem modify = new MenuItem("Modify");
+        modify.setOnAction(e->{
+            System.out.println("click on modify menu");
+        });
+        contextMenu.getItems().addAll(delete,modify);
+
         circle.setOnMouseClicked(e->{
+
+            if(e.getButton() == MouseButton.SECONDARY) {
+                System.out.println("second button pressed");
+                contextMenu.show(circle, e.getScreenX(), e.getScreenY());
+            }else{
                 showTaggedFileListView(color);
+            }
         });
 
         Label label = new Label(text, circle) {
             @Override
             public String toString() {
-                return text;
+                return color;
             }
         };
+        label.setContextMenu(contextMenu);
         label.setOnMouseClicked(e->{
+            if(e.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(hbox, e.getScreenX(), e.getScreenY());
+            }else{
                 showTaggedFileListView(color);
+            }
         });
         label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
 
-        HBox hbox = new HBox() {
-            @Override
-            public String toString() {
-                return text;
-            }
-        };
         hbox.setOnMouseClicked(e->{
+            if(e.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(hbox, e.getScreenX(), e.getScreenY());
+            }else{
                 showTaggedFileListView(color);
+            }
         });
         hbox.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         hbox.getChildren().add(label);
@@ -240,19 +268,6 @@ public class Controller implements Initializable {
 
     }
 
-    void addOnClickListener(HBox tag) {
-        tag.setOnMouseClicked(e -> {
-            /*
-             *
-             * load tags from file
-             * not yet implemented...
-             *
-             */
-            System.out.println(e.getTarget().toString()+" clicked");
-                showTaggedFileListView(e.getTarget().toString());
-        });
-    }
-
     void setDefaultTags() {
         TaggedFiles.setUserTag();
         for (Map.Entry<String, TagDetail> color : TaggedFiles.taggedFile.entrySet()){
@@ -266,7 +281,7 @@ public class Controller implements Initializable {
     }
 
     public void appendTag(HBox tag) {
-//        addOnClickListener(tag);
+
         setHoverEffect(tag);
         tagPanel.getChildren().add(tag);
     }

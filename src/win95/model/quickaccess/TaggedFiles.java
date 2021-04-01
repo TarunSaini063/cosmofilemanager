@@ -226,6 +226,11 @@ public class TaggedFiles {
         return res;
     }
 
+    public static void deleteTag(String color){
+        taggedFile.remove(color);
+        taggedColorToNameMap.remove(color);
+    }
+
     public static String print() {
         String res = "";
 //        for (Map.Entry<String, TagDetail> tags : taggedFile.entrySet()) {
