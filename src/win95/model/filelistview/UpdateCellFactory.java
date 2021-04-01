@@ -8,9 +8,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import win95.constants.CommonData;
 import win95.constants.Dimensions;
+import win95.constants.FileType;
 import win95.debug.LogsPrinter;
 import win95.model.filelistview.listViewelements.RowGridPane;
 import win95.model.filelistview.listViewelements.RowLabel;
+import win95.utilities.filehandling.os.linux.mac.OpenInTerminal;
 
 import java.io.IOException;
 
@@ -43,13 +45,25 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             setGraphic(grid);
             ContextMenu contextMenu = new ContextMenu();
             this.setContextMenu(contextMenu);
-            MenuItem menuItem = new MenuItem("Add tag");
-            menuItem.setOnAction(e->{
+            MenuItem menuItem1 = new MenuItem("Add tag");
+
+            menuItem1.setOnAction(e->{
                 System.out.println("context click : "+item.toString());
                 CommonData.instance.showAddTagToFileDialog(item);
 
             });
-            contextMenu.getItems().add(menuItem);
+            if(item.getFileDetail().getFileType() == FileType.DIRECTORY) {
+                MenuItem menuItem2 = new MenuItem("Open in Terminal");
+                menuItem2.setOnAction(e -> {
+                    System.out.println("context click : " + item.toString());
+                    OpenInTerminal.OpenDirInTerminal(item.getFileDetail().getFilePath());
+
+                });
+                contextMenu.getItems().add(menuItem2);
+            }
+
+            contextMenu.getItems().add(menuItem1);
+
             this.setOnMouseClicked(event->{
                 if (event.getButton() == MouseButton.PRIMARY){
                     if(event.getClickCount() == 2){
