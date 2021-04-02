@@ -1,6 +1,6 @@
 package win95.constants;
 
-public enum themes {
+public enum Themes {
     DARK,
     LIGHT,
     FADE

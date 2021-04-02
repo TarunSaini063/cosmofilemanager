@@ -28,70 +28,70 @@ public class TaggedFiles {
     }
 
     public static void fetchTagged() {
-        JSONParser jsonParser = new JSONParser();
+            JSONParser jsonParser = new JSONParser();
 
-        File USER_HOME = new File(System.getProperty("user.home"));
-        String homeFolderPath = USER_HOME.getAbsolutePath() + "/.CosmoFileManager";
-        File homeFolder = new File(homeFolderPath);
+            File USER_HOME = new File(System.getProperty("user.home"));
+            String homeFolderPath = USER_HOME.getAbsolutePath() + "/.CosmoFileManager";
+            File homeFolder = new File(homeFolderPath);
 
-        if (homeFolder.exists() && homeFolder.isDirectory()) {
+            if (homeFolder.exists() && homeFolder.isDirectory()) {
 
-            String tagFilePath = homeFolder + "/tagged.json";
-            File tagFile = new File(tagFilePath);
-
-            if (tagFile.exists() && tagFile.isFile()) {
-                try (FileReader reader = new FileReader(tagFilePath)) {
-
-                    Object tagFileListObject = jsonParser.parse(reader);
-                    JSONArray tagFileList = (JSONArray) tagFileListObject;
-                    System.out.println("fetch from json : "+tagFileList.toJSONString());
-                    for (Object jsonObject : tagFileList) {
-                        addTaggedQueue((JSONObject) jsonObject);
-                    }
-
-                } catch (IOException | ParseException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    if (tagFile.createNewFile()) {
-                        setDefaultTag();
-                        LogsPrinter.printLogic("TaggedFiles", 42,
-                                "Successfully crated tagged.json");
-                    } else {
-                        LogsPrinter.printLogic("TaggedFiles", 42,
-                                "return false in crating tagged.json");
-                    }
-                } catch (IOException e) {
-                    LogsPrinter.printError("TaggedFiles", 42,
-                            "IOException in crating tagged.json");
-                }
-            }
-        } else {
-            if (homeFolder.mkdir()) {
                 String tagFilePath = homeFolder + "/tagged.json";
                 File tagFile = new File(tagFilePath);
-                LogsPrinter.printLogic("TaggedFiles", 52,
-                        "Successfully crated home folder");
-                try {
-                    if (tagFile.createNewFile()) {
-                        setDefaultTag();
-//                        saveTagged();
-                        LogsPrinter.printLogic("TaggedFiles", 52,
-                                "Successfully crated tagged.json");
-                    } else {
-                        LogsPrinter.printLogic("TaggedFiles", 52,
-                                "return false in crating tagged.json");
+
+                if (tagFile.exists() && tagFile.isFile()) {
+                    try (FileReader reader = new FileReader(tagFilePath)) {
+
+                        Object tagFileListObject = jsonParser.parse(reader);
+                        JSONArray tagFileList = (JSONArray) tagFileListObject;
+                        System.out.println("fetch from json : "+tagFileList.toJSONString());
+                        for (Object jsonObject : tagFileList) {
+                            addTaggedQueue((JSONObject) jsonObject);
+                        }
+
+                    } catch (IOException | ParseException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    LogsPrinter.printError("TaggedFiles", 52,
-                            "IOException in crating tagged.json");
+                } else {
+                    try {
+                        if (tagFile.createNewFile()) {
+                            setDefaultTag();
+                            LogsPrinter.printLogic("TaggedFiles", 42,
+                                    "Successfully crated tagged.json");
+                        } else {
+                            LogsPrinter.printLogic("TaggedFiles", 42,
+                                    "return false in crating tagged.json");
+                        }
+                    } catch (IOException e) {
+                        LogsPrinter.printError("TaggedFiles", 42,
+                                "IOException in crating tagged.json");
+                    }
                 }
             } else {
-                LogsPrinter.printError("TaggedFiles", 52,
-                        "some error occur in crating home folder");
+                if (homeFolder.mkdir()) {
+                    String tagFilePath = homeFolder + "/tagged.json";
+                    File tagFile = new File(tagFilePath);
+                    LogsPrinter.printLogic("TaggedFiles", 52,
+                            "Successfully crated home folder");
+                    try {
+                        if (tagFile.createNewFile()) {
+                            setDefaultTag();
+    //                        saveTagged();
+                            LogsPrinter.printLogic("TaggedFiles", 52,
+                                    "Successfully crated tagged.json");
+                        } else {
+                            LogsPrinter.printLogic("TaggedFiles", 52,
+                                    "return false in crating tagged.json");
+                        }
+                    } catch (IOException e) {
+                        LogsPrinter.printError("TaggedFiles", 52,
+                                "IOException in crating tagged.json");
+                    }
+                } else {
+                    LogsPrinter.printError("TaggedFiles", 52,
+                            "some error occur in crating home folder");
+                }
             }
-        }
     }
 
     public static void addTaggedQueue(JSONObject jsonObject) throws IOException {

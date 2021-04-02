@@ -44,9 +44,10 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             grid.setAlignment(Pos.BASELINE_LEFT);
             setGraphic(grid);
             ContextMenu contextMenu = new ContextMenu();
+            contextMenu.getStyleClass().add(".context-menu");
             this.setContextMenu(contextMenu);
             MenuItem menuItem1 = new MenuItem("Change tags");
-
+            menuItem1.getStyleClass().add("menu-item");
             menuItem1.setOnAction(e->{
                 System.out.println("context click : "+item.toString());
                 CommonData.instance.showAddTagToFileDialog(item);
@@ -54,6 +55,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             });
             if(item.getFileDetail().getFileType() == FileType.DIRECTORY) {
                 MenuItem menuItem2 = new MenuItem("Open in Terminal");
+                menuItem2.getStyleClass().add("menu-item");
                 menuItem2.setOnAction(e -> {
                     System.out.println("context click : " + item.toString());
                     SystemCommands.OpenDirInTerminal(item.getFileDetail().getFilePath());
@@ -62,6 +64,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
                 contextMenu.getItems().add(menuItem2);
             }
             MenuItem menuItem3 = new MenuItem("Delete");
+            menuItem3.getStyleClass().add("menu-item");
             menuItem3.setOnAction(e->{
                 CommonData.instance.deleteFromListView(item);
                 if(item.getFileDetail().getFileType() == FileType.DIRECTORY) {

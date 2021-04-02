@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import win95.constants.CommonData;
 import win95.constants.LogicConstants;
+import win95.constants.Themes;
+import win95.constants.UserPreference;
 import win95.model.quickaccess.RecentFiles;
 import win95.model.quickaccess.TaggedFiles;
 
@@ -14,11 +16,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        UserPreference.fetchUserPreferences();
         TaggedFiles.fetchTagged();
         RecentFiles.fetchRecent();
         Parent root = FXMLLoader.load(getClass().getResource("./view/sample.fxml"));
         primaryStage.setTitle("BIT-COSMOS");
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        if(UserPreference.THEME == Themes.DARK) {
+            scene.getStylesheets().add(getClass().getResource("./view/css/DarkStyle.css").toExternalForm());
+        }else if(UserPreference.THEME == Themes.LIGHT){
+            scene.getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
+        }else{
+            /*  set FADE theme not Theme implemented */
+            scene.getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
+        }
+        primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
     }
@@ -50,6 +62,7 @@ public class Main extends Application {
             System.out.println("In shutdown hook");
             RecentFiles.saveRecent();
             TaggedFiles.saveTagged();
+            UserPreference.saveUserPreferences();
         }, "Shutdown-thread"));
         launch(args);
     }

@@ -1,7 +1,5 @@
 package win95.controller;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,13 +41,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import static win95.constants.Color.HOVERED_BUTTON_STYLE;
-import static win95.constants.Color.STANDARD_BUTTON_STYLE;
+import static javafx.application.Application.setUserAgentStylesheet;
 import static win95.constants.CommonData.CURRENT_DIRECTORY;
 import static win95.constants.Dimensions.LEFT_PANEL_ICON;
 import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class Controller implements Initializable {
+
+
     @FXML
     private ListView<ListEntry> listView;
 
@@ -190,12 +189,15 @@ public class Controller implements Initializable {
             }
         };
         ContextMenu contextMenu = new ContextMenu();
+        contextMenu.getStyleClass().add("context-menu");
         MenuItem delete = new MenuItem("delete");
+        delete.getStyleClass().add("menu-item");
         delete.setOnAction(e->{
             TaggedFiles.deleteTag(color);
             setTagPanel();
         });
         MenuItem modify = new MenuItem("Modify");
+        modify.getStyleClass().add("menu-item");
         modify.setOnAction(e1->{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/EditDialogs.fxml"));
             Parent parent = null;
@@ -250,6 +252,7 @@ public class Controller implements Initializable {
         });
         hbox.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         hbox.getChildren().add(label);
+        hbox.getStyleClass().add("hbox");
         setHoverEffect(hbox);
 
         return hbox;
@@ -273,11 +276,15 @@ public class Controller implements Initializable {
         favourite.setFont(Fonts.TOP_FONT);
 
         HBox recent = getLeftPaneHBox("Recent", Icons.RECENT_LIGHT);
+        recent.getStyleClass().add("hbox");
         HBox desktop = getLeftPaneHBox("Desktop", Icons.DESKTOP_LIGHT);
+        desktop.getStyleClass().add("hbox");
         HBox download = getLeftPaneHBox("Downloads", Icons.DOWNLOAD_LIGHT);
+        download.getStyleClass().add("hbox");
         HBox document = getLeftPaneHBox("Documents", Icons.DOCUMENT_LIGHT);
+        document.getStyleClass().add("hbox");
         HBox home = getLeftPaneHBox("Home", Icons.HOME_LIGHT);
-
+        home.getStyleClass().add("hbox");
         favouritePanel.getChildren().addAll(favourite, recent, desktop, download, document, home);
 
 
@@ -341,7 +348,6 @@ public class Controller implements Initializable {
 
         setDefaultTags();
     }
-
     @FXML
     void showMenu(MouseEvent event) {
         System.out.println("Menu button pressed");
@@ -492,16 +498,16 @@ public class Controller implements Initializable {
     }
 
     void setHoverEffect(Node node) {
-        node.styleProperty().bind(
-                Bindings
-                        .when(node.hoverProperty())
-                        .then(
-                                new SimpleStringProperty(HOVERED_BUTTON_STYLE)
-                        )
-                        .otherwise(
-                                new SimpleStringProperty(STANDARD_BUTTON_STYLE)
-                        )
-        );
+//        node.styleProperty().bind(
+//                Bindings
+//                        .when(node.hoverProperty())
+//                        .then(
+//                                new SimpleStringProperty(HOVERED_BUTTON_STYLE)
+//                        )
+//                        .otherwise(
+//                                new SimpleStringProperty(STANDARD_BUTTON_STYLE)
+//                        )
+//        );
     }
 
     @Override
@@ -514,9 +520,9 @@ public class Controller implements Initializable {
          * themes not yet implemented...
          *
          */
-        tagPane.setStyle("-fx-background-color: " + Color.LEFT_PANE_COLOR);
-        middleTop.setStyle("-fx-background-color: " + Color.MIDDLE_PANE_COLOR);
-        preview.setStyle("-fx-background-color: " + Color.PREVIEW_PANE_COLOR);
+//        tagPane.setStyle("-fx-background-color: " + Color.LEFT_PANE_COLOR);
+//        middleTop.setStyle("-fx-background-color: " + Color.MIDDLE_PANE_COLOR);
+//        preview.setStyle("-fx-background-color: " + Color.PREVIEW_PANE_COLOR);
 
         Image leftImageLight = new Image(new File(Icons.LIGHT_LEFT_ARROW).toURI().toString());
         ImageView leftImageLightImageView = new ImageView(leftImageLight);
@@ -543,13 +549,16 @@ public class Controller implements Initializable {
 
         setFavouritePanel();
         setTagPanel();
-
+//        System.out.println(changeTheme.toString());
         listView.setCellFactory(new CellFactory());
 
         menuPopup = new ContextMenu();
+        menuPopup.getStyleClass().add("context-menu");
 
         MenuItem sort_by_name = new MenuItem("sort by name");
+        sort_by_name.getStyleClass().add("menu-item");
         MenuItem createNewFile = new MenuItem("New File");
+        createNewFile.getStyleClass().add("menu-item");
         createNewFile.setOnAction(event -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/CreateFile.fxml"));
             Parent parent = null;
@@ -561,13 +570,21 @@ public class Controller implements Initializable {
             CreateFile createFile = fxmlLoader.<CreateFile>getController();
             createFile.setFileDetail(CURRENT_DIRECTORY);
             createFile.setFileType(FileType.FILE);
-            Scene scene = new Scene(parent, 419, 159);
+            Scene scene1 = new Scene(parent, 419, 159);
+            if(UserPreference.getTHEME() == Themes.DARK){
+                scene1.getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
+                UserPreference.setTHEME(Themes.LIGHT);
+            }else if(UserPreference.getTHEME() == Themes.LIGHT){
+                scene1.getStylesheets().add(getClass().getResource("./view/css/DarkStyle.css").toExternalForm());
+                UserPreference.setTHEME(Themes.DARK);
+            }
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
+            stage.setScene(scene1);
             stage.showAndWait();
         });
         MenuItem createNewFolder = new MenuItem("New Folder");
+        createNewFolder.getStyleClass().add("menu-item");
         createNewFolder.setOnAction(event -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/CreateFile.fxml"));
             Parent parent = null;
@@ -579,10 +596,17 @@ public class Controller implements Initializable {
             CreateFile createFile = fxmlLoader.<CreateFile>getController();
             createFile.setFileDetail(CURRENT_DIRECTORY);
             createFile.setFileType(FileType.DIRECTORY);
-            Scene scene = new Scene(parent, 419, 159);
+            Scene scene1 = new Scene(parent, 419, 159);
+            if(UserPreference.getTHEME() == Themes.DARK){
+                scene1.getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
+                UserPreference.setTHEME(Themes.LIGHT);
+            }else if(UserPreference.getTHEME() == Themes.LIGHT){
+                scene1.getStylesheets().add(getClass().getResource("./view/css/DarkStyle.css").toExternalForm());
+                UserPreference.setTHEME(Themes.DARK);
+            }
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
+            stage.setScene(scene1);
             stage.showAndWait();
         });
 
@@ -597,7 +621,7 @@ public class Controller implements Initializable {
 
 
         MenuItem sort_by_size = new MenuItem("sort by size");
-
+        sort_by_size.getStyleClass().add("menu-item");
         sort_by_size.setOnAction(event -> {
             if (sortingType == LogicConstants.SortingType.BY_DEFAULT ||
                     sortingType == LogicConstants.SortingType.BY_SIZE_DESC) {
@@ -609,7 +633,7 @@ public class Controller implements Initializable {
 
 
         MenuItem sort_by_access = new MenuItem("sort by access time");
-
+        sort_by_access.getStyleClass().add("menu-item");
         sort_by_access.setOnAction(event -> {
             if (sortingType == LogicConstants.SortingType.BY_DEFAULT ||
                     sortingType == LogicConstants.SortingType.BY_ACCESS_DESC) {
@@ -619,7 +643,22 @@ public class Controller implements Initializable {
             }
         });
 
-        menuPopup.getItems().addAll(sort_by_name, sort_by_size, sort_by_access);
+        MenuItem theme = new MenuItem("Change Theme");
+        theme.setOnAction(e->{
+            Scene scene = listView.getScene();
+            scene.getStylesheets().clear();
+            setUserAgentStylesheet(null);
+            System.out.println(scene);
+            if(UserPreference.getTHEME() == Themes.DARK){
+                scene.getStylesheets().add(this.getClass().getResource("../view/css/LightStyle.css").toExternalForm());
+                UserPreference.setTHEME(Themes.LIGHT);
+            }else if(UserPreference.getTHEME() == Themes.LIGHT){
+                scene.getStylesheets().add(this.getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
+                UserPreference.setTHEME(Themes.DARK);
+            }
+        });
+
+        menuPopup.getItems().addAll(sort_by_name, sort_by_size, sort_by_access,theme);
         if(CommonData.CURRENT_LIST_VIEW_ITEM == FileType.DIRECTORY){
             menuPopup.getItems().addAll(createNewFile,createNewFolder);
         }
@@ -655,5 +694,16 @@ public class Controller implements Initializable {
 
     public void appendInCurrentListView(ListEntry listEntry){
         listView.getItems().add(listEntry);
+    }
+    public void addThemeOptionMenu(){
+
+    }
+
+    private void changeTheme() {
+        if(UserPreference.getTHEME() == Themes.DARK){
+            listView.getScene().getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
+        }else if(UserPreference.getTHEME() == Themes.LIGHT){
+            listView.getScene().getStylesheets().add(getClass().getResource("./view/css/DarkStyle.css").toExternalForm());
+        }
     }
 }
