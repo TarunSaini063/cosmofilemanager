@@ -19,6 +19,15 @@
     -fx-background-color: #646668;
 }
 
+#createFilePane{
+    -fx-background-color: #646668;
+}
+#setTagPane{
+    -fx-background-color: #646668;
+}
+#dialogPane{
+    -fx-background-color: #646668;
+}
 #middleTop  {
     -fx-background-color: #1f222a;
 }
@@ -95,3 +104,12 @@
 }
 
 
+.text-field{
+    -fx-background-color: #323232;
+    -fx-text-fill: #ffffff;
+}
+
+.color-picker{
+    -fx-background-color: #323232;
+    -fx-text-fill: #ffffff;
+}

@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -36,6 +37,9 @@ public class TagDialogs implements Initializable {
 
     @FXML
     private Label invalidColor;
+
+    @FXML
+    private AnchorPane dialogPane;
 
     @FXML
     void addTag(ActionEvent event) {

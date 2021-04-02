@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import win95.constants.CommonData;
@@ -20,6 +21,9 @@ import java.util.ResourceBundle;
 public class EditDialogs implements Initializable {
     @FXML
     private ColorPicker tagColorPicker;
+
+    @FXML
+    private AnchorPane dialogPane;
 
     @FXML
     private Circle tagColorCircle;

@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="234.0" prefWidth="464.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.EditDialogs">
+<AnchorPane fx:id="dialogPane" prefHeight="234.0" prefWidth="464.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.EditDialogs">
     <children>
         <ColorPicker fx:id="tagColorPicker" layoutX="144.0" layoutY="47.0" onAction="#setCircleColor" promptText="Chose Color" />
         <Circle fx:id="tagColorCircle" fill="DODGERBLUE" layoutX="342.0" layoutY="61.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />

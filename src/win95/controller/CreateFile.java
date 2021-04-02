@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import win95.constants.CommonData;
 import win95.constants.FileType;
@@ -24,6 +25,9 @@ public class CreateFile {
     private FileDetail fileDetail;
     @FXML
     private Button add;
+
+    @FXML
+    private AnchorPane createFilePane;
 
     @FXML
     private Button cancel;

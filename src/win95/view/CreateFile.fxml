@@ -4,8 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="159.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.CreateFile">
+<AnchorPane fx:id="createFilePane" prefHeight="159.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.CreateFile">
    <children>
       <TextField fx:id="name" layoutX="99.0" layoutY="32.0" prefHeight="27.0" prefWidth="219.0" promptText="Name" />
       <Button fx:id="add" layoutX="99.0" layoutY="77.0" mnemonicParsing="false" onAction="#add" text="Create" />

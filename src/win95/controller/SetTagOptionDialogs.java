@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import win95.constants.CommonData;
 import win95.model.FileDetail;
 import win95.model.quickaccess.TaggedFiles;
@@ -18,9 +19,11 @@ import java.util.ResourceBundle;
 public class SetTagOptionDialogs implements Initializable {
     private  FileDetail fileDetail;
     final private ObservableList<TagListEntry> observableList = FXCollections.observableArrayList();
+    @FXML
+    private AnchorPane setTagPane;
 
     @FXML
-    private ListView<TagListEntry> tagListView;
+    private ListView<TagListEntry> listView;
     public void setFileDetails(FileDetail fileDetail){
         this.fileDetail = fileDetail;
     }
@@ -32,8 +35,8 @@ public class SetTagOptionDialogs implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         observableList.clear();
-        tagListView.setItems(observableList);
-        tagListView.setCellFactory(new TagCellFactory());
+        listView.setItems(observableList);
+        listView.setCellFactory(new TagCellFactory());
         CommonData.TAG_OPTION_INSTANCE = this;
         Map<String,String> taggedColorToNameMap = TaggedFiles.getTaggedColorToNameMap();
         for (Map.Entry<String, String> tag : taggedColorToNameMap.entrySet()){

@@ -209,6 +209,11 @@ public class Controller implements Initializable {
             EditDialogs dialogs = fxmlLoader.<EditDialogs>getController();
             dialogs.setTagDetail(tagDetail);
             Scene scene = new Scene(parent, 464, 234);
+            if(UserPreference.getTHEME() == Themes.LIGHT){
+                scene.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
+            }else if(UserPreference.getTHEME() == Themes.DARK){
+                scene.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
+            }
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
@@ -335,6 +340,11 @@ public class Controller implements Initializable {
             TagDialogs dialogs = fxmlLoader.<TagDialogs>getController();
             Scene scene = new Scene(parent, 464, 234);
             Stage stage = new Stage();
+            if(UserPreference.getTHEME() == Themes.LIGHT){
+                scene.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
+            }else if(UserPreference.getTHEME() == Themes.DARK){
+                scene.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
+            }
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
@@ -681,6 +691,11 @@ public class Controller implements Initializable {
         Stage stage = new Stage();
         stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
+        if(UserPreference.getTHEME() == Themes.LIGHT){
+            scene.getStylesheets().add(this.getClass().getResource("../view/css/LightStyle.css").toExternalForm());
+        }else if(UserPreference.getTHEME() == Themes.DARK){
+            scene.getStylesheets().add(this.getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
+        }
         stage.setScene(scene);
         stage.setResizable(false);
 //        stage.setMaxHeight(600);
