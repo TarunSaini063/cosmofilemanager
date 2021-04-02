@@ -6,9 +6,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import win95.constants.CommonData;
 import win95.constants.FileType;
+import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
+import win95.model.filelistview.ListEntry;
 import win95.utilities.filehandling.os.SystemCommands;
+
+import java.io.File;
+import java.io.IOException;
 
 public class CreateFile {
     @FXML
@@ -29,6 +35,13 @@ public class CreateFile {
             SystemCommands.createFolder(path + "/" + name.getText());
         }else{
             SystemCommands.createFile(path + "/" + name.getText());
+        }
+        try {
+            CommonData.instance.appendInCurrentListView(new ListEntry(new FileDetail(new File(path+"/"+name.getText()))));
+        } catch (IOException e) {
+            LogsPrinter.printError("CreateFile",41,
+                    "Error in appending newly created file to listView");
+            e.printStackTrace();
         }
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

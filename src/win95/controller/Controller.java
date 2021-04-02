@@ -566,12 +566,6 @@ public class Controller implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
-            /* can user better logic to add only newly created file only to observable List*/
-            try {
-                updateListView(CURRENT_DIRECTORY);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         });
         MenuItem createNewFolder = new MenuItem("New Folder");
         createNewFolder.setOnAction(event -> {
@@ -590,12 +584,6 @@ public class Controller implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
-            /* can user better logic to add only newly created file only to observable List*/
-            try {
-                updateListView(CURRENT_DIRECTORY);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         });
 
         sort_by_name.setOnAction(event -> {
@@ -663,5 +651,9 @@ public class Controller implements Initializable {
 
     public void deleteFromListView(ListEntry listEntry) {
         listView.getItems().remove(listEntry);
+    }
+
+    public void appendInCurrentListView(ListEntry listEntry){
+        listView.getItems().add(listEntry);
     }
 }
