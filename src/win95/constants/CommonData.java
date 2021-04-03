@@ -12,4 +12,5 @@ public class CommonData {
     public static LogicConstants.OS OS = LogicConstants.OS.UNKNOWN;
     public static FileDetail CURRENT_DIRECTORY = null;
     public static SetTagOptionDialogs TAG_OPTION_INSTANCE = null;
+    public static String  VIEW_MODE = "LISTVIEW";
 }

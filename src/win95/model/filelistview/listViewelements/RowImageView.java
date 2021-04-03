@@ -18,7 +18,10 @@ public class RowImageView extends ImageView {
         this.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
     }
-
+    public void refresh(){
+        this.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
+        this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
+    }
     public RowImageView(FileDetail fileDetail,LogicConstants previewMode) {
         this.fileDetail = fileDetail;
         this.setFitHeight(Dimensions.PREVIEW_FILE_ICON);
@@ -47,5 +50,11 @@ public class RowImageView extends ImageView {
     public String toString() {
         return  "{{" + fileDetail.getFileName() + "}}" + '\n' +
                 "{{" + fileDetail.getFilePath() + "}}" + '\n';
+    }
+    public RowImageView getCopy(){
+        RowImageView rowImageViewCopy = new RowImageView(fileDetail);
+        rowImageViewCopy.setFitWidth(Dimensions.GRIDVIEW_ROWIMAGEVIEW);
+        rowImageViewCopy.setFitHeight(Dimensions.GRIDVIEW_ROWIMAGEVIEW);
+        return rowImageViewCopy;
     }
 }

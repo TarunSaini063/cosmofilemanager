@@ -11,7 +11,7 @@ import win95.constants.CommonData;
 import win95.constants.FileType;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
-import win95.model.filelistview.ListEntry;
+import win95.model.filegridview.GridEntry;
 import win95.utilities.filehandling.os.SystemCommands;
 
 import java.io.File;
@@ -41,7 +41,7 @@ public class CreateFile {
             SystemCommands.createFile(path + "/" + name.getText());
         }
         try {
-            CommonData.instance.appendInCurrentListView(new ListEntry(new FileDetail(new File(path+"/"+name.getText()))));
+            CommonData.instance.appendInCurrentGridView(new GridEntry(new FileDetail(new File(path+"/"+name.getText()))));
         } catch (IOException e) {
             LogsPrinter.printError("CreateFile",41,
                     "Error in appending newly created file to listView");

@@ -31,6 +31,10 @@
 #middleTop  {
     -fx-background-color: #1f222a;
 }
+#gridViewScrollPane #gridView{
+    -fx-background-color: #525253;
+}
+
 .button{
     -fx-background-color: #434345;
     -fx-text-fill: #ffffff;
@@ -112,4 +116,11 @@
 .color-picker{
     -fx-background-color: #323232;
     -fx-text-fill: #ffffff;
+}
+
+.file-block:hover{
+    -fx-background-color: #3066a0;
+}
+.file-block .label{
+    -fx-text-fill: white;
 }

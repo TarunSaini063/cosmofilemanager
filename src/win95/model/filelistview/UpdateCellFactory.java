@@ -37,6 +37,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             count.setMinWidth(Dimensions.LISTVIEW_ROWCOUNT);
 
             grid.add(count,0,0,1,1);
+            item.refresh();
             grid.add(item.getRowImageView(),1,0);
             grid.add(item.getRowNamelabel(),2,0,3,1);
             grid.add(item.getShare(),5,0);

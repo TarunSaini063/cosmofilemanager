@@ -17,16 +17,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import win95.constants.*;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
+import win95.model.filegridview.GridEntry;
 import win95.model.filelistview.CellFactory;
 import win95.model.filelistview.ListEntry;
 import win95.model.filelistview.listViewelements.RowImageView;
@@ -48,10 +46,12 @@ import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class Controller implements Initializable {
 
-
     @FXML
     private ListView<ListEntry> listView;
-
+    @FXML
+    private FlowPane gridView;
+    @FXML
+    private ScrollPane gridViewScrollPane;
     @FXML
     private VBox favouritePanel;
 
@@ -68,6 +68,9 @@ public class Controller implements Initializable {
     private AnchorPane tagPane;
 
     @FXML
+    private AnchorPane middle;
+
+    @FXML
     private AnchorPane middleTop;
 
     @FXML
@@ -81,7 +84,7 @@ public class Controller implements Initializable {
     ContextMenu menuPopup;
 
     final private ObservableList<ListEntry> observableList = FXCollections.observableArrayList();
-
+    final private ArrayList<GridEntry> gridObjectList = new ArrayList<>();
     private LogicConstants.SortingType sortingType = LogicConstants.SortingType.BY_DEFAULT;
 
     Comparator<ListEntry> size_desc = (o2, o1) -> o1.getFileDetail().getSizeInByte().toLowerCase().compareTo(o2.getFileDetail().getSizeInByte().toLowerCase());
@@ -137,6 +140,8 @@ public class Controller implements Initializable {
                 LinkedList<String> list = new LinkedList<>(recentQueue);
                 Iterator<String> itr = list.descendingIterator();
                 observableList.clear();
+                gridView.getChildren().clear();
+                gridObjectList.clear();
                 preview.getChildren().clear();
                 while(itr.hasNext()) {
                     String path = itr.next();
@@ -144,6 +149,8 @@ public class Controller implements Initializable {
                         FileDetail inFileDetail = new FileDetail(new File(path));
                         ListEntry listEntry = new ListEntry(inFileDetail);
                         observableList.add(listEntry);
+                        GridEntry gridEntry = new GridEntry(listEntry);
+                        gridObjectList.add(gridEntry);
                     } catch (IOException e) {
                         LogsPrinter.printError("Controller.java", 131,
                                 "Error in creating recent file object");
@@ -375,10 +382,18 @@ public class Controller implements Initializable {
             System.out.println("PathStack.getNextDirectory() return null ");
             return;
         }
-        if (updateListView(nextDirectory)) {
-            preview.getChildren().clear();
-        } else {
-            BUTTON_PRESSED = "NONE";
+        if(CommonData.VIEW_MODE.equals("LISTVIEW")) {
+            if (updateListView(nextDirectory)) {
+                preview.getChildren().clear();
+            } else {
+                BUTTON_PRESSED = "NONE";
+            }
+        }else{
+            if (updateGridView(nextDirectory)) {
+                preview.getChildren().clear();
+            } else {
+                BUTTON_PRESSED = "NONE";
+            }
         }
     }
 
@@ -392,10 +407,18 @@ public class Controller implements Initializable {
             System.out.println("PathStack.getPreviousDirectory() return null ");
             return;
         }
-        if (updateListView(previousDirectory)) {
-            preview.getChildren().clear();
-        } else {
-            BUTTON_PRESSED = "NONE";
+        if(CommonData.VIEW_MODE.equals("LISTVIEW")) {
+            if (updateListView(previousDirectory)) {
+                preview.getChildren().clear();
+            } else {
+                BUTTON_PRESSED = "NONE";
+            }
+        }else{
+            if (updateGridView(previousDirectory)) {
+                preview.getChildren().clear();
+            } else {
+                BUTTON_PRESSED = "NONE";
+            }
         }
     }
 
@@ -444,8 +467,6 @@ public class Controller implements Initializable {
         previewGridPane.add(lastModifiedTimeTag, 0, 5);
         previewGridPane.add(lastModifiedTime, 1, 5);
 
-//        previewGridPane.setGridLinesVisible(true);
-
         AnchorPane.setTopAnchor(previewGridPane, 5d);
         AnchorPane.setLeftAnchor(previewGridPane, 5d);
         AnchorPane.setRightAnchor(previewGridPane, 5d);
@@ -460,17 +481,47 @@ public class Controller implements Initializable {
         CommonData.CURRENT_LIST_VIEW_ITEM = FileType.DIRECTORY;
         CURRENT_DIRECTORY = new FileDetail(USER_HOME);
         File[] files = USER_HOME.listFiles();
+        gridView.getChildren().clear();
+        observableList.clear();
         assert files != null;
         for (File file : files) {
             try {
                 FileDetail fileDetail = new FileDetail(file);
                 ListEntry listEntry = new ListEntry(fileDetail);
                 observableList.add(listEntry);
+                GridEntry  gridEntry = new GridEntry(listEntry);
+                gridObjectList.add(gridEntry);
+                gridView.getChildren().add(gridEntry.getFileGridBlock());
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
+    }
+
+    public void updateGridView() throws IOException {
+        File USER_HOME = new File(System.getProperty("user.home"));
+        CommonData.CURRENT_LIST_VIEW_ITEM = FileType.DIRECTORY;
+        CURRENT_DIRECTORY = new FileDetail(USER_HOME);
+        File[] files = USER_HOME.listFiles();
+        observableList.clear();
+        gridObjectList.clear();
+        gridView.getChildren().clear();
+        assert files != null;
+        for (File file : files) {
+            try {
+                FileDetail fileDetail = new FileDetail(file);
+                ListEntry listEntry = new ListEntry(fileDetail);
+                observableList.add(listEntry);
+                GridEntry gridEntry = new GridEntry(listEntry);
+                gridEntry.refresh();
+                gridObjectList.add(gridEntry);
+                gridView.getChildren().add(gridEntry.getFileGridBlock());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        gridView.setVisible(true);
     }
 
     public boolean updateListView(FileDetail fileDetail) throws IOException {
@@ -493,10 +544,14 @@ public class Controller implements Initializable {
             CURRENT_DIRECTORY = fileDetail;
         }
         observableList.clear();
+        gridView.getChildren().clear();
+        gridObjectList.clear();
         for (File file : files) {
             try {
                 FileDetail inFileDetail = new FileDetail(file);
                 ListEntry listEntry = new ListEntry(inFileDetail);
+                listEntry.refresh();
+                gridObjectList.add(new GridEntry(listEntry));
                 observableList.add(listEntry);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -504,6 +559,47 @@ public class Controller implements Initializable {
 
         }
         CommonData.CURRENT_LIST_VIEW_ITEM = FileType.DIRECTORY;
+        return true;
+    }
+
+    public boolean updateGridView(FileDetail fileDetail) throws IOException {
+        if (fileDetail == null) return false;
+        File parentPath = fileDetail.getFile();
+
+        File[] files = parentPath.listFiles();
+        if (files == null) {
+            LogsPrinter.printLogic("Controller", 157,
+                    "parent Path list files give null (invalid path/some other error");
+            return false;
+        }
+        if (BUTTON_PRESSED.equals("NEXT")) {
+            PathStack.setPreviousDirectory(CURRENT_DIRECTORY);
+            BUTTON_PRESSED = "NONE";
+            CURRENT_DIRECTORY = fileDetail;
+        } else if (BUTTON_PRESSED.equals("PREVIOUS")) {
+            PathStack.setNextDirectory(CURRENT_DIRECTORY);
+            BUTTON_PRESSED = "NONE";
+            CURRENT_DIRECTORY = fileDetail;
+        }
+        observableList.clear();
+        gridView.getChildren().clear();
+        gridObjectList.clear();
+        for (File file : files) {
+            try {
+                FileDetail inFileDetail = new FileDetail(file);
+                ListEntry listEntry = new ListEntry(inFileDetail);
+                GridEntry gridEntry = new GridEntry(listEntry);
+                gridEntry.refresh();
+                gridObjectList.add(gridEntry);
+                observableList.add(listEntry);
+                gridView.getChildren().add(gridEntry.getFileGridBlock());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        CommonData.CURRENT_LIST_VIEW_ITEM = FileType.DIRECTORY;
+        listView.setVisible(false);
+        gridView.setVisible(true);
         return true;
     }
 
@@ -522,7 +618,29 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        gridView.setVgap(10);
+        gridViewScrollPane.setFitToWidth(true);
         listView.setItems(observableList);
+
+        if(CommonData.VIEW_MODE.equals("LISTVIEW")){
+            gridView.setVisible(false);
+            listView.setVisible(true);
+            try {
+                updateListView();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            listView.setVisible(false);
+            gridView.setVisible(true);
+            try {
+                updateGridView();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         /*
          *
          * menu type will be set according to theme
@@ -551,15 +669,10 @@ public class Controller implements Initializable {
         menu.setFitWidth(Dimensions.MENU_ICON);
         menu.setImage(image);
 
-        try {
-            updateListView();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         setFavouritePanel();
         setTagPanel();
-//        System.out.println(changeTheme.toString());
+
         listView.setCellFactory(new CellFactory());
 
         menuPopup = new ContextMenu();
@@ -581,18 +694,17 @@ public class Controller implements Initializable {
             createFile.setFileDetail(CURRENT_DIRECTORY);
             createFile.setFileType(FileType.FILE);
             Scene scene1 = new Scene(parent, 419, 159);
-            if(UserPreference.getTHEME() == Themes.DARK){
-                scene1.getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
-                UserPreference.setTHEME(Themes.LIGHT);
-            }else if(UserPreference.getTHEME() == Themes.LIGHT){
-                scene1.getStylesheets().add(getClass().getResource("./view/css/DarkStyle.css").toExternalForm());
-                UserPreference.setTHEME(Themes.DARK);
+            if(UserPreference.getTHEME() == Themes.LIGHT){
+                scene1.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
+            }else if(UserPreference.getTHEME() == Themes.DARK){
+                scene1.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
             }
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene1);
             stage.showAndWait();
         });
+
         MenuItem createNewFolder = new MenuItem("New Folder");
         createNewFolder.getStyleClass().add("menu-item");
         createNewFolder.setOnAction(event -> {
@@ -607,12 +719,10 @@ public class Controller implements Initializable {
             createFile.setFileDetail(CURRENT_DIRECTORY);
             createFile.setFileType(FileType.DIRECTORY);
             Scene scene1 = new Scene(parent, 419, 159);
-            if(UserPreference.getTHEME() == Themes.DARK){
-                scene1.getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
-                UserPreference.setTHEME(Themes.LIGHT);
-            }else if(UserPreference.getTHEME() == Themes.LIGHT){
-                scene1.getStylesheets().add(getClass().getResource("./view/css/DarkStyle.css").toExternalForm());
-                UserPreference.setTHEME(Themes.DARK);
+            if(UserPreference.getTHEME() == Themes.LIGHT){
+                scene1.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
+            }else if(UserPreference.getTHEME() == Themes.DARK){
+                scene1.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
             }
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -668,12 +778,53 @@ public class Controller implements Initializable {
             }
         });
 
-        menuPopup.getItems().addAll(sort_by_name, sort_by_size, sort_by_access,theme);
+        MenuItem toggleFileView = new MenuItem("Toggle view mode");
+        toggleFileView.setOnAction(event -> {
+            toggleViewMode();
+        });
+        menuPopup.getItems().addAll(sort_by_name, sort_by_size, sort_by_access,theme,toggleFileView);
         if(CommonData.CURRENT_LIST_VIEW_ITEM == FileType.DIRECTORY){
             menuPopup.getItems().addAll(createNewFile,createNewFolder);
         }
         CommonData.instance = this;
 
+    }
+
+    private void toggleViewMode() {
+        if(CommonData.VIEW_MODE.equals("LISTVIEW")){
+            CommonData.VIEW_MODE = "GRIDVIEW";
+            if(observableList.isEmpty()){
+                try {
+                    updateGridView();
+                    gridView.setVisible(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                listView.setVisible(false);
+                gridView.getChildren().clear();
+                gridObjectList.clear();
+                for(ListEntry fileListEntry : observableList){
+                    GridEntry gridEntry = new GridEntry(fileListEntry);
+                    gridEntry.refresh();
+                     gridObjectList.add(gridEntry);
+                     gridView.getChildren().add(gridEntry.getFileGridBlock());
+                }
+                observableList.clear();
+                gridView.setVisible(true);
+            }
+        }else{
+            CommonData.VIEW_MODE = "LISTVIEW";
+            gridView.setVisible(false);
+            observableList.clear();
+            for(GridEntry gridEntry : gridObjectList){
+                gridEntry.getListEntry().refresh();
+                observableList.add(gridEntry.getListEntry());
+            }
+            gridView.getChildren().clear();
+            gridObjectList.clear();
+            listView.setVisible(true);
+        }
     }
 
     public void showAddTagToFileDialog(ListEntry item) {
@@ -707,9 +858,20 @@ public class Controller implements Initializable {
         listView.getItems().remove(listEntry);
     }
 
+    public void deleteFromGridView(GridEntry gridEntry) {
+        gridView.getChildren().remove(gridEntry.getFileGridBlock());
+        gridObjectList.remove(gridEntry);
+    }
+
     public void appendInCurrentListView(ListEntry listEntry){
         listView.getItems().add(listEntry);
     }
+
+    public void appendInCurrentGridView(GridEntry gridEntry){
+        gridView.getChildren().add(gridEntry.getFileGridBlock());
+        gridObjectList.add(gridEntry);
+    }
+
     public void addThemeOptionMenu(){
 
     }

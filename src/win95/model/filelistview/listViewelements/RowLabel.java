@@ -1,5 +1,6 @@
 package win95.model.filelistview.listViewelements;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import win95.model.FileDetail;
 
@@ -21,6 +22,11 @@ public class RowLabel extends Label {
 
     public FileDetail getFileDetail() {
         return fileDetail;
+    }
+    public void refresh(){
+        this.setMaxWidth(500);
+        this.setMinWidth(500);
+        this.setAlignment(Pos.BASELINE_CENTER);
     }
 
 

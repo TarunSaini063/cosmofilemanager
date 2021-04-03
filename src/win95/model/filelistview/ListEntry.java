@@ -1,6 +1,7 @@
 package win95.model.filelistview;
 
 import javafx.scene.image.Image;
+import win95.constants.Dimensions;
 import win95.constants.Icons;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
@@ -121,7 +122,12 @@ public class ListEntry {
     public void setFileDetail(FileDetail fileDetail) {
         this.fileDetail = fileDetail;
     }
-
+    public void refresh(){
+        rowImageView.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
+        rowImageView.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
+        rowNameLabel.setMaxWidth(500);
+        rowNameLabel.setMinWidth(500);
+    }
     @Override
     public String toString() {
         return "ListEntry{" +
