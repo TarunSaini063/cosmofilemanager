@@ -23,7 +23,7 @@ Features implemented :
 # Snapshots
 <img src="https://github.com/TarunSaini063/cosmofilemanager/blob/master/src/win95/demo/Day6/Day6_1.png" width="650" height="400">
 # Dark Mode
-<img src="https://github.com/TarunSaini063/cosmofilemanager/blob/master/src/win95/demo/Day7/Day7_1.png" width="650" height="400">
+<img src="https://github.com/TarunSaini063/cosmofilemanager/blob/master/src/win95/demo/Day8/Day8_1.png" width="650" height="400">
 
 
 
