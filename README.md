@@ -4,7 +4,7 @@ Features implemented :
 1) Quick access to favorite folders
 2) Create colorful tags and add them to file or folder for quick access
 3) Open the terminal in any folder directly from the file manager
-5) Access recently open files any time every after opening file manager next time.
+5) Access recently open files any time even after opening file manager next time.
 4) Get file detail with a single click on the main window
 5) Delete and create a file without opening terminal or cmd directly from file manager
 6) Edit tags or delete them permanently.
