@@ -74,7 +74,7 @@ public class TagDialogs implements Initializable {
             if(e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(circle, e.getScreenX(), e.getScreenY());
             }else{
-                CommonData.instance.showTaggedFileListView(color);
+                CommonData.instance.showTaggedView(color);
             }
         });
         Label label = new Label(tagName.getText(), circle){
@@ -87,7 +87,7 @@ public class TagDialogs implements Initializable {
             if(e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(circle, e.getScreenX(), e.getScreenY());
             }else{
-                CommonData.instance.showTaggedFileListView(color);
+                CommonData.instance.showTaggedView(color);
             }
         });
         label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
@@ -103,7 +103,7 @@ public class TagDialogs implements Initializable {
             if(e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(circle, e.getScreenX(), e.getScreenY());
             }else{
-                CommonData.instance.showTaggedFileListView(color);
+                CommonData.instance.showTaggedView(color);
             }
         });
         tag.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));

@@ -41,7 +41,7 @@ public class CreateFile {
             SystemCommands.createFile(path + "/" + name.getText());
         }
         try {
-            CommonData.instance.appendInCurrentGridView(new GridEntry(new FileDetail(new File(path+"/"+name.getText()))));
+            CommonData.instance.appendView(new GridEntry(new FileDetail(new File(path+"/"+name.getText()))));
         } catch (IOException e) {
             LogsPrinter.printError("CreateFile",41,
                     "Error in appending newly created file to listView");

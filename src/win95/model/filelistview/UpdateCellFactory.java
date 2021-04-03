@@ -67,7 +67,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             MenuItem menuItem3 = new MenuItem("Delete");
             menuItem3.getStyleClass().add("menu-item");
             menuItem3.setOnAction(e->{
-                CommonData.instance.deleteFromListView(item);
+                CommonData.instance.deleteView(item.getGridView());
                 if(item.getFileDetail().getFileType() == FileType.DIRECTORY) {
                     SystemCommands.deleteFolder(item.getFileDetail().getFilePath());
                 }else{

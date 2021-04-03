@@ -5,6 +5,7 @@ import win95.constants.Dimensions;
 import win95.constants.Icons;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
+import win95.model.filegridview.GridEntry;
 import win95.model.filelistview.listViewelements.RowButtonShare;
 import win95.model.filelistview.listViewelements.RowImageView;
 import win95.model.filelistview.listViewelements.RowLabel;
@@ -13,7 +14,7 @@ import java.io.File;
 
 public class ListEntry {
     private String name,url;
-
+    private GridEntry gridEntry;
     private RowImageView rowImageView;
     private RowLabel rowNameLabel,rowCount;
     private RowButtonShare delete,open,share;
@@ -139,4 +140,11 @@ public class ListEntry {
     }
 
 
+    public GridEntry getGridView() {
+        return gridEntry;
+    }
+
+    public void setGridEntry(GridEntry gridEntry) {
+        this.gridEntry = gridEntry;
+    }
 }

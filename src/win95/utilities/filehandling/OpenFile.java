@@ -31,18 +31,10 @@ public class OpenFile {
         }else{
             if(CommonData.instance != null) {
                 Controller.BUTTON_PRESSED = "NEXT";
-                if (CommonData.VIEW_MODE.equals("LISTVIEW")) {
-                    if (!CommonData.instance.updateListView(fileDetail)) {
+                    if (!CommonData.instance.updateView(fileDetail)) {
                         Controller.BUTTON_PRESSED = "NONE";
                     }
-
-                }else{
-                    if (!CommonData.instance.updateGridView(fileDetail)) {
-                        Controller.BUTTON_PRESSED = "NONE";
-                    }
-                }
-            }
-            else {
+                }else {
                 LogsPrinter.printLogic("UpdateCellFactory", 47,
                         "controller class instance is null\nfailed in updating listview");
             }

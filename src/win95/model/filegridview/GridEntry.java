@@ -36,18 +36,14 @@ public class GridEntry {
     public GridEntry(FileDetail fileDetail){
         setData(fileDetail);
         listEntry = new ListEntry(fileDetail);
+        listEntry.setGridEntry(this);
         makeFileBlock();
     }
 
 
     public GridEntry(ListEntry listEntry){
         this.listEntry = listEntry;
-        rowImageView = listEntry.getRowImageView();
-        rowNameLabel = listEntry.getRowNamelabel();
-        rowImageView.setFitHeight(Dimensions.GRIDVIEW_ROWIMAGEVIEW);
-        rowImageView.setFitWidth(Dimensions.GRIDVIEW_ROWIMAGEVIEW);
-        share = listEntry.getShare();
-        fileDetail = listEntry.getFileDetail();
+        setData(listEntry.getFileDetail());
         makeFileBlock();
     }
     private void setData(FileDetail fileDetail) {
@@ -200,7 +196,7 @@ public class GridEntry {
         MenuItem menuItem3 = new MenuItem("Delete");
         menuItem3.getStyleClass().add("menu-item");
         menuItem3.setOnAction(e->{
-            CommonData.instance.deleteFromGridView(this);
+            CommonData.instance.deleteView(this);
             if(listEntry.getFileDetail().getFileType() == FileType.DIRECTORY) {
                 SystemCommands.deleteFolder(listEntry.getFileDetail().getFilePath());
             }else{
@@ -212,6 +208,7 @@ public class GridEntry {
         fileBlock.getStyleClass().clear();
         fileBlock.getStyleClass().add("file-block");
     }
+
 
     public GridPane getFileGridBlock(){
 
