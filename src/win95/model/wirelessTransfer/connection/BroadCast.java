@@ -22,8 +22,8 @@ public class BroadCast {
 
     public static void main(ConnectionCNF callback, FileMetaDataCallBack fileMetaDataCallBack) throws IOException {
         ExecutorService pool = Executors.newFixedThreadPool(MAX_T);
-        for (int j = 137; j >= 137 && Common.ip.equals("localhost"); j--) {
-            for (int i = 1; i <= 1 && Common.ip.equals("localhost"); i++) {
+        for (int j = 254; j >= 1 && Common.ip.equals("localhost"); j--) {
+            for (int i = 1; i <= 254 && Common.ip.equals("localhost"); i++) {
                 final String iIPv4 = "192.168." + j + "." + i;
 
                 Thread thread = new Thread(new Runnable() {
