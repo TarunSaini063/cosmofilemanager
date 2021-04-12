@@ -56,17 +56,17 @@ public class FileDetail {
 
 
             long bytes = attributes.size();
-            long kilobytes = (bytes / 1024);
-            long megabytes = (kilobytes / 1024);
-            long gigabytes = (megabytes / 1024);
+            double kilobytes = (bytes / 1024.0);
+            double megabytes = (kilobytes / 1024.0);
+            double gigabytes = (megabytes / 1024.0);
 
             this.sizeInByte = String.format("%,d bytes", bytes);
-            this.sizeInKiloByte = String.format("%,d kb", kilobytes);
-            this.sizeInMegaByte = String.format("%,d mb", megabytes);
-            this.sizeInGigaByte = String.format("%,d gb", gigabytes);
-            if(gigabytes != 0) optimizedSize = sizeInGigaByte;
-            else if(megabytes != 0) optimizedSize = sizeInMegaByte;
-            else if(kilobytes !=0 ) optimizedSize = sizeInKiloByte;
+            this.sizeInKiloByte = String.format("%,f kb", kilobytes);
+            this.sizeInMegaByte = String.format("%,f mb", megabytes);
+            this.sizeInGigaByte = String.format("%,f gb", gigabytes);
+            if(gigabytes >= 1) optimizedSize = sizeInGigaByte;
+            else if(megabytes >= 1) optimizedSize = sizeInMegaByte;
+            else if(kilobytes >= 1 ) optimizedSize = sizeInKiloByte;
             else if(bytes !=0 ) optimizedSize = sizeInByte;
 
             int lastIndexOf = fileName.lastIndexOf(".");
