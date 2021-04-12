@@ -17,7 +17,7 @@ import java.nio.file.FileSystems;
 public class Common {
     public static  boolean CLIENT = false;
     public static ConnectionIO CONNECTION_STATUS =  ConnectionIO.BREAK;
-    public static String ip = "localhost";
+    public static String ip = "localhost";//"192.168.137.1";
     public static Transfer transfer;
     public static int port = 49452;
     public static int metaPort = 47452;
