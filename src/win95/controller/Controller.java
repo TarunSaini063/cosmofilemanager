@@ -77,6 +77,9 @@ public class Controller implements Initializable {
     private Button left;
 
     @FXML
+    private ImageView transfer;
+
+    @FXML
     private Button right;
 
     public static String BUTTON_PRESSED = "NONE";
@@ -408,6 +411,32 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    void openTransferDialog(MouseEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Transfer.fxml"));
+        Parent parent = null;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        Transfer transfer = fxmlLoader.<Transfer>getController();
+        assert parent != null;
+        Scene scene = new Scene(parent, 625, 1000);
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        if(UserPreference.getTHEME() == Themes.LIGHT){
+            scene.getStylesheets().add(this.getClass().getResource("../view/css/LightStyle.css").toExternalForm());
+        }else if(UserPreference.getTHEME() == Themes.DARK){
+            scene.getStylesheets().add(this.getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
+        }
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.showAndWait();
+
+    }
+
     public void showPreview(FileDetail fileDetail) {
 
         GridPane previewGridPane = new GridPane();
@@ -507,6 +536,9 @@ public class Controller implements Initializable {
         leftImageLightImageView.setFitWidth(Dimensions.DIRECTORY_MOVEMENT_ICON);
         leftImageLightImageView.setFitHeight(Dimensions.DIRECTORY_MOVEMENT_ICON);
         left.setGraphic(leftImageLightImageView);
+
+        Image TRANSFER = new Image(new File(Icons.TRANSFER_LIGHT).toURI().toString());
+        transfer.setImage(TRANSFER);
 
         Image rightImageLight = new Image(new File(Icons.LIGHT_RIGHT_ARROW).toURI().toString());
         ImageView rightImageLightImageView = new ImageView(rightImageLight);
