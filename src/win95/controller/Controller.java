@@ -21,6 +21,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import win95.constants.*;
 import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
@@ -413,6 +414,9 @@ public class Controller implements Initializable {
 
     @FXML
     void openTransferDialog(MouseEvent event) {
+        if(CommonData.transfer!=null){
+            CommonData.transferStage.show();
+        }
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Transfer.fxml"));
         Parent parent = null;
         try {
@@ -422,10 +426,31 @@ public class Controller implements Initializable {
         }
         Transfer transfer = fxmlLoader.<Transfer>getController();
         assert parent != null;
-        Scene scene = new Scene(parent, 625, 1000);
+        Scene scene = new Scene(parent, 600, 700);
         Stage stage = new Stage();
         stage.setResizable(false);
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.NONE);
+
+        stage.setOnCloseRequest((e) -> {
+            /* closing all thread in transfer module*/
+            CommonData.transfer = null;
+            CommonData.transferStage = null;
+            stage.close();
+        });
+
+        stage.initStyle(StageStyle.UNDECORATED);
+
+        stage.focusedProperty().addListener((ov, onHidden, onShown) -> {
+            if(onHidden) {
+                stage.hide();
+                System.out.println("unfocused again");
+            }
+            if(onShown){
+                CommonData.transfer.fetchAll();
+                System.out.println("focused again");
+            }
+        });
+
         if(UserPreference.getTHEME() == Themes.LIGHT){
             scene.getStylesheets().add(this.getClass().getResource("../view/css/LightStyle.css").toExternalForm());
         }else if(UserPreference.getTHEME() == Themes.DARK){
@@ -433,8 +458,8 @@ public class Controller implements Initializable {
         }
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.showAndWait();
-
+        stage.show();
+        CommonData.transferStage = stage;
     }
 
     public void showPreview(FileDetail fileDetail) {

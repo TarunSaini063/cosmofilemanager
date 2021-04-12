@@ -1,8 +1,10 @@
 package win95.constants;
 
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 import win95.controller.Controller;
 import win95.controller.SetTagOptionDialogs;
+import win95.controller.Transfer;
 import win95.model.FileDetail;
 
 public class CommonData {
@@ -13,4 +15,6 @@ public class CommonData {
     public static FileDetail CURRENT_DIRECTORY = null;
     public static SetTagOptionDialogs TAG_OPTION_INSTANCE = null;
     public static String  VIEW_MODE = "LISTVIEW";
+    public static Transfer transfer = null;
+    public static Stage transferStage = null;
 }

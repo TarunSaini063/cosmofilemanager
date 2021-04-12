@@ -40,8 +40,9 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             item.refresh();
             grid.add(item.getRowImageView(),1,0);
             grid.add(item.getRowNamelabel(),2,0,3,1);
-            grid.add(item.getShare(),5,0);
-
+            if(item.getFileDetail().getFileType()==FileType.FILE) {
+                grid.add(item.getShare(), 5, 0);
+            }
             grid.setAlignment(Pos.BASELINE_LEFT);
             setGraphic(grid);
             ContextMenu contextMenu = new ContextMenu();

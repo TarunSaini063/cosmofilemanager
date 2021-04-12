@@ -17,6 +17,7 @@ import win95.model.filelistview.ListEntry;
 import win95.model.filelistview.listViewelements.RowButtonShare;
 import win95.model.filelistview.listViewelements.RowImageView;
 import win95.model.filelistview.listViewelements.RowLabel;
+import win95.model.wirelessTransfer.wirelessfileslistview.ListOfFileTransfer;
 import win95.utilities.filehandling.os.SystemCommands;
 
 import java.io.File;
@@ -191,6 +192,15 @@ public class GridEntry {
 
             });
             contextMenu.getItems().add(menuItem2);
+        }
+        if(listEntry.getFileDetail().getFileType() != FileType.DIRECTORY) {
+            MenuItem share = new MenuItem("Share");
+            share.getStyleClass().add("menu-item");
+            share.setOnAction(e -> {
+                ListOfFileTransfer.add(fileDetail);
+
+            });
+            contextMenu.getItems().add(share);
         }
 
         MenuItem menuItem3 = new MenuItem("Delete");

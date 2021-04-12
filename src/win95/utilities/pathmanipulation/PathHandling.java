@@ -21,7 +21,11 @@ public class PathHandling {
         for(String node : pathNodes){
             count++;
             if(node.contains(" ")){
-                res.append("\"").append(node).append("\"");
+                String []spaces = node.split(" ");
+                for(int i=0;i<spaces.length-1;i++){
+                    res.append(spaces[i]).append("\\ ");
+                }
+                res.append(spaces[spaces.length-1]);
             }else {
                 res.append(node);
             }

@@ -3,17 +3,10 @@ package win95.model.wirelessTransfer.connection;
 import win95.model.wirelessTransfer.FileMetaData;
 import win95.model.wirelessTransfer.connection.callbacks.ConnectionCNF;
 import win95.model.wirelessTransfer.connection.callbacks.FileMetaDataCallBack;
-import win95.model.wirelessTransfer.connection.sockets.FileMetaDataReceiver;
 import win95.model.wirelessTransfer.connection.sockets.FileReceiver;
 import win95.model.wirelessTransfer.iohandler.FileWriter;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.nio.channels.SocketChannel;
 
 public class InitConnectionClient implements Runnable {
@@ -56,38 +49,53 @@ public class InitConnectionClient implements Runnable {
     public void run() {
 
         SocketChannel client = null;
-        Socket socket = null;
-        boolean metaStatus = true;
-        while (metaStatus) {
+//        Socket socket = null;
+//        boolean metaStatus = true;
+//        while (metaStatus) {
+//            try {
+//                System.out.println("Waiting for server to make meta link");
+//                socket = new Socket(Common.ip, Common.metaPort);
+//                metaStatus = false;
+//            } catch (IOException e) {
+//                System.out.println("waiting for server " + e.getMessage());
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException interruptedException) {
+//                    interruptedException.printStackTrace();
+//                }
+//            }
+//        }
+//        assert socket != null;
+//        try {
+//            Common.clientObjectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+//        } catch (IOException e) {
+////            e.printStackTrace();
+//            System.out.println(e.getMessage());
+//            return;
+//        }
+//        try {
+//            Common.clientObjectInputStream = new ObjectInputStream(socket.getInputStream());
+//        } catch (IOException e) {
+////            e.printStackTrace();
+//            System.out.println(e.getMessage());
+//            return;
+//        }
+
+        int count = 1;
+        while (count<=10&&Common.ip.equals("localhost")) {
+            System.out.println("Broadcasting for turn : "+count);
             try {
-                System.out.println("Waiting for server to make meta link");
-                socket = new Socket(Common.ip, Common.metaPort);
-                metaStatus = false;
+                BroadCast.main(callback, fileMetaDataCallBack);
+                count++;
             } catch (IOException e) {
-                System.out.println("waiting for server " + e.getMessage());
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
+                e.printStackTrace();
             }
         }
-        assert socket != null;
-        try {
-            Common.clientObjectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-//            e.printStackTrace();
-            System.out.println(e.getMessage());
-            return;
+        if(Common.ip.equals("localhost")){
+            System.out.println("Request time out");
         }
-        try {
-            Common.clientObjectInputStream = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-//            e.printStackTrace();
-            System.out.println(e.getMessage());
-            return;
-        }
-
+        /*boolean lock = false;
+        while (!lock);
         boolean status = true;
         while (status) {
             try {
@@ -103,7 +111,7 @@ public class InitConnectionClient implements Runnable {
                 System.out.println("reader thread started successfully in client");
                 callback.clientConnected("SUCCESS");
             } catch (ConnectException e) {
-                System.out.println("Error while connecting. " + e.getMessage());
+                System.out.println("Error while connecting with "+Common.ip+" " + e.getMessage());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException interruptedException) {
@@ -117,7 +125,7 @@ public class InitConnectionClient implements Runnable {
                 callback.clientConnected("FAILURE");
                 return;
             }
-        }
+        }*/
     }
 
 

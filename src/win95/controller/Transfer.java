@@ -7,9 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
+import win95.constants.CommonData;
+import win95.model.wirelessTransfer.ConnectionIO;
+import win95.model.wirelessTransfer.FileMetaData;
 import win95.model.wirelessTransfer.connection.Common;
 import win95.model.wirelessTransfer.connection.InitConnectionClient;
 import win95.model.wirelessTransfer.connection.InitConnectionServer;
@@ -21,10 +23,9 @@ import win95.model.wirelessTransfer.connection.sockets.FileReceiver;
 import win95.model.wirelessTransfer.connection.sockets.FileSender;
 import win95.model.wirelessTransfer.iohandler.FileReader;
 import win95.model.wirelessTransfer.iohandler.FileWriter;
+import win95.model.wirelessTransfer.wirelessfileslistview.ListOfFileTransfer;
 import win95.model.wirelessTransfer.wirelessfileslistview.WirelessCellFactory;
 import win95.model.wirelessTransfer.wirelessfileslistview.WirelessListEntry;
-import win95.model.wirelessTransfer.ConnectionIO;
-import win95.model.wirelessTransfer.FileMetaData;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,10 +42,6 @@ public class Transfer implements Initializable {
     @FXML
     private Button remove;
 
-    @FXML
-    void removeList(ActionEvent event) {
-
-    }
 
     @FXML
     private ListView<WirelessListEntry> listView;
@@ -58,9 +55,6 @@ public class Transfer implements Initializable {
     @FXML
     private Button clientButton;
 
-
-    @FXML
-    private Label fileName;
 
 
     @FXML
@@ -76,7 +70,6 @@ public class Transfer implements Initializable {
         List<File> selectedFiles = fil_chooser.showOpenMultipleDialog(select.getScene().getWindow());
         if (selectedFiles != null) {
             for (File file : selectedFiles) {
-                fileName.setText(file.getAbsolutePath());
                 System.out.println(file.length());
                 System.out.println(file.length() / (1024 * 1024) + " MB");
                 if (file.isFile()) {
@@ -337,8 +330,15 @@ public class Transfer implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Common.transfer = this;
+        CommonData.transfer = this;
         listView.setItems(observableList);
         listView.setCellFactory(new WirelessCellFactory());
+        ArrayList<FileMetaData> fileMetaDataArrayList = ListOfFileTransfer.fetch();
+        for(FileMetaData fileMetaData : fileMetaDataArrayList){
+            String name = fileMetaData.getName();
+            WirelessListEntry wirelessListEntry = new WirelessListEntry(name);
+            observableList.add(wirelessListEntry);
+        }
         fil_chooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Select files", "*.*"));
     }
@@ -381,5 +381,17 @@ public class Transfer implements Initializable {
                 observableList.add(wirelessListEntry);
             }
         });
+    }
+
+    public void closeWindow() {
+        Platform.runLater(() -> CommonData.transferStage.close());
+    }
+
+    public void fetchAll() {
+        observableList.clear();
+        ArrayList<FileMetaData> fileMetaDataArrayList = ListOfFileTransfer.fetch();
+        for(FileMetaData fileMetaData : fileMetaDataArrayList){
+            observableList.add(new WirelessListEntry(fileMetaData.getName()));
+        }
     }
 }

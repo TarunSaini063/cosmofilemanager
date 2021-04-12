@@ -3,12 +3,12 @@ package win95.model.filelistview;
 import javafx.scene.image.Image;
 import win95.constants.Dimensions;
 import win95.constants.Icons;
-import win95.debug.LogsPrinter;
 import win95.model.FileDetail;
 import win95.model.filegridview.GridEntry;
 import win95.model.filelistview.listViewelements.RowButtonShare;
 import win95.model.filelistview.listViewelements.RowImageView;
 import win95.model.filelistview.listViewelements.RowLabel;
+import win95.model.wirelessTransfer.wirelessfileslistview.ListOfFileTransfer;
 
 import java.io.File;
 
@@ -47,7 +47,8 @@ public class ListEntry {
                 replace with share module..
                 not implemented yet...
              */
-            LogsPrinter.printLogic("ListEntry",42,"Share logic not implemented yet");
+            ListOfFileTransfer.add(fileDetail);
+            share.setDisable(true);
         });
     }
 
