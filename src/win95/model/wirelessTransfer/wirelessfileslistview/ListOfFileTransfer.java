@@ -10,15 +10,20 @@ public class ListOfFileTransfer {
     public static ArrayList<FileMetaData> arrayList = new ArrayList<>();
 
     public static void add(FileDetail fileDetail){
-//        if(CommonData.transfer==null){
             arrayList.add(new FileMetaData(fileDetail.getFile()));
-//        }else{
-//            CommonData.transfer.appendListView(new FileMetaData(fileDetail.getFile()));
-//        }
     }
 
     public static ArrayList<FileMetaData> fetch(){
         ArrayList<FileMetaData> fileMetaDataArrayList = new ArrayList<>(arrayList);
+        Collections.reverse(fileMetaDataArrayList);
+        return fileMetaDataArrayList;
+    }
+
+    public static ArrayList<FileMetaData> fetch(int size) {
+        ArrayList<FileMetaData> fileMetaDataArrayList = new ArrayList<>();
+        for(int i = size ; i<arrayList.size(); i++){
+            fileMetaDataArrayList.add(arrayList.get(i));
+        }
         Collections.reverse(fileMetaDataArrayList);
         return fileMetaDataArrayList;
     }

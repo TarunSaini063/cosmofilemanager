@@ -2,14 +2,21 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
 <AnchorPane fx:id="transfer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="714.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.Transfer">
    <children>
-      <Button fx:id="select" layoutX="254.0" layoutY="29.0" mnemonicParsing="false" onAction="#selectFile" text="Select file" />
-      <Button fx:id="send" layoutX="344.0" layoutY="29.0" mnemonicParsing="false" onAction="#sendFile" text="Send" />
+      <Button fx:id="select" layoutX="151.0" layoutY="29.0" mnemonicParsing="false" onAction="#selectFile" text="Select file" />
+      <Button fx:id="send" layoutX="233.0" layoutY="29.0" mnemonicParsing="false" onAction="#sendFile" text="Send" />
       <ListView fx:id="listView" layoutX="24.0" layoutY="68.0" prefHeight="584.0" prefWidth="572.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="68.0" />
       <Button fx:id="serverButton" layoutX="33.0" layoutY="29.0" mnemonicParsing="false" onAction="#initServer" text="Server" />
-      <Button fx:id="clientButton" layoutX="161.0" layoutY="29.0" mnemonicParsing="false" onAction="#initClient" text="Client" />
+      <Button fx:id="clientButton" layoutX="93.0" layoutY="29.0" mnemonicParsing="false" onAction="#initClient" text="Client" />
+      <HBox fx:id="loader" layoutX="289.0" layoutY="2.0" prefHeight="62.0" prefWidth="304.0" AnchorPane.leftAnchor="289.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="2.0">
+         <children>
+            <ImageView fx:id="loaderGif" fitHeight="62.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

@@ -38,6 +38,8 @@ public class Icons {
 
     public static final String TRANSFER_LIGHT = otherIconDirectory+"/transfer_light.png";
 
+    public static final String LOADER = otherIconDirectory+"/loader.gif";
+
     static {
         iconPath.put("ai", fileIconDirectory +"/ai.png");
         iconPath.put("apk", fileIconDirectory +"/apk.png");

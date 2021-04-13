@@ -415,7 +415,8 @@ public class Controller implements Initializable {
     @FXML
     void openTransferDialog(MouseEvent event) {
         if(CommonData.transfer!=null){
-            CommonData.transferStage.show();
+            CommonData.transfer.showStage();
+            return;
         }
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Transfer.fxml"));
         Parent parent = null;
@@ -442,11 +443,13 @@ public class Controller implements Initializable {
 
         stage.focusedProperty().addListener((ov, onHidden, onShown) -> {
             if(onHidden) {
-                stage.hide();
+                stage.setIconified(true);
                 System.out.println("unfocused again");
             }
             if(onShown){
-                CommonData.transfer.fetchAll();
+                stage.setIconified(false);
+                stage.requestFocus();
+                CommonData.transfer.fetchNewlyAdded();
                 System.out.println("focused again");
             }
         });

@@ -7,13 +7,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import win95.constants.CommonData;
+import win95.constants.Fonts;
+import win95.constants.Icons;
 import win95.model.wirelessTransfer.ConnectionIO;
 import win95.model.wirelessTransfer.FileMetaData;
 import win95.model.wirelessTransfer.connection.Common;
 import win95.model.wirelessTransfer.connection.InitConnectionClient;
+import win95.model.wirelessTransfer.connection.InitConnectionClientIP;
 import win95.model.wirelessTransfer.connection.InitConnectionServer;
 import win95.model.wirelessTransfer.connection.callbacks.ConnectionCNF;
 import win95.model.wirelessTransfer.connection.callbacks.FileCNF;
@@ -29,7 +39,9 @@ import win95.model.wirelessTransfer.wirelessfileslistview.WirelessListEntry;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +53,8 @@ public class Transfer implements Initializable {
             CURRENT_TRANSFER = ConnectionIO.COMPLETED, FILE_META_RECEIVER = ConnectionIO.INACTIVE;
     @FXML
     private Button remove;
-
+    @FXML
+    private ImageView loaderGif;
 
     @FXML
     private ListView<WirelessListEntry> listView;
@@ -55,7 +68,7 @@ public class Transfer implements Initializable {
     @FXML
     private Button clientButton;
 
-
+    TextField ip = new TextField();
 
     @FXML
     private Button select;
@@ -63,6 +76,8 @@ public class Transfer implements Initializable {
     @FXML
     private Button send;
 
+    @FXML
+    private HBox loader;
 
     @FXML
     void selectFile(ActionEvent event) {
@@ -84,14 +99,25 @@ public class Transfer implements Initializable {
     ConnectionCNF callback = new ConnectionCNF() {
         @Override
         public void clientConnected(String message) {
-            if (message.equals("FAILURE")) {
+            if (message.startsWith("FAILURE")) {
                 confirmation = -1;
                 CLIENT = ConnectionIO.BREAK;
+                ip.setDisable(false);
+                ip.clear();
+                ip.setPromptText("problem in connecting...");
+                ip.setStyle("-fx-border-color: red");
             } else {
                 confirmation++;
                 CLIENT = ConnectionIO.OK;
+                loaderGif.setVisible(false);
+                loader.getChildren().clear();
+                Label confirm = new Label("Connected : "+message);
+                confirm.setFont(Fonts.SUCCESS);
+                confirm.setStyle("-fx-text-fill: green");
+                Common.ip = message;
+                ip.setStyle("-fx-border-color: green");
             }
-            System.out.println("Client message " + message);
+            System.out.println("Client ==> " + message);
         }
 
         @Override
@@ -252,19 +278,71 @@ public class Transfer implements Initializable {
         Common.CLIENT = true;
         type = "CLIENT";
         clientButton.setDisable(true);
-        InitConnectionClient initConnectionClient = new InitConnectionClient(callback);
-        Thread thread = new Thread(initConnectionClient);
-        thread.start();
+//        InitConnectionClient initConnectionClient = new InitConnectionClient(callback);
+//        Thread thread = new Thread(initConnectionClient);
+//        thread.start();
+        ip.setPromptText("Enter link code for faster connection");
+        loader.getChildren().add(ip);
+
+        ip.setOnKeyPressed(event1 -> {
+            if(event1.getCode() == KeyCode.ENTER){
+                String code = ip.getText();
+                if(code.length()!=6){
+                    ip.clear();
+                    ip.setPromptText("Invalid code");
+                    ip.setStyle("-fx-border-color: red");
+                }else{
+                    String codeStr = ip.getText();
+                    try{
+                        Integer.parseInt(codeStr);
+                    }catch (NumberFormatException e){
+                        ip.clear();
+                        ip.setPromptText("Invalid code");
+                        ip.setStyle("-fx-border-color: red");
+                        return;
+                    }
+                    String firstThree = codeStr.substring(0,3);
+                    String lastThree = codeStr.substring(3);
+                    String serverIp = "192.168."+firstThree+"."+lastThree;
+                    ip.setText(serverIp);
+                    ip.setDisable(true);
+                    Common.ip = serverIp;
+                    InitConnectionClientIP initConnectionClientIP = new InitConnectionClientIP(callback);
+                    System.out.println("Starting thread to make meta link on given ip ...");
+                    Thread start = new Thread(initConnectionClientIP);
+                    start.start();
+                }
+            }
+        });
+
     }
 
     @FXML
-    void initServer(ActionEvent event) {
+    void initServer(ActionEvent event) throws UnknownHostException {
         Common.CLIENT = false;
         type = "SERVER";
         serverButton.setDisable(true);
         InitConnectionServer initConnectionServer = new InitConnectionServer(callback);
         Thread thread = new Thread(initConnectionServer);
-        thread.start();
+//        thread.start();
+//        Platform.runLater(()->{
+            loader.getChildren().clear();
+            Label ip = new Label();
+            InetAddress inetAddress = null;
+            try {
+                inetAddress = InetAddress.getLocalHost();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+            String strIP = inetAddress.getHostAddress();
+            String []ipcode = strIP.split("\\.");
+            System.out.println(strIP);
+            String code  = ipcode[2]+ipcode[3];
+            ip.setText("Link Code : "+code);
+            loader.getChildren().add(ip);
+
+//        });
+
     }
 
     @FXML
@@ -332,6 +410,20 @@ public class Transfer implements Initializable {
         Common.transfer = this;
         CommonData.transfer = this;
         listView.setItems(observableList);
+
+        Image image = new Image(new File(Icons.LOADER).toURI().toString());
+        String pa = new File(Icons.LOADER).toURI().toString();
+        System.out.println("path = "+pa);
+        loaderGif.setImage(new Image(pa));
+        loaderGif.setImage(image);
+
+//        Button btPause = new Button( "Pause");
+//        btPause.setOnAction( e -> loaderGif.setVisible(false));
+//
+//        Button btResume = new Button( "Resume");
+//        btResume.setOnAction( e ->loaderGif.setVisible(true));
+//        loader.getChildren().addAll( btPause, btResume);
+
         listView.setCellFactory(new WirelessCellFactory());
         ArrayList<FileMetaData> fileMetaDataArrayList = ListOfFileTransfer.fetch();
         for(FileMetaData fileMetaData : fileMetaDataArrayList){
@@ -393,5 +485,26 @@ public class Transfer implements Initializable {
         for(FileMetaData fileMetaData : fileMetaDataArrayList){
             observableList.add(new WirelessListEntry(fileMetaData.getName()));
         }
+    }
+
+    public void showStage() {
+        Stage stage = (Stage) (listView.getScene()).getWindow();
+        stage.setMaximized(true);
+        stage.requestFocus();
+        stage.setIconified(false);
+        stage.isAlwaysOnTop();
+    }
+
+    public void fetchNewlyAdded() {
+        ArrayList<FileMetaData> fileMetaDataArrayList = ListOfFileTransfer.fetch(observableList.size());
+        for(FileMetaData fileMetaData : fileMetaDataArrayList){
+            WirelessListEntry wirelessListEntry = new WirelessListEntry(fileMetaData.getName());
+//            wirelessListEntry.getName().setStyle("-fx-background-color: green");
+            observableList.add(wirelessListEntry);
+        }
+        Platform.runLater(()->{
+            listView.setVisible(false);
+            listView.setVisible(true);
+        });
     }
 }
