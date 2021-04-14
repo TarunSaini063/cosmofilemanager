@@ -3,6 +3,7 @@ package win95.model.wirelessTransfer.connection;
 import win95.model.wirelessTransfer.connection.callbacks.ConnectionCNF;
 import win95.model.wirelessTransfer.connection.callbacks.FileMetaDataCallBack;
 import win95.model.wirelessTransfer.connection.sockets.FindServer;
+import win95.model.wirelessTransfer.terminate.PublicThreads;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class BroadCast {
             Thread thread = new Thread(findServer);
             arrayList.add(thread);
             thread.start();
+            PublicThreads.add(thread);
 //            pool.execute(thread);
         }
         System.out.println("Waiting in broadcaster");

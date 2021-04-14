@@ -12,6 +12,7 @@ import win95.constants.Themes;
 import win95.constants.UserPreference;
 import win95.model.quickaccess.RecentFiles;
 import win95.model.quickaccess.TaggedFiles;
+import win95.model.wirelessTransfer.terminate.PublicThreads;
 
 public class Main extends Application {
 
@@ -65,6 +66,8 @@ public class Main extends Application {
             RecentFiles.saveRecent();
             TaggedFiles.saveTagged();
             UserPreference.saveUserPreferences();
+            PublicThreads.clearThreads();
+            System.exit(0);
         }, "Shutdown-thread"));
         launch(args);
     }

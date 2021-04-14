@@ -3,6 +3,7 @@ package win95.model.wirelessTransfer.connection.sockets;
 import win95.model.wirelessTransfer.connection.Common;
 import win95.model.wirelessTransfer.connection.callbacks.ConnectionCNF;
 import win95.model.wirelessTransfer.connection.callbacks.FileMetaDataCallBack;
+import win95.model.wirelessTransfer.terminate.PublicThreads;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -86,6 +87,7 @@ public class FindServer implements Runnable{
                 Thread thread = new Thread(fileMetaDataReceiver);
                 System.out.println("Starting reader thread in client");
                 thread.start();
+                PublicThreads.add(thread);
                 System.out.println("reader thread started successfully in client");
                 callback.clientConnected("SUCCESS");
             } catch (ConnectException e) {

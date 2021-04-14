@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -33,6 +34,7 @@ import win95.model.wirelessTransfer.connection.sockets.FileReceiver;
 import win95.model.wirelessTransfer.connection.sockets.FileSender;
 import win95.model.wirelessTransfer.iohandler.FileReader;
 import win95.model.wirelessTransfer.iohandler.FileWriter;
+import win95.model.wirelessTransfer.terminate.PublicThreads;
 import win95.model.wirelessTransfer.wirelessfileslistview.ListOfFileTransfer;
 import win95.model.wirelessTransfer.wirelessfileslistview.WirelessCellFactory;
 import win95.model.wirelessTransfer.wirelessfileslistview.WirelessListEntry;
@@ -111,7 +113,7 @@ public class Transfer implements Initializable {
                 CLIENT = ConnectionIO.OK;
                 loaderGif.setVisible(false);
                 loader.getChildren().clear();
-                Label confirm = new Label("Connected : "+message);
+                Label confirm = new Label("Connected : " + message);
                 confirm.setFont(Fonts.SUCCESS);
                 confirm.setStyle("-fx-text-fill: green");
                 Common.ip = message;
@@ -139,7 +141,7 @@ public class Transfer implements Initializable {
             System.out.println("Received " + fileMetaData);
             int nameIdx = fileMetaData.lastIndexOf(FileSystems.getDefault().getSeparator()) + 1;
             String name = fileMetaData.substring(nameIdx);
-            System.out.println("Received string menu : "+name);
+            System.out.println("Received string menu : " + name);
             WirelessListEntry wirelessListEntry = new WirelessListEntry(name);
             boolean exist = false;
             for (WirelessListEntry entry : observableList) {
@@ -180,7 +182,7 @@ public class Transfer implements Initializable {
             System.out.println("File send successfully " + fileMetaData);
             int nameIdx = fileMetaData.lastIndexOf(FileSystems.getDefault().getSeparator()) + 1;
             String name = fileMetaData.substring(nameIdx);
-            System.out.println("String menu : "+name);
+            System.out.println("String menu : " + name);
             WirelessListEntry wirelessListEntry = new WirelessListEntry(name);
             boolean exist = false;
             for (WirelessListEntry entry : observableList) {
@@ -238,6 +240,7 @@ public class Transfer implements Initializable {
                     Thread receiverThread = new Thread(fileReceiver);
                     CURRENT_TRANSFER = ConnectionIO.RECEIVING;
                     receiverThread.start();
+                    PublicThreads.add(receiverThread);
                     System.out.println("Started Receiving data");
                 } catch (IOException e) {
                     System.out.println("this file is already exist ");
@@ -261,6 +264,7 @@ public class Transfer implements Initializable {
                     Thread fileReaderThread = new Thread(fileReader);
                     CURRENT_TRANSFER = ConnectionIO.SENDING;
                     fileReaderThread.start();
+                    PublicThreads.add(fileReaderThread);
                     System.out.println("Thread started successfully");
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -285,25 +289,25 @@ public class Transfer implements Initializable {
         loader.getChildren().add(ip);
 
         ip.setOnKeyPressed(event1 -> {
-            if(event1.getCode() == KeyCode.ENTER){
+            if (event1.getCode() == KeyCode.ENTER) {
                 String code = ip.getText();
-                if(code.length()!=6){
+                if (code.length() != 6) {
                     ip.clear();
                     ip.setPromptText("Invalid code");
                     ip.setStyle("-fx-border-color: red");
-                }else{
+                } else {
                     String codeStr = ip.getText();
-                    try{
+                    try {
                         Integer.parseInt(codeStr);
-                    }catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         ip.clear();
                         ip.setPromptText("Invalid code");
                         ip.setStyle("-fx-border-color: red");
                         return;
                     }
-                    String firstThree = codeStr.substring(0,3);
+                    String firstThree = codeStr.substring(0, 3);
                     String lastThree = codeStr.substring(3);
-                    String serverIp = "192.168."+firstThree+"."+lastThree;
+                    String serverIp = "192.168." + firstThree + "." + lastThree;
                     ip.setText(serverIp);
                     ip.setDisable(true);
                     Common.ip = serverIp;
@@ -311,6 +315,7 @@ public class Transfer implements Initializable {
                     System.out.println("Starting thread to make meta link on given ip ...");
                     Thread start = new Thread(initConnectionClientIP);
                     start.start();
+                    PublicThreads.add(start);
                 }
             }
         });
@@ -322,27 +327,36 @@ public class Transfer implements Initializable {
         Common.CLIENT = false;
         type = "SERVER";
         serverButton.setDisable(true);
-        InitConnectionServer initConnectionServer = new InitConnectionServer(callback);
-        Thread thread = new Thread(initConnectionServer);
-//        thread.start();
-//        Platform.runLater(()->{
-            loader.getChildren().clear();
-            Label ip = new Label();
+
+        Label label = new Label("Generating link code..");
+        label.setAlignment(Pos.CENTER);
+        loader.getChildren().add(label);
+
+        Label ip = new Label();
+        Thread thread1 = new Thread(() -> {
             InetAddress inetAddress = null;
             try {
                 inetAddress = InetAddress.getLocalHost();
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
+            assert inetAddress != null;
             String strIP = inetAddress.getHostAddress();
-            String []ipcode = strIP.split("\\.");
+            String[] ipcode = strIP.split("\\.");
             System.out.println(strIP);
-            String code  = ipcode[2]+ipcode[3];
-            ip.setText("Link Code : "+code);
-            loader.getChildren().add(ip);
-
-//        });
-
+            String code = ipcode[2] + ipcode[3];
+            ip.setText("Link Code : " + code);
+            Platform.runLater(() -> {
+                loader.getChildren().clear();
+                loader.getChildren().add(ip);
+            });
+        });
+        thread1.start();
+        PublicThreads.add(thread1);
+        InitConnectionServer initConnectionServer = new InitConnectionServer(callback);
+        Thread thread = new Thread(initConnectionServer);
+        thread.start();
+        PublicThreads.add(thread);
     }
 
     @FXML
@@ -360,11 +374,13 @@ public class Transfer implements Initializable {
                 InitConnectionClient initConnectionClient = new InitConnectionClient(callback);
                 Thread clientInitThread = new Thread(initConnectionClient);
                 clientInitThread.start();
+                PublicThreads.add(clientInitThread);
                 System.out.println("Starting client thread again");
             } else if (type.equals("SERVER") && SERVER == ConnectionIO.BREAK) {
                 InitConnectionServer initConnectionServer = new InitConnectionServer(callback);
                 Thread serverInitThread = new Thread(initConnectionServer);
                 serverInitThread.start();
+                PublicThreads.add(serverInitThread);
                 System.out.println("Starting server thread again");
             } else {
                 if (FILE_META_RECEIVER == ConnectionIO.INACTIVE) {
@@ -403,6 +419,7 @@ public class Transfer implements Initializable {
         Thread fileMetaDataSenderThread = new Thread(fileMetaDataSender);
         System.out.println("start fileMetaDataSender thread");
         fileMetaDataSenderThread.start();
+        PublicThreads.add(fileMetaDataSenderThread);
     }
 
     @Override
@@ -413,9 +430,10 @@ public class Transfer implements Initializable {
 
         Image image = new Image(new File(Icons.LOADER).toURI().toString());
         String pa = new File(Icons.LOADER).toURI().toString();
-        System.out.println("path = "+pa);
+        System.out.println("path = " + pa);
         loaderGif.setImage(new Image(pa));
         loaderGif.setImage(image);
+        loader.setAlignment(Pos.CENTER);
 
 //        Button btPause = new Button( "Pause");
 //        btPause.setOnAction( e -> loaderGif.setVisible(false));
@@ -426,7 +444,7 @@ public class Transfer implements Initializable {
 
         listView.setCellFactory(new WirelessCellFactory());
         ArrayList<FileMetaData> fileMetaDataArrayList = ListOfFileTransfer.fetch();
-        for(FileMetaData fileMetaData : fileMetaDataArrayList){
+        for (FileMetaData fileMetaData : fileMetaDataArrayList) {
             String name = fileMetaData.getName();
             WirelessListEntry wirelessListEntry = new WirelessListEntry(name);
             observableList.add(wirelessListEntry);
@@ -482,7 +500,7 @@ public class Transfer implements Initializable {
     public void fetchAll() {
         observableList.clear();
         ArrayList<FileMetaData> fileMetaDataArrayList = ListOfFileTransfer.fetch();
-        for(FileMetaData fileMetaData : fileMetaDataArrayList){
+        for (FileMetaData fileMetaData : fileMetaDataArrayList) {
             observableList.add(new WirelessListEntry(fileMetaData.getName()));
         }
     }
@@ -497,12 +515,12 @@ public class Transfer implements Initializable {
 
     public void fetchNewlyAdded() {
         ArrayList<FileMetaData> fileMetaDataArrayList = ListOfFileTransfer.fetch(observableList.size());
-        for(FileMetaData fileMetaData : fileMetaDataArrayList){
+        for (FileMetaData fileMetaData : fileMetaDataArrayList) {
             WirelessListEntry wirelessListEntry = new WirelessListEntry(fileMetaData.getName());
 //            wirelessListEntry.getName().setStyle("-fx-background-color: green");
             observableList.add(wirelessListEntry);
         }
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             listView.setVisible(false);
             listView.setVisible(true);
         });

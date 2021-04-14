@@ -6,6 +6,7 @@ import win95.model.wirelessTransfer.connection.callbacks.FileMetaDataCallBack;
 import win95.model.wirelessTransfer.connection.sockets.FileMetaDataReceiver;
 import win95.model.wirelessTransfer.connection.sockets.FileReceiver;
 import win95.model.wirelessTransfer.iohandler.FileWriter;
+import win95.model.wirelessTransfer.terminate.PublicThreads;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,7 +17,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.channels.SocketChannel;
 
-public class InitConnectionClientIP implements Runnable{
+public class InitConnectionClientIP implements Runnable {
     ConnectionCNF callback;
     FileMetaDataCallBack fileMetaDataCallBack = new FileMetaDataCallBack() {
         @Override
@@ -30,6 +31,7 @@ public class InitConnectionClientIP implements Runnable{
                     fileReceiver.receiveNextFile(fileWriter, fileMetaData.getSize());
                     Thread receiverThread = new Thread(fileReceiver);
                     receiverThread.start();
+                    PublicThreads.add(receiverThread);
                     System.out.println("Started Receiving data");
                 } catch (IOException e) {
                     System.out.println("this file is already exist ");
@@ -51,6 +53,7 @@ public class InitConnectionClientIP implements Runnable{
     public InitConnectionClientIP(ConnectionCNF callback) {
         this.callback = callback;
     }
+
     @Override
     public void run() {
         System.out.println("start meta link with : " + Common.ip);
@@ -59,7 +62,7 @@ public class InitConnectionClientIP implements Runnable{
         boolean status = true;
         boolean metaStatus = true;
         int tries = 0;
-        while (metaStatus&&tries<20) {
+        while (metaStatus && tries < 20) {
             tries++;
             try {
                 socket = new Socket(Common.ip, Common.metaPort);
@@ -74,7 +77,7 @@ public class InitConnectionClientIP implements Runnable{
                 }
             }
         }
-        if(tries==20&&socket==null){
+        if (tries == 20 && socket == null) {
             callback.clientConnected("FAILURE");
         }
         System.out.println("Connected with : " + Common.ip);
@@ -85,7 +88,7 @@ public class InitConnectionClientIP implements Runnable{
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             return;
         }
@@ -110,6 +113,7 @@ public class InitConnectionClientIP implements Runnable{
                 Thread thread = new Thread(fileMetaDataReceiver);
                 System.out.println("Starting reader thread in client");
                 thread.start();
+                PublicThreads.add(thread);
                 System.out.println("reader thread started successfully in client");
                 callback.clientConnected("SUCCESS");
             } catch (ConnectException e) {

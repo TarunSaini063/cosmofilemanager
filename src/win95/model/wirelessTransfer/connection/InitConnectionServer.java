@@ -6,6 +6,7 @@ import win95.model.wirelessTransfer.connection.callbacks.FileMetaDataCallBack;
 import win95.model.wirelessTransfer.connection.sockets.FileMetaDataReceiver;
 import win95.model.wirelessTransfer.connection.sockets.FileReceiver;
 import win95.model.wirelessTransfer.iohandler.FileWriter;
+import win95.model.wirelessTransfer.terminate.PublicThreads;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -27,6 +28,7 @@ public class InitConnectionServer implements Runnable {
                     FileReceiver fileReceiver = new FileReceiver(fileMetaData, Common.transfer.fileCNFCallback, fileWriter);
                     Thread receiverThread = new Thread(fileReceiver);
                     receiverThread.start();
+                    PublicThreads.add(receiverThread);
                     System.out.println("Started Receiving data");
                 } catch (IOException e) {
                     System.out.println("this file is already exist ");
@@ -76,6 +78,7 @@ public class InitConnectionServer implements Runnable {
             Thread thread = new Thread(fileMetaDataReceiver);
             System.out.println("Starting reader thread in server");
             thread.start();
+            PublicThreads.add(thread);
             System.out.println("reader thread started successfully in server");
             callback.serverConnected("SUCCESS");
 
