@@ -23,7 +23,6 @@ import win95.constants.Icons;
 import win95.model.wirelessTransfer.ConnectionIO;
 import win95.model.wirelessTransfer.FileMetaData;
 import win95.model.wirelessTransfer.connection.Common;
-import win95.model.wirelessTransfer.connection.InitConnectionClient;
 import win95.model.wirelessTransfer.connection.InitConnectionClientIP;
 import win95.model.wirelessTransfer.connection.InitConnectionServer;
 import win95.model.wirelessTransfer.connection.callbacks.ConnectionCNF;
@@ -46,7 +45,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class Transfer implements Initializable {
@@ -84,18 +82,18 @@ public class Transfer implements Initializable {
     @FXML
     void selectFile(ActionEvent event) {
 
-        List<File> selectedFiles = fil_chooser.showOpenMultipleDialog(select.getScene().getWindow());
-        if (selectedFiles != null) {
-            for (File file : selectedFiles) {
-                System.out.println(file.length());
-                System.out.println(file.length() / (1024 * 1024) + " MB");
-                if (file.isFile()) {
-                    System.out.println("File");
-                    arrayList.add(file);
-                    observableList.add(new WirelessListEntry(file.getName()));
-                } else System.out.println("Directory");
-            }
-        }
+//        List<File> selectedFiles = fil_chooser.showOpenMultipleDialog(select.getScene().getWindow());
+//        if (selectedFiles != null) {
+//            for (File file : selectedFiles) {
+//                System.out.println(file.length());
+//                System.out.println(file.length() / (1024 * 1024) + " MB");
+//                if (file.isFile()) {
+//                    System.out.println("File");
+//                    arrayList.add(file);
+//                    observableList.add(new WirelessListEntry(file.getName()));
+//                } else System.out.println("Directory");
+//            }
+//        }
     }
 
     ConnectionCNF callback = new ConnectionCNF() {
@@ -111,13 +109,16 @@ public class Transfer implements Initializable {
             } else {
                 confirmation++;
                 CLIENT = ConnectionIO.OK;
-                loaderGif.setVisible(false);
-                loader.getChildren().clear();
-                Label confirm = new Label("Connected : " + message);
-                confirm.setFont(Fonts.SUCCESS);
-                confirm.setStyle("-fx-text-fill: green");
-                Common.ip = message;
-                ip.setStyle("-fx-border-color: green");
+                Platform.runLater(() -> {
+                    loaderGif.setVisible(false);
+                    loader.getChildren().clear();
+                    Label confirm = new Label("Connected : " + message);
+                    confirm.setFont(Fonts.SUCCESS);
+                    confirm.setStyle("-fx-text-fill: green");
+                    Common.ip = message;
+                    ip.setStyle("-fx-border-color: green");
+                });
+
             }
             System.out.println("Client ==> " + message);
         }
@@ -309,7 +310,7 @@ public class Transfer implements Initializable {
                     String lastThree = codeStr.substring(3);
                     String serverIp = "192.168." + firstThree + "." + lastThree;
                     ip.setText(serverIp);
-                    ip.setDisable(true);
+//                    ip.setDisable(true);
                     Common.ip = serverIp;
                     InitConnectionClientIP initConnectionClientIP = new InitConnectionClientIP(callback);
                     System.out.println("Starting thread to make meta link on given ip ...");
@@ -361,36 +362,37 @@ public class Transfer implements Initializable {
 
     @FXML
     void sendFile(ActionEvent event) throws IOException {
-
-
-        if ((type.equals("SERVER") && SERVER == ConnectionIO.WAITING) || (type.equals("CLIENT") && CLIENT == ConnectionIO.WAITING)) {
-            if (type.equals("SERVER")) {
-                System.out.println("SERVER WAITING");
-            } else {
-                System.out.println("CLIENT WAITING");
-            }
-        } else {
-            if (type.equals("CLIENT") && CLIENT == ConnectionIO.BREAK) {
-                InitConnectionClient initConnectionClient = new InitConnectionClient(callback);
-                Thread clientInitThread = new Thread(initConnectionClient);
-                clientInitThread.start();
-                PublicThreads.add(clientInitThread);
-                System.out.println("Starting client thread again");
-            } else if (type.equals("SERVER") && SERVER == ConnectionIO.BREAK) {
-                InitConnectionServer initConnectionServer = new InitConnectionServer(callback);
-                Thread serverInitThread = new Thread(initConnectionServer);
-                serverInitThread.start();
-                PublicThreads.add(serverInitThread);
-                System.out.println("Starting server thread again");
-            } else {
-                if (FILE_META_RECEIVER == ConnectionIO.INACTIVE) {
-                    send.setDisable(true);
-                    next();
-                    FILE_META_RECEIVER = ConnectionIO.ACTIVE;
-                }
-
-            }
-        }
+//
+//
+//        if ((type.equals("SERVER") && SERVER == ConnectionIO.WAITING) || (type.equals("CLIENT") && CLIENT == ConnectionIO.WAITING)) {
+//            if (type.equals("SERVER")) {
+//                System.out.println("SERVER WAITING");
+//            } else {
+//                System.out.println("CLIENT WAITING");
+//            }
+//        } else {
+//            if (type.equals("CLIENT") && CLIENT == ConnectionIO.BREAK) {
+//                InitConnectionClient initConnectionClient = new InitConnectionClient(callback);
+//                Thread clientInitThread = new Thread(initConnectionClient);
+//                clientInitThread.start();
+//                PublicThreads.add(clientInitThread);
+//                System.out.println("Starting client thread again");
+//            } else if (type.equals("SERVER") && SERVER == ConnectionIO.BREAK) {
+//                InitConnectionServer initConnectionServer = new InitConnectionServer(callback);
+//                Thread serverInitThread = new Thread(initConnectionServer);
+//                serverInitThread.start();
+//                PublicThreads.add(serverInitThread);
+//                System.out.println("Starting server thread again");
+//            } else {
+//                if (FILE_META_RECEIVER == ConnectionIO.INACTIVE) {
+//                    send.setDisable(true);
+        System.out.println("send pressed");
+        next();
+//                    FILE_META_RECEIVER = ConnectionIO.ACTIVE;
+//                }
+//
+//            }
+//        }
     }
 
     private File getNext() {
@@ -407,6 +409,7 @@ public class Transfer implements Initializable {
     }
 
     public void next() {
+        System.out.println("next pressed");
         File file = getNext();
         if (file == null) {
             send.setDisable(false);
@@ -448,6 +451,7 @@ public class Transfer implements Initializable {
             String name = fileMetaData.getName();
             WirelessListEntry wirelessListEntry = new WirelessListEntry(name);
             observableList.add(wirelessListEntry);
+            arrayList.add(new File(fileMetaData.getPath()));
         }
         fil_chooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Select files", "*.*"));
@@ -466,6 +470,7 @@ public class Transfer implements Initializable {
             @Override
             public void run() {
                 observableList.add(wirelessListEntry);
+                arrayList.add(new File(fileMetaData.getPath()));
             }
         });
     }
@@ -519,6 +524,7 @@ public class Transfer implements Initializable {
             WirelessListEntry wirelessListEntry = new WirelessListEntry(fileMetaData.getName());
 //            wirelessListEntry.getName().setStyle("-fx-background-color: green");
             observableList.add(wirelessListEntry);
+            arrayList.add(new File(fileMetaData.getPath()));
         }
         Platform.runLater(() -> {
             listView.setVisible(false);
