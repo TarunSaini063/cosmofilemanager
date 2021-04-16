@@ -139,25 +139,36 @@ public class Transfer implements Initializable {
     public FileCNF fileCNFCallback = new FileCNF() {
         @Override
         public void onReceived(String fileMetaData) {
+            if(fileMetaData == null){
+                System.out.println("Error in receiver thread");
+                return;
+            }
             System.out.println("Received " + fileMetaData);
             int nameIdx = fileMetaData.lastIndexOf(FileSystems.getDefault().getSeparator()) + 1;
             String name = fileMetaData.substring(nameIdx);
             System.out.println("Received string menu : " + name);
+
             WirelessListEntry wirelessListEntry = new WirelessListEntry(name);
             boolean exist = false;
-            for (WirelessListEntry entry : observableList) {
-                if (entry.getNameStr().equals(name)) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            entry.getName().setStyle("-fx-text-fill: green");
-                            entry.getPercent().setText("100 %");
-                            entry.getCancel().setVisible(false);
-                            entry.getCancel().setDisable(true);
-                        }
-                    });
+            synchronized(this) {
+                for (WirelessListEntry entry : observableList) {
+                    System.out.println(entry.getNameStr() + " : " + name);
 
-                    exist = true;
+                    if (entry.getNameStr().equals(name)) {
+                        System.out.println("equal in fileCNF callback");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                entry.getName().setStyle("-fx-text-fill: green");
+                                entry.getPercent().setText("100 %");
+                                entry.getCancel().setVisible(false);
+                                entry.getCancel().setDisable(true);
+                            }
+                        });
+
+                        exist = true;
+                        break;
+                    }
                 }
             }
             if (!exist) {
@@ -233,7 +244,11 @@ public class Transfer implements Initializable {
                         }
                     }
                     if (checker) {
+                        Platform.runLater(()->{
                         observableList.add(wirelessListEntry);
+                         listView.setVisible(false);
+                         listView.setVisible(true);
+                        });
                     }
                     System.out.println("writing data at " + Common.receivedPath + fileMetaData.getName());
                     FileWriter fileWriter = new FileWriter(Common.receivedPath + fileMetaData.getName());
@@ -461,18 +476,22 @@ public class Transfer implements Initializable {
 
         String name = fileMetaData.getName();
         WirelessListEntry wirelessListEntry = new WirelessListEntry(name);
-        for (WirelessListEntry wirelessListEntry1 : observableList) {
-            if (wirelessListEntry1.getNameStr().equals(name)) {
-                return;
+        synchronized (this) {
+            for (WirelessListEntry wirelessListEntry1 : observableList) {
+                if (wirelessListEntry1.getNameStr().equals(name)) {
+                    return;
+                }
             }
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    observableList.add(wirelessListEntry);
+                    arrayList.add(new File(fileMetaData.getPath()));
+                    listView.setVisible(false);
+                    listView.setVisible(true);
+                }
+            });
         }
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                observableList.add(wirelessListEntry);
-                arrayList.add(new File(fileMetaData.getPath()));
-            }
-        });
     }
 
     public void appendListViewFinish(FileMetaData fileMetaData) {

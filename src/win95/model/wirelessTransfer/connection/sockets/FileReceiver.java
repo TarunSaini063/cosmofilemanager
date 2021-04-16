@@ -27,15 +27,6 @@ public class FileReceiver implements Runnable{
         this.size = size;
     }
 
-    void receive() throws IOException {
-        SocketChannel channel = Common.server;
-        try {
-            doTransfer(channel);
-        }finally {
-            this.fileWriter.close();
-        }
-    }
-
     private void doTransfer(final SocketChannel channel) throws IOException {
         assert !Objects.isNull(channel);
 
@@ -50,14 +41,14 @@ public class FileReceiver implements Runnable{
                 doTransfer(channel);
             } catch (IOException e) {
                 e.printStackTrace();
-                callback.onReceived(fileWriter.getPath()); /* just to check logic */
             }
         }finally {
             try {
                 this.fileWriter.close();
-                callback.onReceived(fileWriter.getPath());
             } catch (IOException e) {
                 e.printStackTrace();
+            }finally {
+                callback.onReceived(fileWriter.getPath());
             }
         }
     }

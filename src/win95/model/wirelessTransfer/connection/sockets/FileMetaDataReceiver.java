@@ -38,6 +38,7 @@ public class FileMetaDataReceiver implements Runnable {
                 callBack.onReceived(fileMetaData);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
+                System.out.println("error in fileMetaDataReceiver.java");
                 callBack.onReceived(null);
                 return;
             }

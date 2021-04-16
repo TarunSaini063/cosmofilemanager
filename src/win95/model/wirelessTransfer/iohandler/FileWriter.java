@@ -30,9 +30,7 @@ public class FileWriter {
         assert !Objects.isNull(channel);
 
         long position = 0l;
-        long  tmp =0;
         while (position < bytes) {
-            tmp+=bytes;
             position += this.channel.transferFrom(channel, position, Common.TRANSFER_MAX_SIZE);
 
         }
