@@ -27,7 +27,7 @@ public class BroadCast {
 //            pool.execute(thread);
         }
         System.out.println("Waiting in broadcaster");
-        for(Thread thread : arrayList){
+        for (Thread thread : arrayList) {
             try {
                 thread.join();
             } catch (InterruptedException e) {

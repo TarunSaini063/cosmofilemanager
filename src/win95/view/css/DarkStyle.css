@@ -1,71 +1,83 @@
-.hbox:hover{
+.hbox:hover {
     -fx-background-color: #3066a0;
 }
-.hbox{
+
+.hbox {
     -fx-text-fill: #ffffff;
 }
-.label{
+
+.label {
     -fx-text-fill: #ffffff;
 }
+
 .list-cell {
     -fx-control-inner-background: #525253;
     -fx-text-fill: #ffffff;
 }
-#tagPane  {
+
+#tagPane {
     -fx-background-color: #646668;
 }
 
-#transfer  {
+#transfer {
     -fx-background-color: #646668;
 }
 
-#preview  {
+#preview {
     -fx-background-color: #646668;
 }
 
-#createFilePane{
+#createFilePane {
     -fx-background-color: #646668;
 }
-#setTagPane{
+
+#setTagPane {
     -fx-background-color: #646668;
 }
-#dialogPane{
+
+#dialogPane {
     -fx-background-color: #646668;
 }
-#middleTop  {
+
+#middleTop {
     -fx-background-color: #1f222a;
 }
-#gridViewScrollPane #gridView{
+
+#gridViewScrollPane #gridView {
     -fx-background-color: #525253;
 }
 
-.button{
+.button {
     -fx-background-color: #434345;
     -fx-text-fill: #ffffff;
 }
 
-.button:hover{
+.button:hover {
     -fx-background-color: #569024;
     -fx-text-fill: #ffffff;
 }
-.menu-item{
+
+.menu-item {
     -fx-text-fill: #1e212f;
 }
+
 .list-cell:hover {
     -fx-control-inner-background: #3066a0;
     -fx-text-fill: #ffffff;
 }
-.context-menu{
+
+.context-menu {
     -fx-background-color: #2b2727;
 }
-.menu-item{
+
+.menu-item {
 
 }
 
 .list-cell:empty {
 }
 
-.list-cell:selected .listCellColourStrip{
+.list-cell:selected .listCellColourStrip {
 
 
 }
@@ -74,6 +86,7 @@
 
 
 }
+
 /* to hide scroll-bar in listview */
 /*.list-view .scroll-bar:vertical .increment-arrow,*/
 /*.list-view .scroll-bar:vertical .decrement-arrow,*/
@@ -84,47 +97,48 @@
 
 
 .list-view .scroll-bar {
-    -fx-background-color:transparent;
+    -fx-background-color: transparent;
 }
 
 .list-view .scroll-bar:vertical {
-    -fx-background-color:transparent;
+    -fx-background-color: transparent;
 }
 
 .list-view .scroll-bar:horizontal {
-    -fx-background-color:transparent;
+    -fx-background-color: transparent;
 }
 
 .list-view .scroll-bar .thumb {
-    -fx-background-color:derive(black, 50%);
+    -fx-background-color: derive(black, 50%);
 }
 
 .list-view .scroll-bar .thumb:hover {
-    -fx-background-color:derive(black, 70%);
+    -fx-background-color: derive(black, 70%);
 }
 
-.list-view .track  {
+.list-view .track {
     -fx-background-color: #232222;
 }
 
 .list-view .scroll-bar .corner {
-    -fx-background-color: transparent ;
+    -fx-background-color: transparent;
 }
 
 
-.text-field{
+.text-field {
     -fx-background-color: #323232;
     -fx-text-fill: #ffffff;
 }
 
-.color-picker{
+.color-picker {
     -fx-background-color: #323232;
     -fx-text-fill: #ffffff;
 }
 
-.file-block:hover{
+.file-block:hover {
     -fx-background-color: #3066a0;
 }
-.file-block .label{
+
+.file-block .label {
     -fx-text-fill: white;
 }

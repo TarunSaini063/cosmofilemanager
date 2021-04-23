@@ -9,6 +9,7 @@ public class RowGridPane extends GridPane {
     public RowGridPane(FileDetail fileDetail) {
         this.fileDetail = fileDetail;
     }
+
     public FileDetail getFileDetail() {
         return fileDetail;
     }
@@ -16,7 +17,7 @@ public class RowGridPane extends GridPane {
 
     @Override
     public String toString() {
-        return  "{{" + fileDetail.getFileName() + "}}" + '\n' +
+        return "{{" + fileDetail.getFileName() + "}}" + '\n' +
                 "{{" + fileDetail.getFilePath() + "}}" + '\n';
     }
 }

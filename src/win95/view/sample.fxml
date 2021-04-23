@@ -12,52 +12,75 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.Controller">
-   <children>
-      <AnchorPane fx:id="tagPane" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#707c8600" height="42.0" layoutX="58.0" layoutY="6.0" stroke="BLACK" strokeType="INSIDE" width="170.0" />
-            <Button fx:id="left" layoutX="72.0" layoutY="14.0" mnemonicParsing="false" onAction="#previousDirectory" prefHeight="27.0" prefWidth="33.0" AnchorPane.topAnchor="14.0" />
-            <Button fx:id="right" layoutX="173.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextDirectory" prefHeight="27.0" prefWidth="33.0" AnchorPane.topAnchor="14.0" />
-            <AnchorPane layoutY="48.0" prefHeight="250.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
-               <children>
-                  <VBox fx:id="favouritePanel" prefHeight="500.0" prefWidth="300.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="7.0" layoutY="353.0" prefHeight="947.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="303.0">
-               <children>
-                  <VBox fx:id="tagPanel" prefHeight="847.0" prefWidth="300.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </AnchorPane>
-         </children></AnchorPane>
-      <AnchorPane fx:id="middle" layoutX="300.0" prefHeight="1200.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="0.0">
-         <ScrollPane fx:id="gridViewScrollPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-            <content>
-               <FlowPane fx:id="gridView" prefHeight="1500.0" prefWidth="999.0" />
-            </content>
-         </ScrollPane>
-         <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-         <AnchorPane fx:id="middleTop" prefHeight="50.0" prefWidth="1200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0"
+            prefWidth="1800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="win95.controller.Controller">
+    <children>
+        <AnchorPane fx:id="tagPane" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-               <Label layoutX="14.0" layoutY="17.0" text="Number" />
-               <Label layoutX="268.0" layoutY="17.0" text="Name" />
-               <ImageView fx:id="menu" fitHeight="35.0" fitWidth="45.0" layoutX="1155.0" layoutY="9.0" onMouseClicked="#showMenu" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="11.0" />
-               <ImageView fx:id="transfer" fitHeight="42.0" fitWidth="45.0" layoutX="964.0" layoutY="6.0" onMouseClicked="#openTransferDialog" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="194.0" AnchorPane.topAnchor="2.0">
-                  <image>
-                     <Image url="@../asset/other/transfer_light.png" />
-                  </image>
-               </ImageView>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#707c8600" height="42.0" layoutX="58.0" layoutY="6.0"
+                           stroke="BLACK" strokeType="INSIDE" width="170.0"/>
+                <Button fx:id="left" layoutX="72.0" layoutY="14.0" mnemonicParsing="false" onAction="#previousDirectory"
+                        prefHeight="27.0" prefWidth="33.0" AnchorPane.topAnchor="14.0"/>
+                <Button fx:id="right" layoutX="173.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextDirectory"
+                        prefHeight="27.0" prefWidth="33.0" AnchorPane.topAnchor="14.0"/>
+                <AnchorPane layoutY="48.0" prefHeight="250.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0"
+                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
+                    <children>
+                        <VBox fx:id="favouritePanel" prefHeight="500.0" prefWidth="300.0" spacing="5.0"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <padding>
+                                <Insets left="10.0"/>
+                            </padding>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="7.0" layoutY="353.0" prefHeight="947.0" prefWidth="300.0"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                            AnchorPane.topAnchor="303.0">
+                    <children>
+                        <VBox fx:id="tagPanel" prefHeight="847.0" prefWidth="300.0" spacing="5.0"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <padding>
+                                <Insets left="10.0"/>
+                            </padding>
+                        </VBox>
+                    </children>
+                </AnchorPane>
             </children>
-         </AnchorPane>
-      </AnchorPane>
-      <AnchorPane fx:id="preview" layoutX="1600.0" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-   </children>
+        </AnchorPane>
+        <AnchorPane fx:id="middle" layoutX="300.0" prefHeight="1200.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="0.0">
+            <ScrollPane fx:id="gridViewScrollPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                <content>
+                    <FlowPane fx:id="gridView" prefHeight="1500.0" prefWidth="999.0"/>
+                </content>
+            </ScrollPane>
+            <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0"/>
+            <AnchorPane fx:id="middleTop" prefHeight="50.0" prefWidth="1200.0" AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <children>
+                    <Label layoutX="14.0" layoutY="17.0" text="Number"/>
+                    <Label layoutX="268.0" layoutY="17.0" text="Name"/>
+                    <ImageView fx:id="menu" fitHeight="35.0" fitWidth="45.0" layoutX="1155.0" layoutY="9.0"
+                               onMouseClicked="#showMenu" pickOnBounds="true" preserveRatio="true"
+                               AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="11.0"/>
+                    <ImageView fx:id="transfer" fitHeight="42.0" fitWidth="45.0" layoutX="964.0" layoutY="6.0"
+                               onMouseClicked="#openTransferDialog" pickOnBounds="true" preserveRatio="true"
+                               AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="194.0" AnchorPane.topAnchor="2.0">
+                        <image>
+                            <Image url="@../asset/other/transfer_light.png"/>
+                        </image>
+                    </ImageView>
+                </children>
+            </AnchorPane>
+        </AnchorPane>
+        <AnchorPane fx:id="preview" layoutX="1600.0" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+    </children>
 </AnchorPane>

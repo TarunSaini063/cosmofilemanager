@@ -14,11 +14,12 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.channels.SocketChannel;
 
-public class FindServer implements Runnable{
+public class FindServer implements Runnable {
     ConnectionCNF callback;
     FileMetaDataCallBack fileMetaDataCallBack;
     String iIPv4;
-    public FindServer(ConnectionCNF callback, FileMetaDataCallBack fileMetaDataCallBack,String iIPv4) {
+
+    public FindServer(ConnectionCNF callback, FileMetaDataCallBack fileMetaDataCallBack, String iIPv4) {
         this.callback = callback;
         this.fileMetaDataCallBack = fileMetaDataCallBack;
         this.iIPv4 = iIPv4;
@@ -34,14 +35,14 @@ public class FindServer implements Runnable{
         long start = System.currentTimeMillis();
         long end = start + 1000;
         end = 0;
-        while (end<2) {
+        while (end < 2) {
             end++;
             try {
                 socket = new Socket(iIPv4, Common.metaPort);
                 System.out.println(socket);
                 break;
             } catch (IOException e) {
-                System.out.println("waiting for server : " + iIPv4 +" end = "+end);
+                System.out.println("waiting for server : " + iIPv4 + " end = " + end);
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException interruptedException) {
@@ -49,7 +50,7 @@ public class FindServer implements Runnable{
                 }
             }
         }
-        if(socket == null) {
+        if (socket == null) {
             return;
         }
         Common.ip = iIPv4;
@@ -61,7 +62,7 @@ public class FindServer implements Runnable{
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             return;
         }
@@ -75,7 +76,7 @@ public class FindServer implements Runnable{
         }
         callback.clientConnected(iIPv4);
         int trying = 0;
-        while (status&&trying<20) {
+        while (status && trying < 20) {
             try {
                 trying++;
                 client = SocketChannel.open();

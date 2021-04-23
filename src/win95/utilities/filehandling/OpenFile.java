@@ -22,19 +22,20 @@ public class OpenFile {
             RecentFiles.addRecentQueue(fileDetail.getFilePath());
             Desktop.getDesktop().open(fileDetail.getFile());
         } catch (IOException e) {
-            ExceptionPrinter.print("OpenFile",12,"failed to open file using Desktop class");
+            ExceptionPrinter.print("OpenFile", 12, "failed to open file using Desktop class");
         }
     }
+
     public static void doubleClick(FileDetail fileDetail) throws IOException {
-        if(fileDetail.getFileType()== FileType.FILE){
+        if (fileDetail.getFileType() == FileType.FILE) {
             open(fileDetail);
-        }else{
-            if(CommonData.instance != null) {
+        } else {
+            if (CommonData.instance != null) {
                 Controller.BUTTON_PRESSED = "NEXT";
-                    if (!CommonData.instance.updateView(fileDetail)) {
-                        Controller.BUTTON_PRESSED = "NONE";
-                    }
-                }else {
+                if (!CommonData.instance.updateView(fileDetail)) {
+                    Controller.BUTTON_PRESSED = "NONE";
+                }
+            } else {
                 LogsPrinter.printLogic("UpdateCellFactory", 47,
                         "controller class instance is null\nfailed in updating listview");
             }

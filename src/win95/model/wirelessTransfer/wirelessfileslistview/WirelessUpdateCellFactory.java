@@ -9,13 +9,13 @@ public class WirelessUpdateCellFactory extends ListCell<WirelessListEntry> {
     @Override
     protected void updateItem(WirelessListEntry item, boolean empty) {
         super.updateItem(item, empty);
-        if(empty){
+        if (empty) {
             setGraphic(null);
-        }else{
+        } else {
             int index = this.getIndex();
 
             Label count = item.getCount();
-            count.setText((1+index)+". ");
+            count.setText((1 + index) + ". ");
             Label name = item.getName();
 
             Label percent = item.getPercent();
@@ -24,7 +24,7 @@ public class WirelessUpdateCellFactory extends ListCell<WirelessListEntry> {
 
             HBox entry = new HBox();
             entry.setSpacing(5);
-            entry.getChildren().addAll(count,name,percent,cancel);
+            entry.getChildren().addAll(count, name, percent, cancel);
 
             setGraphic(entry);
         }

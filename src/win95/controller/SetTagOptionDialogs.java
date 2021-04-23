@@ -17,14 +17,15 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class SetTagOptionDialogs implements Initializable {
-    private  FileDetail fileDetail;
+    private FileDetail fileDetail;
     final private ObservableList<TagListEntry> observableList = FXCollections.observableArrayList();
     @FXML
     private AnchorPane setTagPane;
 
     @FXML
     private ListView<TagListEntry> listView;
-    public void setFileDetails(FileDetail fileDetail){
+
+    public void setFileDetails(FileDetail fileDetail) {
         this.fileDetail = fileDetail;
     }
 
@@ -38,9 +39,9 @@ public class SetTagOptionDialogs implements Initializable {
         listView.setItems(observableList);
         listView.setCellFactory(new TagCellFactory());
         CommonData.TAG_OPTION_INSTANCE = this;
-        Map<String,String> taggedColorToNameMap = TaggedFiles.getTaggedColorToNameMap();
-        for (Map.Entry<String, String> tag : taggedColorToNameMap.entrySet()){
-            TagListEntry tagListEntry = new TagListEntry(tag.getKey(),tag.getValue());
+        Map<String, String> taggedColorToNameMap = TaggedFiles.getTaggedColorToNameMap();
+        for (Map.Entry<String, String> tag : taggedColorToNameMap.entrySet()) {
+            TagListEntry tagListEntry = new TagListEntry(tag.getKey(), tag.getValue());
             observableList.add(tagListEntry);
         }
     }

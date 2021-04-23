@@ -5,13 +5,6 @@ import javafx.scene.control.Label;
 import win95.model.FileDetail;
 
 public class RowLabel extends Label {
-    /*
-     *
-     *
-     * set set theme from user previous data
-     *
-     *
-     */
 
     private final FileDetail fileDetail;
 
@@ -23,7 +16,8 @@ public class RowLabel extends Label {
     public FileDetail getFileDetail() {
         return fileDetail;
     }
-    public void refresh(){
+
+    public void refresh() {
         this.setMaxWidth(500);
         this.setMinWidth(500);
         this.setAlignment(Pos.BASELINE_CENTER);
@@ -32,7 +26,7 @@ public class RowLabel extends Label {
 
     @Override
     public String toString() {
-        return  "{{" + fileDetail.getFileName() + "}}" + '\n' +
+        return "{{" + fileDetail.getFileName() + "}}" + '\n' +
                 "{{" + fileDetail.getFilePath() + "}}" + '\n';
     }
 }

@@ -8,18 +8,26 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dialogPane" prefHeight="234.0" prefWidth="464.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.TagDialogs">
-   <children>
-      <ColorPicker fx:id="tagColorPicker" layoutX="144.0" layoutY="47.0" onAction="#setCircleColor" promptText="Chose Color" />
-      <Circle fx:id="tagColorCircle" fill="DODGERBLUE" layoutX="342.0" layoutY="61.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
-      <TextField fx:id="tagName" layoutX="139.0" layoutY="97.0" prefHeight="27.0" prefWidth="217.0" promptText="Tag Name" />
-      <Button fx:id="addTag" layoutX="144.0" layoutY="173.0" mnemonicParsing="false" onAction="#addTag" text="Add Tag" />
-      <Button fx:id="cancel" layoutX="301.0" layoutY="173.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
-      <Label layoutX="148.0" layoutY="10.0" prefHeight="21.0" prefWidth="169.0" text="Add new color tag" textFill="#655555">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="invalidColor" layoutX="139.0" layoutY="145.0" prefHeight="17.0" prefWidth="217.0" text="this color or name is already chosen :)" textFill="#e43535" />
-   </children>
+<AnchorPane fx:id="dialogPane" prefHeight="234.0" prefWidth="464.0" xmlns="http://javafx.com/javafx/15.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.TagDialogs">
+    <children>
+        <ColorPicker fx:id="tagColorPicker" layoutX="144.0" layoutY="47.0" onAction="#setCircleColor"
+                     promptText="Chose Color"/>
+        <Circle fx:id="tagColorCircle" fill="DODGERBLUE" layoutX="342.0" layoutY="61.0" radius="14.0" stroke="BLACK"
+                strokeType="INSIDE"/>
+        <TextField fx:id="tagName" layoutX="139.0" layoutY="97.0" prefHeight="27.0" prefWidth="217.0"
+                   promptText="Tag Name"/>
+        <Button fx:id="addTag" layoutX="144.0" layoutY="173.0" mnemonicParsing="false" onAction="#addTag"
+                text="Add Tag"/>
+        <Button fx:id="cancel" layoutX="301.0" layoutY="173.0" mnemonicParsing="false" onAction="#cancel"
+                text="Cancel"/>
+        <Label layoutX="148.0" layoutY="10.0" prefHeight="21.0" prefWidth="169.0" text="Add new color tag"
+               textFill="#655555">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label fx:id="invalidColor" layoutX="139.0" layoutY="145.0" prefHeight="17.0" prefWidth="217.0"
+               text="this color or name is already chosen :)" textFill="#e43535"/>
+    </children>
 </AnchorPane>

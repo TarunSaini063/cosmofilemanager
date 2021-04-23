@@ -9,19 +9,22 @@ import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.Objects;
 
-public class FileReceiver implements Runnable{
+public class FileReceiver implements Runnable {
     private final int port = Common.port;
     private FileWriter fileWriter;
     private long size;
     FileCNF callback;
-    public FileReceiver(FileMetaData fileMetaData,FileCNF callback,FileWriter fileWriter) {
+
+    public FileReceiver(FileMetaData fileMetaData, FileCNF callback, FileWriter fileWriter) {
         this.callback = callback;
         this.fileWriter = fileWriter;
         this.size = fileMetaData.getSize();
     }
-    public void setCallBack(FileCNF callback){
+
+    public void setCallBack(FileCNF callback) {
         this.callback = callback;
     }
+
     public void receiveNextFile(FileWriter fileWriter, long size) {
         this.fileWriter = fileWriter;
         this.size = size;
@@ -42,12 +45,12 @@ public class FileReceiver implements Runnable{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }finally {
+        } finally {
             try {
                 this.fileWriter.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 callback.onReceived(fileWriter.getPath());
             }
         }

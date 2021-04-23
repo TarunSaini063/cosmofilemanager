@@ -44,49 +44,49 @@ public class TagDialogs implements Initializable {
     @FXML
     void addTag(ActionEvent event) {
         System.out.println(tagName.getText());
-        String color = String.format( "0X%02X%02X%02X",
-                (int)( tagColorPicker.getValue().getRed() * 255 ),
-                (int)( tagColorPicker.getValue().getGreen() * 255 ),
-                (int)( tagColorPicker.getValue().getBlue() * 255 ) )+"FF";
+        String color = String.format("0X%02X%02X%02X",
+                (int) (tagColorPicker.getValue().getRed() * 255),
+                (int) (tagColorPicker.getValue().getGreen() * 255),
+                (int) (tagColorPicker.getValue().getBlue() * 255)) + "FF";
 
-        if(!TaggedFiles.addNewCreatedTag(color,tagName.getText())){
+        if (!TaggedFiles.addNewCreatedTag(color, tagName.getText())) {
             invalidColor.setVisible(true);
             return;
         }
         ContextMenu contextMenu = new ContextMenu();
         MenuItem delete = new MenuItem("delete");
-        delete.setOnAction(e->{
+        delete.setOnAction(e -> {
             TaggedFiles.deleteTag(color);
             CommonData.instance.setTagPanel();
         });
         MenuItem modify = new MenuItem("Modify");
-        modify.setOnAction(e->{
+        modify.setOnAction(e -> {
         });
-        contextMenu.getItems().addAll(delete,modify);
+        contextMenu.getItems().addAll(delete, modify);
 
-        Circle circle = new Circle(Dimensions.COLOR_RADIUS, tagColorPicker.getValue()){
+        Circle circle = new Circle(Dimensions.COLOR_RADIUS, tagColorPicker.getValue()) {
             @Override
             public String toString() {
                 return color;
             }
         };
-        circle.setOnMouseClicked(e->{
-            if(e.getButton() == MouseButton.SECONDARY) {
+        circle.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(circle, e.getScreenX(), e.getScreenY());
-            }else{
+            } else {
                 CommonData.instance.showTaggedView(color);
             }
         });
-        Label label = new Label(tagName.getText(), circle){
+        Label label = new Label(tagName.getText(), circle) {
             @Override
             public String toString() {
                 return color;
             }
         };
-        label.setOnMouseClicked(e->{
-            if(e.getButton() == MouseButton.SECONDARY) {
+        label.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(circle, e.getScreenX(), e.getScreenY());
-            }else{
+            } else {
                 CommonData.instance.showTaggedView(color);
             }
         });
@@ -99,10 +99,10 @@ public class TagDialogs implements Initializable {
                 return color;
             }
         };
-        tag.setOnMouseClicked(e->{
-            if(e.getButton() == MouseButton.SECONDARY) {
+        tag.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(circle, e.getScreenX(), e.getScreenY());
-            }else{
+            } else {
                 CommonData.instance.showTaggedView(color);
             }
         });

@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class PublicThreads {
     static ArrayList<Thread> userThread = new ArrayList<>();
-    public static void clearThreads(){
-        for(Thread thread : userThread){
-            if(thread.isAlive()){
+
+    public static void clearThreads() {
+        for (Thread thread : userThread) {
+            if (thread.isAlive()) {
                 thread.interrupt();
             }
         }
     }
-    public static void add(Thread thread){
+
+    public static void add(Thread thread) {
         userThread.add(thread);
     }
 }

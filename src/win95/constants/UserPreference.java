@@ -13,7 +13,8 @@ import java.io.IOException;
 public class UserPreference {
     public static Themes THEME = Themes.LIGHT;
     public static String VIEW_MODE;
-    public static void fetchUserPreferences(){
+
+    public static void fetchUserPreferences() {
         JSONParser jsonParser = new JSONParser();
 
         File USER_HOME = new File(System.getProperty("user.home"));
@@ -73,13 +74,14 @@ public class UserPreference {
         }
 
     }
-    public static void saveUserPreferences(){
+
+    public static void saveUserPreferences() {
         String userPreferencesPath = new File(System.getProperty("user.home")).getAbsolutePath() +
                 "/.CosmoFileManager/UserPreferences.json";
 
         JSONObject userPreferences = new JSONObject();
-        userPreferences.put("theme",THEME.toString());
-        userPreferences.put("viewmode",CommonData.VIEW_MODE);
+        userPreferences.put("theme", THEME.toString());
+        userPreferences.put("viewmode", CommonData.VIEW_MODE);
 
         try (FileWriter file = new FileWriter(userPreferencesPath)) {
             file.write(userPreferences.toJSONString());
@@ -89,11 +91,12 @@ public class UserPreference {
         }
 
     }
+
     public static void setUserPreferences(JSONObject jsonObject) {
         String theme = (String) jsonObject.get("theme");
         String view_mode = (String) jsonObject.get("viewmode");
-        if(theme.equals("LIGHT")) THEME = Themes.LIGHT;
-        else if(theme.equals("DARK")) THEME = Themes.DARK;
+        if (theme.equals("LIGHT")) THEME = Themes.LIGHT;
+        else if (theme.equals("DARK")) THEME = Themes.DARK;
         else THEME = Themes.FADE;
         VIEW_MODE = view_mode;
 
@@ -102,12 +105,15 @@ public class UserPreference {
     public static Themes getTHEME() {
         return THEME;
     }
+
     public static String getViewMode() {
         return VIEW_MODE;
     }
+
     public static void setTHEME(Themes THEME) {
         UserPreference.THEME = THEME;
     }
+
     public static void setViewMode(String viewMode) {
         VIEW_MODE = viewMode;
     }

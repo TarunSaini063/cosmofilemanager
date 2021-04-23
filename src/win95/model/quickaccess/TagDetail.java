@@ -3,14 +3,16 @@ package win95.model.quickaccess;
 import java.util.ArrayList;
 
 public class TagDetail {
-    private String color,name;
+    private String color, name;
     private ArrayList<String> path;
-    public TagDetail(String color,String name){
+
+    public TagDetail(String color, String name) {
         this.color = color;
         this.name = name;
         path = new ArrayList<>();
     }
-    public TagDetail(){
+
+    public TagDetail() {
 
     }
 
@@ -40,7 +42,7 @@ public class TagDetail {
 
     @Override
     public String toString() {
-        return "Color : " + color + '\n'+
+        return "Color : " + color + '\n' +
                 "Name : " + name;
     }
 }

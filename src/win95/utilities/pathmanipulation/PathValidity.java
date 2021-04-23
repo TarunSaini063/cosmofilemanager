@@ -5,27 +5,29 @@ import win95.constants.FileType;
 import java.io.File;
 
 public class PathValidity {
-    private final String  path;
-    private  FileType type;
-    PathValidity(String path){
+    private final String path;
+    private FileType type;
+
+    PathValidity(String path) {
         this.path = path;
     }
-    boolean isValid(){
+
+    boolean isValid() {
         File file = new File(path);
-        if(file.exists()) {
-            if(file.isFile()) {
+        if (file.exists()) {
+            if (file.isFile()) {
                 type = FileType.FILE;
-            }else{
+            } else {
                 type = FileType.DIRECTORY;
             }
             return true;
-        }else{
+        } else {
             type = FileType.UNKNOWN;
             return false;
         }
     }
 
-    FileType fileType(){
+    FileType fileType() {
         return type;
     }
 }

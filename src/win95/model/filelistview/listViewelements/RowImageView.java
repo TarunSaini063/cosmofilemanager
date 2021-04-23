@@ -10,7 +10,7 @@ import java.io.File;
 
 public class RowImageView extends ImageView {
     private final FileDetail fileDetail;
-    private  String imageURL;
+    private String imageURL;
     private Image image;
 
     public RowImageView(FileDetail fileDetail) {
@@ -18,11 +18,13 @@ public class RowImageView extends ImageView {
         this.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
     }
-    public void refresh(){
+
+    public void refresh() {
         this.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
     }
-    public RowImageView(FileDetail fileDetail,LogicConstants previewMode) {
+
+    public RowImageView(FileDetail fileDetail, LogicConstants previewMode) {
         this.fileDetail = fileDetail;
         this.setFitHeight(Dimensions.PREVIEW_FILE_ICON);
         this.setFitWidth(Dimensions.PREVIEW_FILE_ICON);
@@ -36,22 +38,23 @@ public class RowImageView extends ImageView {
         return imageURL;
     }
 
-    public void setRowImage(String url){
+    public void setRowImage(String url) {
         this.imageURL = url;
         image = new Image(new File(url).toURI().toString());
         super.setImage(image);
     }
 
-    public void setRowImage(Image image){
+    public void setRowImage(Image image) {
         super.setImage(image);
     }
 
     @Override
     public String toString() {
-        return  "{{" + fileDetail.getFileName() + "}}" + '\n' +
+        return "{{" + fileDetail.getFileName() + "}}" + '\n' +
                 "{{" + fileDetail.getFilePath() + "}}" + '\n';
     }
-    public RowImageView getCopy(){
+
+    public RowImageView getCopy() {
         RowImageView rowImageViewCopy = new RowImageView(fileDetail);
         rowImageViewCopy.setFitWidth(Dimensions.GRIDVIEW_ROWIMAGEVIEW);
         rowImageViewCopy.setFitHeight(Dimensions.GRIDVIEW_ROWIMAGEVIEW);

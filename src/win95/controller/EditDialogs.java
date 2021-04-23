@@ -42,22 +42,22 @@ public class EditDialogs implements Initializable {
 
     private TagDetail tagDetail;
 
-    public void setTagDetail(TagDetail tagDetail){
+    public void setTagDetail(TagDetail tagDetail) {
         this.tagDetail = tagDetail;
     }
 
-    public TagDetail getTagDetail(){
-        return  tagDetail;
+    public TagDetail getTagDetail() {
+        return tagDetail;
     }
 
     @FXML
     void addTag(ActionEvent event) {
-        String color = String.format( "0X%02X%02X%02X",
-                (int)( tagColorPicker.getValue().getRed() * 255 ),
-                (int)( tagColorPicker.getValue().getGreen() * 255 ),
-                (int)( tagColorPicker.getValue().getBlue() * 255 ) )+"FF";
-        System.out.println("Updated tag new color = "+color);
-        if(!TaggedFiles.editTag(tagDetail.getColor(),color,tagDetail.getName(),tagName.getText())){
+        String color = String.format("0X%02X%02X%02X",
+                (int) (tagColorPicker.getValue().getRed() * 255),
+                (int) (tagColorPicker.getValue().getGreen() * 255),
+                (int) (tagColorPicker.getValue().getBlue() * 255)) + "FF";
+        System.out.println("Updated tag new color = " + color);
+        if (!TaggedFiles.editTag(tagDetail.getColor(), color, tagDetail.getName(), tagName.getText())) {
             invalidColor.setVisible(true);
             return;
         }

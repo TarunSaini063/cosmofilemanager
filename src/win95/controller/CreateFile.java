@@ -35,15 +35,15 @@ public class CreateFile {
     @FXML
     void add(ActionEvent event) {
         String path = fileDetail.getFilePath();
-        if(fileType == FileType.DIRECTORY) {
+        if (fileType == FileType.DIRECTORY) {
             SystemCommands.createFolder(path + "/" + name.getText());
-        }else{
+        } else {
             SystemCommands.createFile(path + "/" + name.getText());
         }
         try {
-            CommonData.instance.appendView(new GridEntry(new FileDetail(new File(path+"/"+name.getText()))));
+            CommonData.instance.appendView(new GridEntry(new FileDetail(new File(path + "/" + name.getText()))));
         } catch (IOException e) {
-            LogsPrinter.printError("CreateFile",41,
+            LogsPrinter.printError("CreateFile", 41,
                     "Error in appending newly created file to listView");
             e.printStackTrace();
         }

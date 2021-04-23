@@ -15,8 +15,8 @@ import java.nio.channels.SocketChannel;
 import java.nio.file.FileSystems;
 
 public class Common {
-    public static  boolean CLIENT = false;
-    public static ConnectionIO CONNECTION_STATUS =  ConnectionIO.BREAK;
+    public static boolean CLIENT = false;
+    public static ConnectionIO CONNECTION_STATUS = ConnectionIO.BREAK;
     public static String ip = "localhost";//"192.168.137.1";
     public static Transfer transfer;
     public static int port = 49452;
@@ -33,10 +33,11 @@ public class Common {
     public static ObjectInputStream clientObjectInputStream;
     public static ObjectOutputStream serverObjectOutputStream;
     public static ObjectInputStream serverObjectInputStream;
-    public static String receivedPath = new File(System.getProperty("user.home")).getAbsolutePath()+ FileSystems.getDefault().getSeparator()+"Downloads/";
+    public static String receivedPath = new File(System.getProperty("user.home")).getAbsolutePath() + FileSystems.getDefault().getSeparator() + "Downloads/";
     public static Socket serverMeta;
     public static final String INSTANTIATION_NOT_ALLOWED = "Instantiation not allowed";
     public static final long TRANSFER_MAX_SIZE = (1024 * 1024);
+
     private Common() {
         throw new IllegalStateException(INSTANTIATION_NOT_ALLOWED);
     }

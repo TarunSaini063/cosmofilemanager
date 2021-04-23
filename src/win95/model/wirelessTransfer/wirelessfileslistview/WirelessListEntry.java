@@ -22,7 +22,7 @@ public class WirelessListEntry {
         percent.setFont(PREVIEW_FONT);
         cancel = new Button("Cancel");
         cancel.setStyle("-fx-text-fill: white; -fx-background-color: red");
-        cancel.setOnAction(e->{
+        cancel.setOnAction(e -> {
             System.out.println("pressed cancel");
         });
     }

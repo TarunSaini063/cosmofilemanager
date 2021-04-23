@@ -147,7 +147,7 @@ public class Controller implements Initializable {
                 gridView.getChildren().clear();
                 gridObjectList.clear();
                 preview.getChildren().clear();
-                while(itr.hasNext()) {
+                while (itr.hasNext()) {
                     String path = itr.next();
                     try {
                         FileDetail inFileDetail = new FileDetail(new File(path));
@@ -179,13 +179,13 @@ public class Controller implements Initializable {
         return hbox;
     }
 
-    HBox getLeftTagPaneHBox(javafx.scene.paint.Color colorWord, String text,TagDetail tagDetail) {
+    HBox getLeftTagPaneHBox(javafx.scene.paint.Color colorWord, String text, TagDetail tagDetail) {
 
-        String color = String.format( "0X%02X%02X%02X",
-                (int)( colorWord.getRed() * 255 ),
-                (int)( colorWord.getGreen() * 255 ),
-                (int)( colorWord.getBlue() * 255 ) )+"FF";
-        System.out.println(text+" "+color);
+        String color = String.format("0X%02X%02X%02X",
+                (int) (colorWord.getRed() * 255),
+                (int) (colorWord.getGreen() * 255),
+                (int) (colorWord.getBlue() * 255)) + "FF";
+        System.out.println(text + " " + color);
         HBox hbox = new HBox() {
             @Override
             public String toString() {
@@ -202,13 +202,13 @@ public class Controller implements Initializable {
         contextMenu.getStyleClass().add("context-menu");
         MenuItem delete = new MenuItem("delete");
         delete.getStyleClass().add("menu-item");
-        delete.setOnAction(e->{
+        delete.setOnAction(e -> {
             TaggedFiles.deleteTag(color);
             setTagPanel();
         });
         MenuItem modify = new MenuItem("Modify");
         modify.getStyleClass().add("menu-item");
-        modify.setOnAction(e1->{
+        modify.setOnAction(e1 -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/EditDialogs.fxml"));
             Parent parent = null;
             try {
@@ -219,9 +219,9 @@ public class Controller implements Initializable {
             EditDialogs dialogs = fxmlLoader.<EditDialogs>getController();
             dialogs.setTagDetail(tagDetail);
             Scene scene = new Scene(parent, 464, 234);
-            if(UserPreference.getTHEME() == Themes.LIGHT){
+            if (UserPreference.getTHEME() == Themes.LIGHT) {
                 scene.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
-            }else if(UserPreference.getTHEME() == Themes.DARK){
+            } else if (UserPreference.getTHEME() == Themes.DARK) {
                 scene.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
             }
             Stage stage = new Stage();
@@ -229,13 +229,13 @@ public class Controller implements Initializable {
             stage.setScene(scene);
             stage.showAndWait();
         });
-        contextMenu.getItems().addAll(delete,modify);
+        contextMenu.getItems().addAll(delete, modify);
 
-        circle.setOnMouseClicked(e->{
+        circle.setOnMouseClicked(e -> {
 
-            if(e.getButton() == MouseButton.SECONDARY) {
+            if (e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(circle, e.getScreenX(), e.getScreenY());
-            }else{
+            } else {
                 showTaggedView(color);
             }
         });
@@ -247,20 +247,20 @@ public class Controller implements Initializable {
             }
         };
         label.setContextMenu(contextMenu);
-        label.setOnMouseClicked(e->{
-            if(e.getButton() == MouseButton.SECONDARY) {
+        label.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(hbox, e.getScreenX(), e.getScreenY());
-            }else{
+            } else {
                 showTaggedView(color);
             }
         });
         label.setPadding(new Insets(Dimensions.LEFT_PANEL_HBOX_PADDING));
         label.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
 
-        hbox.setOnMouseClicked(e->{
-            if(e.getButton() == MouseButton.SECONDARY) {
+        hbox.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
                 contextMenu.show(hbox, e.getScreenX(), e.getScreenY());
-            }else{
+            } else {
                 showTaggedView(color);
             }
         });
@@ -279,7 +279,7 @@ public class Controller implements Initializable {
         observableList.clear();
         gridObjectList.clear();
         gridView.getChildren().clear();
-        for(FileDetail fileDetail : fileDetails){
+        for (FileDetail fileDetail : fileDetails) {
             ListEntry listEntry = new ListEntry(fileDetail);
             GridEntry gridEntry = new GridEntry(listEntry);
             observableList.add(listEntry);
@@ -310,12 +310,12 @@ public class Controller implements Initializable {
 
     void setDefaultTags() {
         TaggedFiles.setUserTag();
-        for (Map.Entry<String, TagDetail> color : TaggedFiles.taggedFile.entrySet()){
+        for (Map.Entry<String, TagDetail> color : TaggedFiles.taggedFile.entrySet()) {
             TagDetail tagDetail = color.getValue();
             String name = tagDetail.getName();
             String tagColor = tagDetail.getColor();
-            tagColor = tagColor.substring(0,tagColor.length()-2);
-            HBox hbox = getLeftTagPaneHBox(javafx.scene.paint.Color.web(tagColor), name,tagDetail);
+            tagColor = tagColor.substring(0, tagColor.length() - 2);
+            HBox hbox = getLeftTagPaneHBox(javafx.scene.paint.Color.web(tagColor), name, tagDetail);
             appendTag(hbox);
         }
     }
@@ -353,9 +353,9 @@ public class Controller implements Initializable {
             TagDialogs dialogs = fxmlLoader.<TagDialogs>getController();
             Scene scene = new Scene(parent, 464, 234);
             Stage stage = new Stage();
-            if(UserPreference.getTHEME() == Themes.LIGHT){
+            if (UserPreference.getTHEME() == Themes.LIGHT) {
                 scene.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
-            }else if(UserPreference.getTHEME() == Themes.DARK){
+            } else if (UserPreference.getTHEME() == Themes.DARK) {
                 scene.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
             }
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -371,6 +371,7 @@ public class Controller implements Initializable {
 
         setDefaultTags();
     }
+
     @FXML
     void showMenu(MouseEvent event) {
         System.out.println("Menu button pressed");
@@ -388,12 +389,12 @@ public class Controller implements Initializable {
             System.out.println("PathStack.getNextDirectory() return null ");
             return;
         }
-            if (updateView(nextDirectory)) {
-                preview.getChildren().clear();
-            } else {
-                BUTTON_PRESSED = "NONE";
-            }
+        if (updateView(nextDirectory)) {
+            preview.getChildren().clear();
+        } else {
+            BUTTON_PRESSED = "NONE";
         }
+    }
 
     @FXML
     void previousDirectory(ActionEvent event) throws IOException {
@@ -405,16 +406,16 @@ public class Controller implements Initializable {
             System.out.println("PathStack.getPreviousDirectory() return null ");
             return;
         }
-            if (updateView(previousDirectory)) {
-                preview.getChildren().clear();
-            } else {
-                BUTTON_PRESSED = "NONE";
+        if (updateView(previousDirectory)) {
+            preview.getChildren().clear();
+        } else {
+            BUTTON_PRESSED = "NONE";
         }
     }
 
     @FXML
     void openTransferDialog(MouseEvent event) {
-        if(CommonData.transfer!=null){
+        if (CommonData.transfer != null) {
             CommonData.transfer.showStage();
             return;
         }
@@ -442,11 +443,11 @@ public class Controller implements Initializable {
         stage.initStyle(StageStyle.UNDECORATED);
 
         stage.focusedProperty().addListener((ov, onHidden, onShown) -> {
-            if(onHidden) {
+            if (onHidden) {
                 stage.setIconified(true);
                 System.out.println("unfocused again");
             }
-            if(onShown){
+            if (onShown) {
                 stage.setIconified(false);
                 stage.requestFocus();
                 CommonData.transfer.fetchNewlyAdded();
@@ -454,9 +455,9 @@ public class Controller implements Initializable {
             }
         });
 
-        if(UserPreference.getTHEME() == Themes.LIGHT){
+        if (UserPreference.getTHEME() == Themes.LIGHT) {
             scene.getStylesheets().add(this.getClass().getResource("../view/css/LightStyle.css").toExternalForm());
-        }else if(UserPreference.getTHEME() == Themes.DARK){
+        } else if (UserPreference.getTHEME() == Themes.DARK) {
             scene.getStylesheets().add(this.getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
         }
         stage.setScene(scene);
@@ -529,16 +530,6 @@ public class Controller implements Initializable {
 
 
     void setHoverEffect(Node node) {
-//        node.styleProperty().bind(
-//                Bindings
-//                        .when(node.hoverProperty())
-//                        .then(
-//                                new SimpleStringProperty(HOVERED_BUTTON_STYLE)
-//                        )
-//                        .otherwise(
-//                                new SimpleStringProperty(STANDARD_BUTTON_STYLE)
-//                        )
-//        );
     }
 
     @Override
@@ -546,10 +537,10 @@ public class Controller implements Initializable {
         gridView.setVgap(10);
         gridViewScrollPane.setFitToWidth(true);
         listView.setItems(observableList);
-        if(CommonData.VIEW_MODE.equals("LISTVIEW")){
+        if (CommonData.VIEW_MODE.equals("LISTVIEW")) {
             listView.setVisible(true);
             gridView.setVisible(false);
-        }else{
+        } else {
             listView.setVisible(false);
             gridView.setVisible(true);
         }
@@ -604,9 +595,9 @@ public class Controller implements Initializable {
             createFile.setFileDetail(CURRENT_DIRECTORY);
             createFile.setFileType(FileType.FILE);
             Scene scene1 = new Scene(parent, 419, 159);
-            if(UserPreference.getTHEME() == Themes.LIGHT){
+            if (UserPreference.getTHEME() == Themes.LIGHT) {
                 scene1.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
-            }else if(UserPreference.getTHEME() == Themes.DARK){
+            } else if (UserPreference.getTHEME() == Themes.DARK) {
                 scene1.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
             }
             Stage stage = new Stage();
@@ -629,9 +620,9 @@ public class Controller implements Initializable {
             createFile.setFileDetail(CURRENT_DIRECTORY);
             createFile.setFileType(FileType.DIRECTORY);
             Scene scene1 = new Scene(parent, 419, 159);
-            if(UserPreference.getTHEME() == Themes.LIGHT){
+            if (UserPreference.getTHEME() == Themes.LIGHT) {
                 scene1.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
-            }else if(UserPreference.getTHEME() == Themes.DARK){
+            } else if (UserPreference.getTHEME() == Themes.DARK) {
                 scene1.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
             }
             Stage stage = new Stage();
@@ -674,15 +665,15 @@ public class Controller implements Initializable {
         });
 
         MenuItem theme = new MenuItem("Change Theme");
-        theme.setOnAction(e->{
+        theme.setOnAction(e -> {
             Scene scene = listView.getScene();
             scene.getStylesheets().clear();
             setUserAgentStylesheet(null);
             System.out.println(scene);
-            if(UserPreference.getTHEME() == Themes.DARK){
+            if (UserPreference.getTHEME() == Themes.DARK) {
                 scene.getStylesheets().add(this.getClass().getResource("../view/css/LightStyle.css").toExternalForm());
                 UserPreference.setTHEME(Themes.LIGHT);
-            }else if(UserPreference.getTHEME() == Themes.LIGHT){
+            } else if (UserPreference.getTHEME() == Themes.LIGHT) {
                 scene.getStylesheets().add(this.getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
                 UserPreference.setTHEME(Themes.DARK);
             }
@@ -692,40 +683,40 @@ public class Controller implements Initializable {
         toggleFileView.setOnAction(event -> {
             toggleViewMode();
         });
-        menuPopup.getItems().addAll(sort_by_name, sort_by_size, sort_by_access,theme,toggleFileView);
-        if(CommonData.CURRENT_LIST_VIEW_ITEM == FileType.DIRECTORY){
-            menuPopup.getItems().addAll(createNewFile,createNewFolder);
+        menuPopup.getItems().addAll(sort_by_name, sort_by_size, sort_by_access, theme, toggleFileView);
+        if (CommonData.CURRENT_LIST_VIEW_ITEM == FileType.DIRECTORY) {
+            menuPopup.getItems().addAll(createNewFile, createNewFolder);
         }
         CommonData.instance = this;
 
     }
 
     private void toggleViewMode() {
-        if(CommonData.VIEW_MODE.equals("LISTVIEW")){
+        if (CommonData.VIEW_MODE.equals("LISTVIEW")) {
             CommonData.VIEW_MODE = "GRIDVIEW";
             gridView.getChildren().clear();
             gridObjectList.clear();
             ArrayList<ListEntry> temp = new ArrayList<>(observableList);
             observableList.clear();
-            for(ListEntry listEntry : temp){
-                if(listEntry !=null) {
+            for (ListEntry listEntry : temp) {
+                if (listEntry != null) {
                     updateView(new GridEntry(listEntry));
                 }
             }
             listView.setVisible(false);
             gridView.setVisible(true);
-        }else{
+        } else {
             CommonData.VIEW_MODE = "LISTVIEW";
-            for(ListEntry listEntry : observableList){
+            for (ListEntry listEntry : observableList) {
                 listEntry.refresh();
             }
             listView.setVisible(true);
             gridView.setVisible(false);
         }
         System.out.println(CommonData.VIEW_MODE);
-        for(ListEntry listEntry : observableList) System.out.print(listEntry.toString()+" ");
+        for (ListEntry listEntry : observableList) System.out.print(listEntry.toString() + " ");
         System.out.println();
-        for(GridEntry listEntry : gridObjectList) System.out.print(listEntry.toString()+" ");
+        for (GridEntry listEntry : gridObjectList) System.out.print(listEntry.toString() + " ");
     }
 
     public void showAddTagToFileDialog(ListEntry item) {
@@ -743,9 +734,9 @@ public class Controller implements Initializable {
         Stage stage = new Stage();
         stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
-        if(UserPreference.getTHEME() == Themes.LIGHT){
+        if (UserPreference.getTHEME() == Themes.LIGHT) {
             scene.getStylesheets().add(this.getClass().getResource("../view/css/LightStyle.css").toExternalForm());
-        }else if(UserPreference.getTHEME() == Themes.DARK){
+        } else if (UserPreference.getTHEME() == Themes.DARK) {
             scene.getStylesheets().add(this.getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
         }
         stage.setScene(scene);
@@ -761,15 +752,15 @@ public class Controller implements Initializable {
         observableList.remove(gridEntry.getListEntry());
     }
 
-    public void appendView(GridEntry gridEntry){
+    public void appendView(GridEntry gridEntry) {
         updateView(gridEntry);
     }
 
-    void updateView(GridEntry gridEntry){
+    void updateView(GridEntry gridEntry) {
         ListEntry listEntry = gridEntry.getListEntry();
-        if(CommonData.VIEW_MODE.equals("GRIDVIEW")){
+        if (CommonData.VIEW_MODE.equals("GRIDVIEW")) {
             gridEntry.refresh();
-        }else{
+        } else {
             listEntry.refresh();
         }
         gridObjectList.add(gridEntry);

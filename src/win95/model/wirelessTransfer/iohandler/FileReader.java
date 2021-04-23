@@ -15,12 +15,13 @@ public class FileReader implements Runnable {
     private final FileSender sender;
     private FileCNF callback;
     private String path;
-    public FileReader( FileSender sender,  String path,FileCNF callback) throws IOException {
-        System.out.println("in fileReader class path : "+path);
-        if (Objects.isNull(sender)){
+
+    public FileReader(FileSender sender, String path, FileCNF callback) throws IOException {
+        System.out.println("in fileReader class path : " + path);
+        if (Objects.isNull(sender)) {
             throw new IllegalArgumentException("sender required");
         }
-        if(StringUtils.isEmpty(path)){
+        if (StringUtils.isEmpty(path)) {
             throw new IllegalArgumentException(" path required");
 
         }

@@ -9,19 +9,19 @@ import win95.constants.Fonts;
 
 public class TagListEntry {
     private Circle colorCircle;
-    String color ;
+    String color;
 
     private Label tagName;
     private Label tagCount;
     private String tagNameString;
 
 
-    public TagListEntry(String color, String tagName){
+    public TagListEntry(String color, String tagName) {
         tagCount = new Label();
         tagNameString = tagName;
         tagCount.setMinWidth(10);
-        if(color.length()>8)
-            color = color.substring(0,color.length()-2);
+        if (color.length() > 8)
+            color = color.substring(0, color.length() - 2);
         this.color = color;
         colorCircle = new Circle(Dimensions.COLOR_RADIUS, Color.web(color)) {
             @Override
@@ -39,6 +39,7 @@ public class TagListEntry {
         this.tagName.setFont(Fonts.LEFT_PANEL_HBOX_FONT);
         this.tagName.setMinWidth(200);
     }
+
     public Circle getColorCircle() {
         return colorCircle;
     }
@@ -46,6 +47,7 @@ public class TagListEntry {
     public Label getTagNameLabel() {
         return this.tagName;
     }
+
     public String getColor() {
         return color;
     }
@@ -54,12 +56,13 @@ public class TagListEntry {
         return tagCount;
     }
 
-    public String getName(){
+    public String getName() {
         return tagNameString;
     }
+
     @Override
     public String toString() {
-        return "Color : " + colorCircle.getFill()+'\n'+
-                "Name : " + tagName.getText()+'\n';
+        return "Color : " + colorCircle.getFill() + '\n' +
+                "Name : " + tagName.getText() + '\n';
     }
 }

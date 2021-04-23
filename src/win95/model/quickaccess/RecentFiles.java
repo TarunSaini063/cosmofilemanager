@@ -16,7 +16,8 @@ import static win95.constants.Dimensions.RECENT_QUEUE_CAPACITY;
 
 public class RecentFiles {
     private final static Set<String> recentSet = new LinkedHashSet<>();
-    private final static int  CAPACITY = RECENT_QUEUE_CAPACITY;
+    private final static int CAPACITY = RECENT_QUEUE_CAPACITY;
+
     public static void fetchRecent() {
         JSONParser jsonParser = new JSONParser();
         File USER_HOME = new File(System.getProperty("user.home"));
@@ -80,7 +81,7 @@ public class RecentFiles {
     public static void addRecentQueue(String path) {
         LinkedList<String> list = new LinkedList<>(recentSet);
         Iterator<String> itr = list.descendingIterator();
-        if(recentSet.size() == CAPACITY){
+        if (recentSet.size() == CAPACITY) {
             String firstKey = recentSet.iterator().next();
             recentSet.remove(firstKey);
         }
@@ -100,7 +101,7 @@ public class RecentFiles {
         LinkedList<String> list = new LinkedList<>(recentSet);
         Iterator<String> itr = list.iterator();
 
-        while (itr.hasNext()){
+        while (itr.hasNext()) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("path", itr.next());
             recentFileArray.add(jsonObject);

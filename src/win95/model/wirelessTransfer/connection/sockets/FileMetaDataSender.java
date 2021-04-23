@@ -7,9 +7,10 @@ import win95.model.wirelessTransfer.connection.callbacks.FileMetaDataCallBack;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class FileMetaDataSender implements Runnable{
+public class FileMetaDataSender implements Runnable {
     FileMetaDataCallBack callBack;
     FileMetaData fileMetaData;
+
     public FileMetaDataSender(FileMetaDataCallBack callBack, FileMetaData fileMetaData) {
         this.callBack = callBack;
         this.fileMetaData = fileMetaData;
@@ -19,14 +20,14 @@ public class FileMetaDataSender implements Runnable{
     public void run() {
         ObjectOutputStream objectOutputStream = null;
         System.out.println("fetching object output stream ");
-        if(Common.CLIENT) {
-                System.out.println("Waiting in client");
-                objectOutputStream = Common.clientObjectOutputStream;
-        }else{
-                objectOutputStream = Common.serverObjectOutputStream;
+        if (Common.CLIENT) {
+            System.out.println("Waiting in client");
+            objectOutputStream = Common.clientObjectOutputStream;
+        } else {
+            objectOutputStream = Common.serverObjectOutputStream;
         }
         assert objectOutputStream != null;
-        System.out.println("get object output steam... "+objectOutputStream.toString());
+        System.out.println("get object output steam... " + objectOutputStream.toString());
         try {
             System.out.println("writing object");
             objectOutputStream.writeObject(fileMetaData);

@@ -49,17 +49,17 @@ public class InitConnectionClient implements Runnable {
     @Override
     public void run() {
         int turn = 0;
-        while(turn<2&&Common.ip.equals("localhost")) {
+        while (turn < 2 && Common.ip.equals("localhost")) {
             int count = 254;
             turn++;
             while (count >= 1 && Common.ip.equals("localhost")) {
-                System.out.println("Broadcasting for turn : " + turn+" with sub ip "+ count);
+                System.out.println("Broadcasting for turn : " + turn + " with sub ip " + count);
                 try {
                     long before = System.currentTimeMillis();
                     System.out.println(before);
                     BroadCast.main(callback, fileMetaDataCallBack, count);
                     Thread.sleep(5000);
-                    System.out.println(System.currentTimeMillis()-before);
+                    System.out.println(System.currentTimeMillis() - before);
                     count--;
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();

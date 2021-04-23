@@ -1,20 +1,20 @@
-.hbox:hover{
+.hbox:hover {
     -fx-background-color: #acdb7d;
 }
 
-#tagPane  {
+#tagPane {
     -fx-background-color: #D4DFE7;
 }
 
-#preview  {
+#preview {
     -fx-background-color: #D4DFE7;
 }
 
-#middleTop  {
+#middleTop {
     -fx-background-color: #EEDFEA;
 }
 
-.button:hover{
+.button:hover {
     -fx-background-color: #343436;
     -fx-text-fill: #ffffff;
 }

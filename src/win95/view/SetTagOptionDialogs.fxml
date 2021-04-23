@@ -3,8 +3,11 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="setTagPane" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.SetTagOptionDialogs">
-   <children>
-      <ListView fx:id="listView" layoutX="17.0" layoutY="36.0" prefHeight="545.0" prefWidth="463.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="15.0" />
-   </children>
+<AnchorPane fx:id="setTagPane" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/15.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="win95.controller.SetTagOptionDialogs">
+    <children>
+        <ListView fx:id="listView" layoutX="17.0" layoutY="36.0" prefHeight="545.0" prefWidth="463.0"
+                  AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="17.0"
+                  AnchorPane.topAnchor="15.0"/>
+    </children>
 </AnchorPane>

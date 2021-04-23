@@ -13,16 +13,15 @@ import win95.model.wirelessTransfer.wirelessfileslistview.ListOfFileTransfer;
 import java.io.File;
 
 public class ListEntry {
-    private String name,url;
+    private String name, url;
     private GridEntry gridEntry;
     private RowImageView rowImageView;
-    private RowLabel rowNameLabel,rowCount;
-    private RowButtonShare delete,open,share;
+    private RowLabel rowNameLabel, rowCount;
+    private RowButtonShare delete, open, share;
     private FileDetail fileDetail;
 
 
-
-    public ListEntry(FileDetail fileDetail){
+    public ListEntry(FileDetail fileDetail) {
         this.fileDetail = fileDetail;
         this.name = fileDetail.getFileName();
         this.url = Icons.getFileIconPath(fileDetail.getFileExtension());
@@ -40,13 +39,9 @@ public class ListEntry {
         this.rowImageView.setImage(image);
 
 
-        share = new RowButtonShare(fileDetail,"Share");
+        share = new RowButtonShare(fileDetail, "Share");
 
         share.setOnAction(event -> {
-            /*
-                replace with share module..
-                not implemented yet...
-             */
             ListOfFileTransfer.add(fileDetail);
             share.setDisable(true);
         });
@@ -124,12 +119,14 @@ public class ListEntry {
     public void setFileDetail(FileDetail fileDetail) {
         this.fileDetail = fileDetail;
     }
-    public void refresh(){
+
+    public void refresh() {
         rowImageView.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         rowImageView.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         rowNameLabel.setMaxWidth(500);
         rowNameLabel.setMinWidth(500);
     }
+
     @Override
     public String toString() {
         return "ListEntry{" +

@@ -22,9 +22,9 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
     @Override
     protected void updateItem(ListEntry item, boolean empty) {
         super.updateItem(item, empty);
-        if(empty){
+        if (empty) {
             setGraphic(null);
-        }else{
+        } else {
             int index = this.getIndex();
 
             RowGridPane grid = new RowGridPane(item.getFileDetail());
@@ -33,14 +33,14 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             grid.setPadding(new Insets(0, 10, 0, 10));
 
             RowLabel count = item.getRowCount();
-            count.setText(index+1+"");
+            count.setText(index + 1 + "");
             count.setMinWidth(Dimensions.LISTVIEW_ROWCOUNT);
 
-            grid.add(count,0,0,1,1);
+            grid.add(count, 0, 0, 1, 1);
             item.refresh();
-            grid.add(item.getRowImageView(),1,0);
-            grid.add(item.getRowNamelabel(),2,0,3,1);
-            if(item.getFileDetail().getFileType()==FileType.FILE) {
+            grid.add(item.getRowImageView(), 1, 0);
+            grid.add(item.getRowNamelabel(), 2, 0, 3, 1);
+            if (item.getFileDetail().getFileType() == FileType.FILE) {
                 grid.add(item.getShare(), 5, 0);
             }
             grid.setAlignment(Pos.BASELINE_LEFT);
@@ -50,12 +50,12 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             this.setContextMenu(contextMenu);
             MenuItem menuItem1 = new MenuItem("Change tags");
             menuItem1.getStyleClass().add("menu-item");
-            menuItem1.setOnAction(e->{
-                System.out.println("context click : "+item.toString());
+            menuItem1.setOnAction(e -> {
+                System.out.println("context click : " + item.toString());
                 CommonData.instance.showAddTagToFileDialog(item);
 
             });
-            if(item.getFileDetail().getFileType() == FileType.DIRECTORY) {
+            if (item.getFileDetail().getFileType() == FileType.DIRECTORY) {
                 MenuItem menuItem2 = new MenuItem("Open in Terminal");
                 menuItem2.getStyleClass().add("menu-item");
                 menuItem2.setOnAction(e -> {
@@ -67,31 +67,30 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             }
             MenuItem menuItem3 = new MenuItem("Delete");
             menuItem3.getStyleClass().add("menu-item");
-            menuItem3.setOnAction(e->{
+            menuItem3.setOnAction(e -> {
                 CommonData.instance.deleteView(item.getGridView());
-                if(item.getFileDetail().getFileType() == FileType.DIRECTORY) {
+                if (item.getFileDetail().getFileType() == FileType.DIRECTORY) {
                     SystemCommands.deleteFolder(item.getFileDetail().getFilePath());
-                }else{
+                } else {
                     SystemCommands.deleteFile(item.getFileDetail().getFilePath());
                 }
             });
-            contextMenu.getItems().addAll(menuItem1,menuItem3);
+            contextMenu.getItems().addAll(menuItem1, menuItem3);
 
-            this.setOnMouseClicked(event->{
-                if (event.getButton() == MouseButton.PRIMARY){
-                    if(event.getClickCount() == 2){
+            this.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.PRIMARY) {
+                    if (event.getClickCount() == 2) {
                         try {
                             doubleClick(item.getFileDetail());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else{
-                            if(CommonData.instance!=null){
-                                CommonData.instance.showPreview(item.getFileDetail());
-                            }else{
-                                LogsPrinter.printLogic("UpdateCellFactory",47,"controller instance is null");
-                            }
+                    } else {
+                        if (CommonData.instance != null) {
+                            CommonData.instance.showPreview(item.getFileDetail());
+                        } else {
+                            LogsPrinter.printLogic("UpdateCellFactory", 47, "controller instance is null");
+                        }
                     }
                 }
             });

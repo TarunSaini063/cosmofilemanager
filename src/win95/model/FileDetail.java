@@ -10,16 +10,10 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class FileDetail {
-    /*
-    *   Add system call to find details for particular file or directory
-    *   not yet implemented...
-    *   use utilities.fileHandling.os module to add logic
-     */
 
-
-    private final String filePath,fileName;
-    private String sizeInByte,sizeInKiloByte,sizeInGigaByte,sizeInMegaByte,optimizedSize;
-    private String lastAccessTime,lastModifiedTime,creationTime;
+    private final String filePath, fileName;
+    private String sizeInByte, sizeInKiloByte, sizeInGigaByte, sizeInMegaByte, optimizedSize;
+    private String lastAccessTime, lastModifiedTime, creationTime;
     private final File file;
     private FileType fileType;
     private String fileExtension = "unknown";
@@ -31,28 +25,28 @@ public class FileDetail {
         this.file = file;
         filePath = this.file.getPath();
         fileName = this.file.getName();
-        if(FileValidity.isValid(file)){
+        if (FileValidity.isValid(file)) {
 
             Path OsPath = this.file.toPath();
-            BasicFileAttributes attributes = Files.readAttributes(OsPath,BasicFileAttributes.class);
+            BasicFileAttributes attributes = Files.readAttributes(OsPath, BasicFileAttributes.class);
             this.creationTime = attributes.creationTime().toString();
             this.lastAccessTime = attributes.lastAccessTime().toString();
             this.lastModifiedTime = attributes.lastModifiedTime().toString();
 
-            creationTime = creationTime.substring(0,creationTime.length()-1);
-            String []splitCreationTime = creationTime.split("T");
+            creationTime = creationTime.substring(0, creationTime.length() - 1);
+            String[] splitCreationTime = creationTime.split("T");
             creationTime = "";
-            for(String var : splitCreationTime) creationTime += var + " ";
+            for (String var : splitCreationTime) creationTime += var + " ";
 
-            lastAccessTime = lastAccessTime.substring(0,lastAccessTime.length()-1);
-            String []splitLastAccessTime = lastAccessTime.split("T");
+            lastAccessTime = lastAccessTime.substring(0, lastAccessTime.length() - 1);
+            String[] splitLastAccessTime = lastAccessTime.split("T");
             lastAccessTime = "";
-            for(String var : splitLastAccessTime) lastAccessTime += var + " ";
+            for (String var : splitLastAccessTime) lastAccessTime += var + " ";
 
-            lastModifiedTime = lastModifiedTime.substring(0,lastModifiedTime.length()-1);
-            String []splitModifiedAccessTime = lastAccessTime.split("T");
+            lastModifiedTime = lastModifiedTime.substring(0, lastModifiedTime.length() - 1);
+            String[] splitModifiedAccessTime = lastAccessTime.split("T");
             lastModifiedTime = "";
-            for(String var : splitModifiedAccessTime) lastModifiedTime += var + " ";
+            for (String var : splitModifiedAccessTime) lastModifiedTime += var + " ";
 
 
             long bytes = attributes.size();
@@ -64,31 +58,32 @@ public class FileDetail {
             this.sizeInKiloByte = String.format("%,f kb", kilobytes);
             this.sizeInMegaByte = String.format("%,f mb", megabytes);
             this.sizeInGigaByte = String.format("%,f gb", gigabytes);
-            if(gigabytes >= 1) optimizedSize = sizeInGigaByte;
-            else if(megabytes >= 1) optimizedSize = sizeInMegaByte;
-            else if(kilobytes >= 1 ) optimizedSize = sizeInKiloByte;
-            else if(bytes !=0 ) optimizedSize = sizeInByte;
+            if (gigabytes >= 1) optimizedSize = sizeInGigaByte;
+            else if (megabytes >= 1) optimizedSize = sizeInMegaByte;
+            else if (kilobytes >= 1) optimizedSize = sizeInKiloByte;
+            else if (bytes != 0) optimizedSize = sizeInByte;
 
             int lastIndexOf = fileName.lastIndexOf(".");
             if (lastIndexOf == -1) {
                 fileExtension = "unknown";
-            }else{
-                fileExtension = fileName.substring(lastIndexOf+1);
+            } else {
+                fileExtension = fileName.substring(lastIndexOf + 1);
             }
-            if(attributes.isDirectory()){
+            if (attributes.isDirectory()) {
                 fileType = FileType.DIRECTORY;
                 fileExtension = "directory";
                 /*
-                * replace it with system call in future for fast working;
-                * numberOfFiles = (this.file.list()).length;
+                 * replace it with system call in future for fast working;
+                 * numberOfFiles = (this.file.list()).length;
                  */
 
-            }else {
+            } else {
                 fileType = FileType.FILE;
             }
         }
 
     }
+
     public String getLastAccessTime() {
         return lastAccessTime;
     }
@@ -137,13 +132,15 @@ public class FileDetail {
     public String getFileExtension() {
         return fileExtension;
     }
-    public String getOptimizedSize(){
+
+    public String getOptimizedSize() {
 
         return optimizedSize;
     }
+
     @Override
     public String toString() {
-        return  "fileName       : " + fileName + "\n" +
+        return "fileName       : " + fileName + "\n" +
                 "filePath       : " + filePath + "\n" +
                 "sizeInByte     : " + sizeInByte + "\n" +
                 "sizeInKiloByte : " + sizeInKiloByte + "\n" +
@@ -151,7 +148,7 @@ public class FileDetail {
                 "optimizedSize  : " + optimizedSize + "\n" +
                 "fileType       : " + fileType + "\n" +
                 "fileExtension  : " + fileExtension + "\n" +
-                "numberOfFiles  : " + numberOfFiles + "\n" ;
+                "numberOfFiles  : " + numberOfFiles + "\n";
 
     }
 

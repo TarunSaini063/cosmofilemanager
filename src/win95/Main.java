@@ -24,11 +24,11 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("./view/sample.fxml"));
         primaryStage.setTitle("BIT-COSMOS");
         Scene scene = new Scene(root);
-        if(UserPreference.THEME == Themes.DARK) {
+        if (UserPreference.THEME == Themes.DARK) {
             scene.getStylesheets().add(getClass().getResource("./view/css/DarkStyle.css").toExternalForm());
-        }else if(UserPreference.THEME == Themes.LIGHT){
+        } else if (UserPreference.THEME == Themes.LIGHT) {
             scene.getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
-        }else{
+        } else {
             /*  set FADE theme not Theme implemented */
             scene.getStylesheets().add(getClass().getResource("./view/css/LightStyle.css").toExternalForm());
         }

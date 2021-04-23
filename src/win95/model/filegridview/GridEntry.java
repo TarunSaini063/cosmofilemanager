@@ -26,7 +26,7 @@ import java.io.IOException;
 import static win95.utilities.filehandling.OpenFile.doubleClick;
 
 public class GridEntry {
-    private String name,url;
+    private String name, url;
 
     private RowImageView rowImageView;
     private RowLabel rowNameLabel;
@@ -34,7 +34,8 @@ public class GridEntry {
     private FileDetail fileDetail;
     private ListEntry listEntry;
     GridPane fileBlock;
-    public GridEntry(FileDetail fileDetail){
+
+    public GridEntry(FileDetail fileDetail) {
         setData(fileDetail);
         listEntry = new ListEntry(fileDetail);
         listEntry.setGridEntry(this);
@@ -42,11 +43,12 @@ public class GridEntry {
     }
 
 
-    public GridEntry(ListEntry listEntry){
+    public GridEntry(ListEntry listEntry) {
         this.listEntry = listEntry;
         setData(listEntry.getFileDetail());
         makeFileBlock();
     }
+
     private void setData(FileDetail fileDetail) {
         this.fileDetail = fileDetail;
         this.name = fileDetail.getFileName();
@@ -59,14 +61,14 @@ public class GridEntry {
         this.rowImageView.setImage(image);
         rowImageView.setFitHeight(Dimensions.GRIDVIEW_ROWIMAGEVIEW);
         rowImageView.setFitWidth(Dimensions.GRIDVIEW_ROWIMAGEVIEW);
-        share = new RowButtonShare(fileDetail,"Share");
+        share = new RowButtonShare(fileDetail, "Share");
 
         share.setOnAction(event -> {
             /*
                 replace with share module..
                 not implemented yet...
              */
-            LogsPrinter.printLogic("ListEntry",42,"Share logic not implemented yet");
+            LogsPrinter.printLogic("ListEntry", 42, "Share logic not implemented yet");
         });
     }
 
@@ -134,7 +136,7 @@ public class GridEntry {
         this.fileDetail = fileDetail;
     }
 
-    public void makeFileBlock(){
+    public void makeFileBlock() {
         ContextMenu contextMenu = new ContextMenu();
         fileBlock = new GridPane();
         fileBlock.getStyleClass().add("file-block");
@@ -145,30 +147,29 @@ public class GridEntry {
         rowNameLabel.setWrapText(true);
 
         rowNameLabel.setAlignment(Pos.CENTER);
-        fileBlock.add(rowImageView,0,0,2,1);
-        fileBlock.add(rowNameLabel,0,1,2,1);
+        fileBlock.add(rowImageView, 0, 0, 2, 1);
+        fileBlock.add(rowNameLabel, 0, 1, 2, 1);
 
         GridPane.setHalignment(rowNameLabel, HPos.CENTER);
 
-        fileBlock.setOnMouseClicked(event->{
-            if (event.getButton() == MouseButton.PRIMARY){
-                if(event.getClickCount() == 2){
+        fileBlock.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                if (event.getClickCount() == 2) {
                     try {
                         doubleClick(listEntry.getFileDetail());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else{
-                    if(CommonData.instance!=null){
+                } else {
+                    if (CommonData.instance != null) {
                         CommonData.instance.showPreview(listEntry.getFileDetail());
-                    }else{
-                        LogsPrinter.printLogic("UpdateCellFactory",47,"controller instance is null");
+                    } else {
+                        LogsPrinter.printLogic("UpdateCellFactory", 47, "controller instance is null");
                     }
                 }
             }
         });
-        fileBlock.setOnContextMenuRequested(event->{
+        fileBlock.setOnContextMenuRequested(event -> {
             contextMenu.show(fileBlock, event.getScreenX(), event.getScreenY());
             event.consume();
         });
@@ -177,13 +178,13 @@ public class GridEntry {
 
         MenuItem menuItem1 = new MenuItem("Change tags");
         menuItem1.getStyleClass().add("menu-item");
-        menuItem1.setOnAction(e->{
-            System.out.println("context click : "+listEntry.toString());
+        menuItem1.setOnAction(e -> {
+            System.out.println("context click : " + listEntry.toString());
             CommonData.instance.showAddTagToFileDialog(listEntry);
 
         });
 
-        if(listEntry.getFileDetail().getFileType() == FileType.DIRECTORY) {
+        if (listEntry.getFileDetail().getFileType() == FileType.DIRECTORY) {
             MenuItem menuItem2 = new MenuItem("Open in Terminal");
             menuItem2.getStyleClass().add("menu-item");
             menuItem2.setOnAction(e -> {
@@ -193,7 +194,7 @@ public class GridEntry {
             });
             contextMenu.getItems().add(menuItem2);
         }
-        if(listEntry.getFileDetail().getFileType() != FileType.DIRECTORY) {
+        if (listEntry.getFileDetail().getFileType() != FileType.DIRECTORY) {
             MenuItem share = new MenuItem("Share");
             share.getStyleClass().add("menu-item");
             share.setOnAction(e -> {
@@ -205,27 +206,27 @@ public class GridEntry {
 
         MenuItem menuItem3 = new MenuItem("Delete");
         menuItem3.getStyleClass().add("menu-item");
-        menuItem3.setOnAction(e->{
+        menuItem3.setOnAction(e -> {
             CommonData.instance.deleteView(this);
-            if(listEntry.getFileDetail().getFileType() == FileType.DIRECTORY) {
+            if (listEntry.getFileDetail().getFileType() == FileType.DIRECTORY) {
                 SystemCommands.deleteFolder(listEntry.getFileDetail().getFilePath());
-            }else{
+            } else {
                 SystemCommands.deleteFile(listEntry.getFileDetail().getFilePath());
             }
         });
 
-        contextMenu.getItems().addAll(menuItem1,menuItem3);
+        contextMenu.getItems().addAll(menuItem1, menuItem3);
         fileBlock.getStyleClass().clear();
         fileBlock.getStyleClass().add("file-block");
     }
 
 
-    public GridPane getFileGridBlock(){
+    public GridPane getFileGridBlock() {
 
         return fileBlock;
     }
 
-    public void refresh(){
+    public void refresh() {
         fileBlock.setMaxWidth(100);
         fileBlock.setMinWidth(100);
         rowNameLabel.setMaxWidth(100);

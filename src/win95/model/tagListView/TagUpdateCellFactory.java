@@ -17,40 +17,40 @@ public class TagUpdateCellFactory extends ListCell<TagListEntry> {
     @Override
     protected void updateItem(TagListEntry item, boolean empty) {
         super.updateItem(item, empty);
-        if(empty){
+        if (empty) {
             setGraphic(null);
-        }else {
+        } else {
             int index = this.getIndex();
             GridPane tagRowGridPane = new GridPane();
             tagRowGridPane.setHgap(10);
             tagRowGridPane.setVgap(10);
 
             Label count = item.getTagCount();
-            count.setText(index+1+"");
+            count.setText(index + 1 + "");
             count.setMinWidth(Dimensions.LISTVIEW_ROWCOUNT);
 
             Label tag = item.getTagNameLabel();
             Button button = new Button();
 
-            tagRowGridPane.add(count,0,0);
-            tagRowGridPane.add(tag,2,0);
+            tagRowGridPane.add(count, 0, 0);
+            tagRowGridPane.add(tag, 2, 0);
             String filePath = new PathHandling(CommonData.TAG_OPTION_INSTANCE.getFileDetail().getFilePath()).getFixedPath();
-            String tagColor = item.getColor()+"FF";
+            String tagColor = item.getColor() + "FF";
             ArrayList<String> tagfiles = TaggedFiles.getList(tagColor);
-            if(tagfiles.contains(filePath)){
+            if (tagfiles.contains(filePath)) {
                 button.setText("Remove");
-                button.setOnMouseClicked(e->{
+                button.setOnMouseClicked(e -> {
                     tagfiles.remove(filePath);
                     CommonData.instance.setTagPanel();
                     Node source = (Node) e.getSource();
                     Stage stage = (Stage) source.getScene().getWindow();
                     stage.close();
                 });
-            }else{
+            } else {
                 button.setText("Add");
 
-                button.setOnMouseClicked(e->{
-                    for(String path : tagfiles) System.out.println(path);
+                button.setOnMouseClicked(e -> {
+                    for (String path : tagfiles) System.out.println(path);
                     TaggedFiles.addThisFileToTag(item.getColorCircle().getFill().toString().toUpperCase(),
                             CommonData.TAG_OPTION_INSTANCE.getFileDetail().getFilePath(),
                             item.getName());
@@ -59,7 +59,7 @@ public class TagUpdateCellFactory extends ListCell<TagListEntry> {
                     stage.close();
                 });
             }
-            tagRowGridPane.add(button,3,0);
+            tagRowGridPane.add(button, 3, 0);
             setGraphic(tagRowGridPane);
         }
     }

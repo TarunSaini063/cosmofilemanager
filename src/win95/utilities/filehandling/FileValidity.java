@@ -4,10 +4,11 @@ import java.io.File;
 
 public class FileValidity {
 
-    public static boolean isValid(File file){
+    public static boolean isValid(File file) {
         return file.exists();
     }
-    public static boolean isValid(String path){
+
+    public static boolean isValid(String path) {
         File file = new File(path);
         return file.exists();
     }

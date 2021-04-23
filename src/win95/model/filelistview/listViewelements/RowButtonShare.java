@@ -11,7 +11,7 @@ public class RowButtonShare extends Button implements ActionListener {
     private final String name;
     private final String path;
 
-    public RowButtonShare(FileDetail fileDetail,String text) {
+    public RowButtonShare(FileDetail fileDetail, String text) {
         super(text);
         this.fileDetail = fileDetail;
         this.name = fileDetail.getFileName();
@@ -32,7 +32,7 @@ public class RowButtonShare extends Button implements ActionListener {
 
     @Override
     public String toString() {
-        return  "{{" + name + "}}" + '\n' +
+        return "{{" + name + "}}" + '\n' +
                 "{{" + path + "}}" + '\n';
     }
 

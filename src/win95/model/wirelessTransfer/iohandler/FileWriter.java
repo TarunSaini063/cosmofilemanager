@@ -14,6 +14,7 @@ import java.util.Objects;
 public class FileWriter {
     private final FileChannel channel;
     String path;
+
     public FileWriter(final String path) throws IOException {
         if (StringUtils.isEmpty(path)) {
             throw new IllegalArgumentException("path required");
@@ -40,7 +41,7 @@ public class FileWriter {
         assert !Objects.isNull(buffer);
 
         int bytesWritten = 0;
-        while(buffer.hasRemaining()) {
+        while (buffer.hasRemaining()) {
             bytesWritten += this.channel.write(buffer, position + bytesWritten);
         }
 
