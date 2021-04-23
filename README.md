@@ -11,7 +11,7 @@ Features implemented :
 7) Remove tag from file at any time
 8) Whenever the file manager opens next time you can access all tags and other preferences.
 9) Multiple themes are available right now dark and light only.
-10) Share file in a single click with any device android, window or mac using hotspot only (Not yet implemented).
+10) Share file in a single click with any device android, window or mac using hotspot only.
 
 # Tech use :
 1) Java 8
@@ -28,5 +28,6 @@ Features implemented :
 
 
 # Work in progress...
-
-
+<p align="center">
+<img src="https://www.code-inspector.com/project/21799/score/svg">
+</p>
