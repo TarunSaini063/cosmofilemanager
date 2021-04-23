@@ -21,9 +21,13 @@ Features implemented :
 1) Simple json
 
 # Snapshots
+<p align="center">
 <img src="https://github.com/TarunSaini063/cosmofilemanager/blob/master/src/win95/demo/Day6/Day6_1.png" width="650" height="400">
+</p>
 # Dark Mode
+<p align="center">
 <img src="https://github.com/TarunSaini063/cosmofilemanager/blob/master/src/win95/demo/Day10/Day10_3.png" width="650" height="400">
+</p>
 
 
 
